@@ -1,12 +1,12 @@
 <html>
 <head>
-<h3>Project Tilte:Celebromos</h3>
+<h3>Project Tilte:Celebremos</h3>
 <head>
 <body>
 <table>
 <tr>
 <th>Project Title</th>
-<td>Celebromos</td>
+<td>Celebremos</td>
 </tr>
 <tr>
 <th>Team Members</th>
