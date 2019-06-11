@@ -2,7 +2,7 @@
 <head>
 <h3>Project Tilte:Celebromos</h3>
 <h4>Team Logo</h4>
-<p>![](https://github.com/karunb09/celebremos/blob/master/Team%20logo%202.png) </p>
+<p>![](https://raw.githubusercontent.com/karunb09/celebremos/master/Team%20logo%202.png)</p>
 <head>
 <body>
 <table>
