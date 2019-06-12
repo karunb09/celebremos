@@ -49,7 +49,7 @@
 <td>Hari Priya Jupally</td>
 <td>Project Manager</td>
 <td>s533990@nwmissouri.edu</td>
-<td>(717)767-8290</td>
+<td>(714)767-8290</td>
 </tr>
 <tr>
 <td>Karun Bourishetty</td>
