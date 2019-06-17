@@ -43,7 +43,7 @@
 <th>Team Member</th>
 <th>Role</th>
 <th>Email</th>
-<th>Contant No.</th>
+<th>Contact No.</th>
 </tr>
 <tr>
 <td>Hari Priya Jupally</td>
