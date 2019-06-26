@@ -1,25 +1,18 @@
-<div class="container">
-
-  <div class="row">
-    <div class="col-md-6">
-      <h1>Register</h1>
-      <p class="lead">Already a member? Please <a routerLink="/login">log in</a> instead.</p>
-      <form>
-        <div class="form-group">
-          <label for="name">Full name</label>
-          <input type="text" class="form-control" name="name" placeholder="Enter your name" >
-        </div>
-        <div class="form-group">
-          <label for="email">Email address</label>
-          <input type="email" class="form-control" name="email" placeholder="Enter email">
-        </div>
-        <div class="form-group">
-          <label for="password">Password</label>
-          <input type="password" class="form-control" name="password" placeholder="Password">
-        </div>
-        <button type="submit" class="btn btn-default">Register!</button>
-      </form>
-    </div>
+<mat-card>
+  <div class = "row">
+    
   </div>
-
-</div>
+    <h1 class="info-text mat-title">Already a member? Please <a routerLink="/">log in</a> instead.</h1>
+    <form #postform="ngForm">
+        <mat-form-field>
+            <input matInput type="text" name="title" ngModel placeholder="Username" #username = "ngModel" required>
+            <mat-error *ngIf="username.invalid">Please enter a valid username</mat-error>
+          </mat-form-field>
+          <br>
+          <mat-form-field class="example-full-width">
+              <input matInput type="password" name="title" ngModel placeholder="Password" #password = "ngModel" required>
+              <mat-error *ngIf="password.invalid">Please enter a valid password</mat-error><br>
+          </mat-form-field><br><br>
+          <button mat-raised-button color="primary" class = "centerbutton" type = "Submit">Sign In</button><br>
+    </form>
+  </mat-card>
