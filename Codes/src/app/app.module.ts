@@ -5,6 +5,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatInputModule, MatCardModule, MatButtonModule,
   MatToolbarModule, MatExpansionModule } from '@angular/material';
 
+
 import { AppComponent } from './app.component';
 import { PostCreateComponent } from './posts/create-posts/post-create.component';
 import { HeaderComponent } from './appheader/app-header.component';
@@ -38,7 +39,7 @@ import { AppRoutingModule } from './app-routing.module';
     MatButtonModule,
     MatToolbarModule,
     MatExpansionModule,
-    HttpClientModule
+    HttpClientModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
