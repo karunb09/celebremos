@@ -9,5 +9,8 @@
 }
 .footer{
   height: 70px;
+  bottom: 0;
+  width: 100%;
+  position: absolute;
   text-align: center;
 }
