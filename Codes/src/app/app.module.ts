@@ -14,7 +14,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { FooterComponent } from './appfooter/app-footer.component';
 import { CarouselComponent } from './carousel/app-carousel.component';
 import { SignINComponent } from './signin/app-signin.component';
-
+import { RegisterComponent } from './register/register.component';
+import { AppRoutingModule } from './app-routing.module';
 
 @NgModule({
   declarations: [
@@ -24,10 +25,12 @@ import { SignINComponent } from './signin/app-signin.component';
     PostListComponent,
     FooterComponent,
     CarouselComponent,
-    SignINComponent
+    SignINComponent,
+    RegisterComponent
   ],
   imports: [
     BrowserModule,
+    AppRoutingModule,
     FormsModule,
     BrowserAnimationsModule,
     MatInputModule,
