@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { AuthenticationService, TokenPayload } from '../authentication.service';
+//import { AuthenticationService, TokenPayload } from '../authentication.service';
 import { Router } from '@angular/router';
 
 /**
@@ -12,19 +12,19 @@ import { Router } from '@angular/router';
 })
 export class SignINComponent {}
 
-export class LoginComponent {
-  credentials: TokenPayload = {
-    email: '',
-    password: ''
-  };
+// export class LoginComponent {
+//   credentials: TokenPayload = {
+//     email: '',
+//     password: ''
+//   };
 
-  constructor(private auth: AuthenticationService, private router: Router) {}
+//   constructor(private auth: AuthenticationService, private router: Router) {}
 
-  login() {
-    this.auth.login(this.credentials).subscribe(() => {
-      this.router.navigateByUrl('/profile');
-    }, (err) => {
-      console.error(err);
-    }); 
-  }
-}
+//   login() {
+//     this.auth.login(this.credentials).subscribe(() => {
+//       this.router.navigateByUrl('/profile');
+//     }, (err) => {
+//       console.error(err);
+//     }); 
+//   }
+// }
