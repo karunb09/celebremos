@@ -5,8 +5,7 @@ import { headersToString } from 'selenium-webdriver/http';
  * @title Basic toolbar
  */
 @Component({
-  selector: 'app-header',
-  templateUrl: './app-header.component.html',
- styleUrls: ['./app-header.component.css']
+  selector: 'app-carousel',
+  templateUrl: './app-carousel.component.html',
 })
-export class HeaderComponent {}
+export class CarouselComponent {}

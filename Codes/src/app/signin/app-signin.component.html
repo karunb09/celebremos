@@ -1,0 +1,17 @@
+<mat-card>
+    <h1 class="info-text mat-headline">Sign into Celebremos</h1>
+    <form #postform="ngForm">
+        <mat-form-field>
+            <input matInput type="text" name="title" ngModel placeholder="Username" #title = "ngModel" required>
+            <mat-error *ngIf="title.invalid">Please enter a valid username</mat-error><br>
+          </mat-form-field>
+          <mat-form-field class="example-full-width">
+              <input matInput type="text" name="title" ngModel placeholder="Password" #title = "ngModel" required>
+              <mat-error *ngIf="title.invalid">Please enter a valid password</mat-error><br>
+          </mat-form-field><br><br>
+          <button mat-raised-button color="primary" class = "centerbutton" type = "Submit">Sign In</button><br>
+
+    </form><br>
+    <p class="info-text mat-body-1"><a href = "#">Forgot Password?</a></p>
+    <p class="info-text mat-body-1">Not a user? <a href = "#">Register</a> with us.</p>
+  </mat-card>
