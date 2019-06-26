@@ -1,10 +1,11 @@
-import {Component} from '@angular/core';
+import { Component } from '@angular/core';
 
 /**
  * @title Basic toolbar
  */
 @Component({
-  selector: 'app-header',
-  templateUrl: './app-header.component.html',
+  selector: 'app-footer',
+  templateUrl: './app-footer.component.html',
+  styleUrls: ['./app-footer.component.css']
 })
-export class AppHeader {}
+export class FooterComponent {}

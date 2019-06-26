@@ -5,8 +5,8 @@ import { headersToString } from 'selenium-webdriver/http';
  * @title Basic toolbar
  */
 @Component({
-  selector: 'app-header',
-  templateUrl: './app-header.component.html',
- styleUrls: ['./app-header.component.css']
+  selector: 'app-signin',
+  templateUrl: './app-signin.component.html',
+  styleUrls: ['./app-signin.component.css']
 })
-export class HeaderComponent {}
+export class SignINComponent {}

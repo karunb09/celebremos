@@ -1,0 +1,13 @@
+#navbartextcolor {
+  color: white;
+}
+#footercolor {
+  background: #0C0E5B;
+  color: white;
+  padding: 20px;
+  text-align: center;
+}
+.footer{
+  height: 70px;
+  text-align: center;
+}
