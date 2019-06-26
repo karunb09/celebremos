@@ -1,4 +1,8 @@
 import { Component } from '@angular/core';
+<<<<<<< HEAD
+//import { AuthenticationService, TokenPayload } from '../authentication.service';
+=======
+>>>>>>> 4661cf3b30ee59c40a0bbfd31d96acd7fa273824
 import { Router } from '@angular/router';
 
 @Component({
@@ -6,6 +10,25 @@ import { Router } from '@angular/router';
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.css']
 })
+<<<<<<< HEAD
+ export class RegisterComponent {
+//   credentials: TokenPayload = {
+//     email: '',
+//     name: '',
+//     password: ''
+   };
+
+//   constructor(private auth: AuthenticationService, private router: Router) {}
+
+//   register() {
+//     this.auth.register(this.credentials).subscribe(() => {
+//       this.router.navigateByUrl('/home-page');
+//     }, (err) => {
+//       console.error(err);
+//     });
+//   }
+// }
+=======
 export class RegisterComponent {
   // credentials: TokenPayload = {
   //   email: '',
@@ -23,3 +46,4 @@ export class RegisterComponent {
   //   });
   // }
 }
+>>>>>>> 4661cf3b30ee59c40a0bbfd31d96acd7fa273824
