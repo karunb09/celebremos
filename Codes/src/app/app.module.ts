@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatInputModule, MatCardModule, MatButtonModule,
-  MatToolbarModule, MatExpansionModule } from '@angular/material';
+  MatToolbarModule, MatExpansionModule, MatDividerModule, MatListModule } from '@angular/material';
 
 
 import { AppComponent } from './app.component';
@@ -40,6 +40,8 @@ import { AppRoutingModule } from './app-routing.module';
     MatToolbarModule,
     MatExpansionModule,
     HttpClientModule,
+    MatDividerModule,
+    MatListModule
   ],
   providers: [],
   bootstrap: [AppComponent]

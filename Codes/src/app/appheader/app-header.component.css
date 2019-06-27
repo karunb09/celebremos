@@ -1,13 +1,10 @@
 #navbartextcolor {
   color: white;
+  font-family: 'Roboto';
 }
-#footercolor {
-  background: #0C0E5B;
+
+#titletext {
   color: white;
-  padding: 20px;
-  text-align: center;
-}
-.footer{
-  height: 70px;
-  text-align: center;
+  font-family: 'Roboto';
+  font-size: 23px;
 }
