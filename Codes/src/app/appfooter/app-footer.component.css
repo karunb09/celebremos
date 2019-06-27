@@ -1,5 +1,6 @@
 #navbartextcolor {
   color: white;
+  text-align: justify;
 }
 #footercolor {
   background: #0C0E5B;
@@ -8,7 +9,7 @@
   text-align: center;
 }
 .footer{
-  height: 70px;
+  height: 40px;
   bottom: 0;
   width: 100%;
   position: absolute;
