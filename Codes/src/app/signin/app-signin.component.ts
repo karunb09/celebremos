@@ -1,8 +1,6 @@
 import { Component } from '@angular/core';
-<<<<<<< HEAD
 //import { AuthenticationService, TokenPayload } from '../authentication.service';
-=======
->>>>>>> 394a848ec733574f11e9e3a1158afc37e700ba7d
+
 import { Router } from '@angular/router';
 
 /**
