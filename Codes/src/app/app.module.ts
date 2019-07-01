@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatInputModule, MatCardModule, MatButtonModule,
-  MatToolbarModule, MatExpansionModule, MatDividerModule, MatListModule } from '@angular/material';
+  MatToolbarModule, MatExpansionModule, MatDividerModule, MatListModule, MatProgressSpinnerModule } from '@angular/material';
 
 
 import { AppComponent } from './app.component';
@@ -41,7 +41,8 @@ import { AppRoutingModule } from './app-routing.module';
     MatExpansionModule,
     HttpClientModule,
     MatDividerModule,
-    MatListModule
+    MatListModule,
+    MatProgressSpinnerModule
   ],
   providers: [],
   bootstrap: [AppComponent]

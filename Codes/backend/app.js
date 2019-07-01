@@ -5,6 +5,8 @@ const bodyParser = require('body-parser');
 
 const postsRoutes = require('./routes/posts')
 
+const userRoutes = require('./routes/user')
+
 const mongoose = require('mongoose');
 
 var db = mongoose.connect("mongodb://localhost: 27017/Posts", { useNewUrlParser: true }, function(err, response){
