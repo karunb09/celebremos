@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 //import { AuthenticationService, TokenPayload } from '../authentication.service';
 
 import { Router } from '@angular/router';
+import { NgForm } from '@angular/forms';
 
 /**
  * @title Basic toolbar
@@ -11,7 +12,12 @@ import { Router } from '@angular/router';
   templateUrl: './app-signin.component.html',
   styleUrls: ['./app-signin.component.css']
 })
-export class SignINComponent {}
+export class SignINComponent {
+
+  onLogin(form: NgForm){
+    console.log(form.value);
+  }
+}
 
   // credentials: TokenPayload = {
   //   email: '',

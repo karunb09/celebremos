@@ -53,4 +53,21 @@ export class PostService {
     });
   }
 
+  getPost(id: string){
+    return {...this.posts.find(p => p.id === id)};
+  }
+
+
+  updatePost(id: string, title: string, content: string){
+    const post: Post = {id: id, title: title, content: content};
+    this.httpClient.put<{message: string}>('http://localhost:3000/api/posts' + id , post)
+    .subscribe((responseData) => {
+      const updatedPosts = [...this.posts];
+      const oldPostIndex = updatedPosts.findIndex(p => p.id === id);
+      updatedPosts[oldPostIndex] = post;
+      this.posts = updatedPosts;
+      this.postsUpdated.next();
+  });
+
+}
 }

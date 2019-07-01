@@ -8,3 +8,7 @@
   font-family: 'Roboto';
   font-size: 23px;
 }
+
+a {
+  text-decoration: none;
+}
