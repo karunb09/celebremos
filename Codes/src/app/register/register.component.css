@@ -10,3 +10,9 @@ textarea, mat-form-field {
 .info-text {
   text-align: center;
 }
+
+#image {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
