@@ -6,6 +6,9 @@ const Post = require('./models/post');
 
 const mongoose = require('mongoose');
 
+const postroutes = require("./routes/posts");
+const userroutes = require("./routes/users");
+
 var db = mongoose.connect("mongodb://localhost: 27017/Posts", { useNewUrlParser: true }, function(err, response){
   if (err) {
     console.log(err);
@@ -73,5 +76,8 @@ app.put('/api/posts/:id', (req, res, next) => {
     });
   })
 });
+
+app.use("/api/posts",postroutes);
+app.use("/api/users",userroutes);
 
 module.exports = app;
