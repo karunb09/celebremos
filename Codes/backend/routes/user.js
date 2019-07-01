@@ -6,7 +6,7 @@ const User = require("../models/user");
 
 const router = express.Router();
 
-router.post("/register", (req, res, next) => {
+router.post("/user/register", (req, res, next) => {
   bcrypt.hash(req.body.password, 10)
         .then(hash => {
           console.log("1sdas");
@@ -15,8 +15,8 @@ router.post("/register", (req, res, next) => {
     lastname: req.body.lastname,
     username: req.body.username,
     email: req.body.email,
-    password: req.body.password,
-    phonenumber: req.body.phonenumber
+    password: hash,
+    phonenumber: req.body.phone
   });
   user
       .save()

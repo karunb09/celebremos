@@ -30,6 +30,6 @@ app.use((req, res, next) => {
 
 app.use(postsRoutes);
 
-app.use("api/user", userRoutes);
+app.use( userRoutes);
 
 module.exports = app;
