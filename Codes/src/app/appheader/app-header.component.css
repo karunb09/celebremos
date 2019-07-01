@@ -7,8 +7,19 @@
   color: white;
   font-family: 'Roboto';
   font-size: 23px;
+  text-align: center
 }
 
 a {
   text-decoration: none;
 }
+.navbar-text {
+  position: absolute;
+  width: 100%;
+  left: 0;
+  text-align: center;
+  margin: auto;
+  padding-top: 3px;
+}
+
+
