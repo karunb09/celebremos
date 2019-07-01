@@ -1,10 +1,6 @@
 <mat-card>
     <h1 class="info-text mat-headline">Sign into Celebremos</h1>
-<<<<<<< HEAD
     <form (submit)="onLogin(loginform)" #loginform="ngForm">
-=======
-    <form (Submit)="onLogin(postform)" #postform="ngForm" *ngIf="!isLoading">
->>>>>>> f97c11a4f93edb574bb085e1c9d235e152422a0d
         <mat-form-field>
             <input matInput type="email" name="username" ngModel placeholder="Username" #username = "ngModel" required email>
             <mat-error *ngIf="username.invalid">Please enter a valid username</mat-error><br>
