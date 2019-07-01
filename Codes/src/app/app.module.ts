@@ -11,12 +11,13 @@ import { PostCreateComponent } from './posts/create-posts/post-create.component'
 import { HeaderComponent } from './appheader/app-header.component';
 import { PostListComponent } from './posts/post-list/post-list.component';
 
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FooterComponent } from './appfooter/app-footer.component';
 import { CarouselComponent } from './carousel/app-carousel.component';
 import { SignINComponent } from './signin/app-signin.component';
 import { RegisterComponent } from './register/register.component';
 import { AppRoutingModule } from './app-routing.module';
+import { AuthInterceptor } from './auth-interceptor';
 
 @NgModule({
   declarations: [
@@ -44,7 +45,7 @@ import { AppRoutingModule } from './app-routing.module';
     MatListModule,
     MatProgressSpinnerModule
   ],
-  providers: [],
+  providers: [{provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

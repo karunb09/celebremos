@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
 import { NgForm} from "@angular/forms";
-//import { AuthenticationService, TokenPayload } from '../authentication.service';
 
-import { Router } from '@angular/router';
+import { AuthService } from "../auth.service";
 
 /**
  * @title Basic toolbar
@@ -14,9 +13,15 @@ import { Router } from '@angular/router';
 })
 export class SignINComponent {
 
-  onLogin(form: NgForm){
-    console.log(form.value);
+  constructor(public authService: AuthService) {}
+
+  onLogin(form: NgForm) {
+    if (form.invalid) {
+      return;
+    }
+    this.authService.login(form.value.username, form.value.password);
   }
+
 }
 
 

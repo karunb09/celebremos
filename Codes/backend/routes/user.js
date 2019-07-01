@@ -4,12 +4,13 @@ const bcrypt = require("bcrypt");
 
 const User = require("../models/user");
 
+const jwt = require("jsonwebtoken");
+
 const router = express.Router();
 
 router.post("/user/register", (req, res, next) => {
   bcrypt.hash(req.body.password, 10)
         .then(hash => {
-          console.log("1sdas");
   const user = new User({
     firstname: req.body.firstname,
     lastname: req.body.lastname,
@@ -17,7 +18,12 @@ router.post("/user/register", (req, res, next) => {
     email: req.body.email,
     password: hash,
     phonenumber: req.body.phone
+<<<<<<< HEAD
      });
+=======
+  });
+  console.log(user);
+>>>>>>> 1bd941f9d0dded31ab7724bcb230444f9e519c7a
   user
       .save()
       .then(result => {
@@ -33,5 +39,42 @@ router.post("/user/register", (req, res, next) => {
       });
   });
 });
+
+
+router.post("/user/login", (req, res, next) => {
+  let fetchedUser;
+  User.findOne({ username: req.body.username })
+    .then(user => {
+      if (!user) {
+        return res.status(401).json({
+          message: "Auth failed"
+        });
+      }
+      fetchedUser = user;
+      return bcrypt.compare(req.body.password, user.password);
+    })
+    .then(result => {
+      if (!result) {
+        console.log(result);
+        return res.status(401).json({
+          message: "Auth failed"
+        });
+      }
+      const token = jwt.sign(
+        { username: fetchedUser.username, userId: fetchedUser._id },
+        "secret_this_should_be_longer",
+        { expiresIn: "1h" }
+      );
+      res.status(200).json({
+        token: token
+      });
+    })
+    .catch(err => {
+      return res.status(401).json({
+        message: "Auth failed"
+      });
+    });
+});
+
 
 module.exports = router;

@@ -2,7 +2,7 @@
     <h1 class="info-text mat-headline">Sign into Celebremos</h1>
     <form (submit)="onLogin(loginform)" #loginform="ngForm">
         <mat-form-field>
-            <input matInput type="email" name="username" ngModel placeholder="Username" #username = "ngModel" required email>
+            <input matInput type="text" name="username" ngModel placeholder="Username" #username = "ngModel" required>
             <mat-error *ngIf="username.invalid">Please enter a valid username</mat-error><br>
           </mat-form-field>
 
