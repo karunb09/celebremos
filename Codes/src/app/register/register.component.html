@@ -19,7 +19,7 @@
           <input matInput type="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" name="email" ngModel placeholder="Email" #email="ngModel" required>
           <mat-hint>We'll never share your email address with others. </mat-hint>
           <mat-error *ngIf="email.invalid">Please enter a valid email address</mat-error><br>
-          </mat-form-field>
+          </mat-form-field><br>
           <mat-form-field>
             <input matInput type="text" name="username" ngModel placeholder="Username" #username="ngModel" required>
             <mat-error *ngIf="username.invalid">Please enter a valid username</mat-error>
@@ -28,8 +28,8 @@
           <mat-form-field class="example-full-width">
             <input matInput type="password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,12}" name="password" ngModel placeholder="Password" #password="ngModel" required>
             <mat-hint>Must contain at least one number and one uppercase and lowercase letter, and at least 8 to 12 characters"</mat-hint>
-            <mat-error *ngIf="password.invalid">Please enter a valid password</mat-error><br>
-          </mat-form-field>
+            <mat-error *ngIf="password.invalid">Please enter a valid password</mat-error>
+          </mat-form-field><br><br>
           <mat-form-field class="example-full-width">
               <input matInput type="text" name="password1" ngModel placeholder="Confirm Password" #password="ngModel" required>
               <mat-error *ngIf="password.invalid">Please enter a valid password</mat-error><br>
