@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatInputModule, MatCardModule, MatButtonModule,
-  MatToolbarModule, MatExpansionModule, MatDividerModule, MatListModule, MatProgressSpinnerModule } from '@angular/material';
+  MatToolbarModule, MatExpansionModule, MatDividerModule, MatListModule, MatProgressSpinnerModule, MatDialogModule } from '@angular/material';
 
 
 import { AppComponent } from './app.component';
@@ -18,6 +18,9 @@ import { SignINComponent } from './signin/app-signin.component';
 import { RegisterComponent } from './register/register.component';
 import { AppRoutingModule } from './app-routing.module';
 import { AuthInterceptor } from './auth-interceptor';
+import { ErrorInterceptor } from './error-interceptor';
+
+import { ErrorComponent } from './error/error.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +31,8 @@ import { AuthInterceptor } from './auth-interceptor';
     FooterComponent,
     CarouselComponent,
     SignINComponent,
-    RegisterComponent
+    RegisterComponent,
+    ErrorComponent
   ],
   imports: [
     BrowserModule,
@@ -43,9 +47,14 @@ import { AuthInterceptor } from './auth-interceptor';
     HttpClientModule,
     MatDividerModule,
     MatListModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatDialogModule
   ],
-  providers: [{provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }],
-  bootstrap: [AppComponent]
+  providers: [
+    {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+    {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }
+  ],
+  bootstrap: [AppComponent],
+  entryComponents: [ErrorComponent]
 })
 export class AppModule { }
