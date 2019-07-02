@@ -6,12 +6,26 @@
 #titletext {
   color: white;
   font-family: 'Roboto';
-  font-size: 23px;
-  text-align: center
+  font-size: 20px;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
 a {
   text-decoration: none;
+  color: white;
+}
+
+ul {
+  display: flex;
+}
+
+.spacer {
+  flex: 1 1 auto;
 }
 .navbar-text {
   position: absolute;

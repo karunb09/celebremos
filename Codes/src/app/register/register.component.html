@@ -1,8 +1,8 @@
 <br>
 <div class="container">
   <div class="row">
-    <div class="col-md-7">
-      <mat-card>
+    <div class="col-sm-7">
+      <mat-card fxFlexAlign="stretch">
         <h1 class="info-text mat-title">Already a member? Please <a routerLink="/">log in</a> instead.</h1>
         <form (submit)="onSignUp(signupform)" #signupform="ngForm">
           <mat-form-field>
@@ -33,11 +33,32 @@
             <mat-error *ngIf="phone.invalid">Please enter a valid phone number</mat-error><br>
           </mat-form-field>
           <br><br>
-          <button mat-raised-button color="primary" class="centerbutton" type="Submit">Register</button><br>
+          <button mat-raised-button color="primary" class="centerbutton" type="Submit" *ngIf="!isLoading">Register</button><br>
+          <mat-spinner *ngIf="isLoading"></mat-spinner>
         </form>
       </mat-card>
     </div>
+
+    <div class="col-sm-1"></div>
+
+    <div class="col-sm-4">
+        <mat-card fxFlexAlign="stretch" width="100px;">
+        <style>
+            img {
+              display: block;
+              margin-left: auto;
+              margin-right: auto;
+              padding: 8px;
+              width: 250px;
+            }
+            </style>
+        <img src="./assets/logo.png" alt="Responsive text">
+
+        <p align="justify">We celebremos are an online invitation application where users can create an invitation and invite guests for their party and manage events for that party.</p>
+          </mat-card>
+      </div>
+
+
   </div>
 </div>
 <br>
-

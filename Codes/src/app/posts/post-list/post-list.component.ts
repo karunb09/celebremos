@@ -16,6 +16,9 @@ export class PostListComponent implements OnInit, OnDestroy {
     // {title: "Second post", content: "This is the second post"},
     // {title: "Third post", content: "This is the third post"},
 ];
+
+isLoading = false;
+
   constructor(public postService: PostService) {}
 
   private postsSub: Subscription;
@@ -32,6 +35,6 @@ export class PostListComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.postsSub.unsubscribe();
+    // this.postsSub.unsubscribe();
   }
 }

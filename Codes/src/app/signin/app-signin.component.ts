@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
-import { NgForm} from "@angular/forms";
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { NgForm} from '@angular/forms';
 
-import { AuthService } from "../auth.service";
+import { AuthService } from '../auth.service';
+import { Subscription } from 'rxjs';
 
 /**
  * @title Basic toolbar
@@ -11,7 +12,11 @@ import { AuthService } from "../auth.service";
   templateUrl: './app-signin.component.html',
   styleUrls: ['./app-signin.component.css']
 })
-export class SignINComponent {
+export class SignINComponent implements OnInit, OnDestroy {
+
+  isLoading = false;
+
+  private authStatusSub: Subscription;
 
   constructor(public authService: AuthService) {}
 
@@ -19,8 +24,20 @@ export class SignINComponent {
     if (form.invalid) {
       return;
     }
+    this.isLoading = true;
     this.authService.login(form.value.username, form.value.password);
   }
+
+  ngOnInit() {
+    this.authStatusSub = this.authService.getAuthStatusListener().subscribe(authStatus => {
+      this.isLoading = false;
+    });
+  }
+
+  ngOnDestroy() {
+    this.authStatusSub.unsubscribe();
+  }
+
 
 }
 

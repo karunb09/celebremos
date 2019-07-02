@@ -10,3 +10,8 @@ textarea, mat-form-field {
 .info-text {
   text-align: center;
 }
+
+
+mat-spinner {
+  margin: auto;
+}
