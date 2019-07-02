@@ -36,4 +36,8 @@ ul {
   padding-top: 3px;
 }
 
+li a b:hover {
+  color: black;
+}
+
 
