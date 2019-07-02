@@ -29,7 +29,7 @@ router.post("/user/register", (req, res, next) => {
       })
       .catch(err => {
         res.status(500).json({
-          error: err
+          message: "Username or email already taken!"
         });
       });
   });
@@ -42,7 +42,7 @@ router.post("/user/login", (req, res, next) => {
     .then(user => {
       if (!user) {
         return res.status(401).json({
-          message: "Auth failed"
+          message: "Invalid username or password. Please try again."
         });
       }
       fetchedUser = user;
@@ -52,7 +52,7 @@ router.post("/user/login", (req, res, next) => {
       if (!result) {
         console.log(result);
         return res.status(401).json({
-          message: "Auth failed"
+          message: "Invalid username or password. Please try again."
         });
       }
       const token = jwt.sign(
@@ -61,12 +61,13 @@ router.post("/user/login", (req, res, next) => {
         { expiresIn: "1h" }
       );
       res.status(200).json({
-        token: token
+        token: token,
+        expiresIn: 3600
       });
     })
     .catch(err => {
       return res.status(401).json({
-        message: "Auth failed"
+        message: "Invalid username or password. Please try again."
       });
     });
 });

@@ -35,6 +35,6 @@ isLoading = false;
   }
 
   ngOnDestroy() {
-    this.postsSub.unsubscribe();
+    // this.postsSub.unsubscribe();
   }
 }

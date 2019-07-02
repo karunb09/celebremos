@@ -4,21 +4,23 @@ import { RegisterComponent } from './register/register.component';
 import { CarouselComponent } from './carousel/app-carousel.component';
 import { PostCreateComponent } from './posts/create-posts/post-create.component';
 import { PostListComponent } from './posts/post-list/post-list.component';
+import { AuthGuard } from './auth.guard';
 
 // Setting path to redirect next page
 
 const routes: Routes =  [
   { path: '', component: CarouselComponent },
   { path: 'register', component: RegisterComponent},
-  { path: 'create', component: PostCreateComponent },
-  { path: 'edit/:postId', component: PostCreateComponent },
-  { path: 'list', component: PostListComponent}
+  { path: 'create', component: PostCreateComponent, canActivate: [AuthGuard] },
+  { path: 'edit/:postId', component: PostCreateComponent, canActivate: [AuthGuard] },
+  { path: 'list', component: PostListComponent, canActivate: [AuthGuard] }
 ];
 
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
+  providers: [AuthGuard]
 })
 
 export class AppRoutingModule {
