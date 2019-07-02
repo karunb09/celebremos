@@ -18,7 +18,12 @@ router.post("/user/register", (req, res, next) => {
     email: req.body.email,
     password: hash,
     phonenumber: req.body.phone
+<<<<<<< HEAD
+  });
+  console.log(user);
+=======
      });
+>>>>>>> 2a5086879ee0c4551c150057bd836cd2917d298e
   user
       .save()
       .then(result => {
