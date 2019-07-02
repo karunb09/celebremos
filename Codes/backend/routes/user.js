@@ -18,8 +18,7 @@ router.post("/user/register", (req, res, next) => {
     email: req.body.email,
     password: hash,
     phonenumber: req.body.phone
-  });
-  console.log(user);
+     });
   user
       .save()
       .then(result => {

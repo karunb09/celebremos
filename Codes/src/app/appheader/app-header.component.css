@@ -27,3 +27,13 @@ ul {
 .spacer {
   flex: 1 1 auto;
 }
+.navbar-text {
+  position: absolute;
+  width: 100%;
+  left: 0;
+  text-align: center;
+  margin: auto;
+  padding-top: 3px;
+}
+
+
