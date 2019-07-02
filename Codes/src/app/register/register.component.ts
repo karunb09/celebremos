@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgForm } from '@angular/forms';
 
-import { AuthService } from "../auth.service";
+import { AuthService } from '../auth.service';
 
 @Component({
   selector: 'app-register',
@@ -19,6 +19,8 @@ export class RegisterComponent {
     if (form.invalid) {
       return;
     }
+// tslint:disable-next-line: max-line-length
+    this.isLoading = true;
     this.authService.createUser( form.value.firstname, form.value.lastname, form.value.username, form.value.email, form.value.password, form.value.phone);
   }
 }

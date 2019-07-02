@@ -33,7 +33,8 @@
             <mat-error *ngIf="phone.invalid">Please enter a valid phone number</mat-error><br>
           </mat-form-field>
           <br><br>
-          <button mat-raised-button color="primary" class="centerbutton" type="Submit">Register</button><br>
+          <button mat-raised-button color="primary" class="centerbutton" type="Submit" *ngIf="!isLoading">Register</button><br>
+          <mat-spinner *ngIf="isLoading"></mat-spinner>
         </form>
       </mat-card>
     </div>

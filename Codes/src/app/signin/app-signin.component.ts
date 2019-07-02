@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
-import { NgForm} from "@angular/forms";
+import { NgForm} from '@angular/forms';
 
-import { AuthService } from "../auth.service";
+import { AuthService } from '../auth.service';
 
 /**
  * @title Basic toolbar
@@ -13,12 +13,15 @@ import { AuthService } from "../auth.service";
 })
 export class SignINComponent {
 
+  isLoading = false;
+
   constructor(public authService: AuthService) {}
 
   onLogin(form: NgForm) {
     if (form.invalid) {
       return;
     }
+    this.isLoading = true;
     this.authService.login(form.value.username, form.value.password);
   }
 
