@@ -13,11 +13,23 @@ export class ResetPasswordComponent {
 
   constructor(public authService: AuthService) { }
 
+  checkEmail(form: NgForm){
+    if (form.value.password !== form.value.password1) {
+          alert('Passwords do not match! Please check and enter same passwords');
+          return false;
+      } else {
+          return true;
+      }
+  }
+
   onResetting(form: NgForm) {
-    if (form.invalid) {
-      return;
-    }
+
+    if (this.checkEmail(form)) {
+      if (form.invalid) {
+        return;
+      }
     this.isLoading = true;
     this.authService.storePassword(form.value.email, form.value.password);
   }
+}
 }

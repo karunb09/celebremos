@@ -10,29 +10,6 @@ const router = express.Router();
 
 router.post("/user/register", (req, res, next) => {
   bcrypt.hash(req.body.password, 10)
-<<<<<<< HEAD
-        .then(hash => {
-  const user = new User({
-    firstname: req.body.firstname,
-    lastname: req.body.lastname,
-    username: req.body.username,
-    email: req.body.email,
-    password: hash,
-    phonenumber: req.body.phone
-     });
-  user
-      .save()
-      .then(result => {
-        res.status(201).json({
-          message: "User created!",
-          result: result
-        });
-      })
-      .catch(err => {
-        res.status(500).json({
-          message: "Username or email already taken!"
-        });
-=======
     .then(hash => {
       const user = new User({
         firstname: req.body.firstname,
@@ -41,7 +18,6 @@ router.post("/user/register", (req, res, next) => {
         email: req.body.email,
         password: hash,
         phonenumber: req.body.phone
->>>>>>> 5241625879a26d0f26152e642fea7f35c3bc8564
       });
       user
         .save()
@@ -102,8 +78,8 @@ router.post("/user/login", (req, res, next) => {
 
 router.post('/user/reset-password', function (req, res, next) {
   let fetchedUser;
-  var api_key = '85f7897f8ac24054f24460647a0a2338-4836d8f5-ad5c1574';
-  var domain = 'sandbox26f7266e41864dab9a24f7d5678b7744.mailgun.org';
+  var api_key = '7c42837cae0148e75ba4cf0213a7f8f4-2b0eef4c-907a95af';
+  var domain = 'sandbox697917eb3f2a4e3494a68f32c844e693.mailgun.org';
   var mailgun = require('mailgun-js')({ apiKey: api_key, domain: domain });
   User
     .findOne({ email: req.body.email })
@@ -116,7 +92,7 @@ router.post('/user/reset-password', function (req, res, next) {
       }
       fetchedUser = user;
       let data = {
-        from: '<Celebremos> vishalreddy.ca@gmail.com',
+        from: '<Celebremos> haripriyarao.jupally@gmail.com',
         to: fetchedUser.email,
         subject: 'Reset your account password',
         html: '<h4><b>Reset Password</b></h4>' +
