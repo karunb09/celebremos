@@ -1,7 +1,7 @@
 <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #FE1E50">
   <a class="navbar-brand" routerLink = '/' id="navbartextcolor"><img
-      src="./assets/9423cc10-a935-45dc-a5d7-8497444f4f29_200x200.png" alt="Responsive text" class="img-fluid" width="70"
-      height="70"></a>
+      src="./assets/9423cc10-a935-45dc-a5d7-8497444f4f29_200x200.png" alt="Responsive text" class="img-fluid" width="50"
+      height="50"></a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
     aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
@@ -10,18 +10,18 @@
   <div class = "collapse-navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
           <li class="nav-item">
-            <a class="mat-subheading nav-link" id="navbartextcolor" *ngIf="!userIsAuthenticated" id="titletext"><b><br>CELEBREMOS</b><span class="sr-only">(current)</span></a>
+            <a class="mat-subheading nav-link" id="navbartextcolor" *ngIf="!userIsAuthenticated" id="titletext"><b>CELEBREMOS</b><span class="sr-only">(current)</span></a>
           </li>
           <li class="nav-item" *ngIf= "userIsAuthenticated">
-            <a class="nav-link" routerLink ="/create" id="navbartextcolor" id="titletext"><b><br>Create Events</b></a>
+            <a class="nav-link" routerLink ="/create" id="navbartextcolor" id="titletext"><b>Create Events</b></a>
           </li>
           <li class="nav-item" *ngIf= "userIsAuthenticated">
-              <a class="nav-link" routerLink ="/list" id="navbartextcolor" id="titletext"><b><br>Dashboard</b></a>
+              <a class="nav-link" routerLink ="/list" id="navbartextcolor" id="titletext"><b>Dashboard</b></a>
           </li>
           <li class="nav-item dropdown" *ngIf="userIsAuthenticated">
             <a class="nav-link dropdown-toggle" href="#" id="navbartextcolor" role="button" data-toggle="dropdown"
               aria-haspopup="true" aria-expanded="false" id="titletext">
-              <b><br>Cards</b>
+              <b>Cards</b>
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
               <a class="dropdown-item" href="#" id="titletext">Birthday</a>
@@ -34,14 +34,14 @@
           <span class = "spacer"></span>
           <ul>
             <li class="nav-item" *ngIf = "userIsAuthenticated">
-              <a class="nav-link" routerLink ="/create" id="navbartextcolor" (click)="onLogout()" id="titletext"><b><br>Logout</b></a>
+              <a class="nav-link" routerLink ="/create" id="navbartextcolor" (click)="onLogout()" id="titletext"><b>Logout</b></a>
             </li>
           </ul>
 
         </ul>
 
 
-    <br>
+   
 
   </div>
 </nav>

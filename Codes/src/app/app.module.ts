@@ -3,14 +3,13 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatInputModule, MatCardModule, MatButtonModule,
-  MatToolbarModule, MatExpansionModule, MatDividerModule, MatListModule, MatProgressSpinnerModule, MatDialogModule } from '@angular/material';
-
+  MatToolbarModule, MatExpansionModule, MatDividerModule,
+  MatListModule, MatProgressSpinnerModule, MatDialogModule } from '@angular/material';
 
 import { AppComponent } from './app.component';
 import { PostCreateComponent } from './posts/create-posts/post-create.component';
 import { HeaderComponent } from './appheader/app-header.component';
 import { PostListComponent } from './posts/post-list/post-list.component';
-
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FooterComponent } from './appfooter/app-footer.component';
 import { CarouselComponent } from './carousel/app-carousel.component';
@@ -19,8 +18,10 @@ import { RegisterComponent } from './register/register.component';
 import { AppRoutingModule } from './app-routing.module';
 import { AuthInterceptor } from './auth-interceptor';
 import { ErrorInterceptor } from './error-interceptor';
-
 import { ErrorComponent } from './error/error.component';
+import { NewPasswordComponent } from './newpassword/newpassword.component';
+import { ResetPasswordComponent } from './newpassword/resetpassword/resetpassword.component';
+
 
 @NgModule({
   declarations: [
@@ -32,7 +33,9 @@ import { ErrorComponent } from './error/error.component';
     CarouselComponent,
     SignINComponent,
     RegisterComponent,
-    ErrorComponent
+    ErrorComponent,
+    NewPasswordComponent,
+    ResetPasswordComponent
   ],
   imports: [
     BrowserModule,

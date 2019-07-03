@@ -12,8 +12,6 @@ export class AuthService {
   private token: string;
   private authStatusListener = new Subject<boolean>();
 
-  private tokenTimer: any;
-
   constructor(private http: HttpClient, private router: Router) {}
 
   getToken() {
@@ -32,29 +30,31 @@ export class AuthService {
     const authData: AuthData = {firstname: firstname, lastname: lastname, username: username, email: email, password: password, phonenumber: phonenumber};
     this.http.post('http://localhost:3000/user/register', authData)
       .subscribe(response => {
+        console.log(response);
         this.router.navigate(['/']);
-      }, error => {
-        this.authStatusListener.next(false);
       });
   }
 
   login(username: string, password: string) {
     const authData: AuthData = {firstname: null, lastname: null, username: username, email: null, password: password, phonenumber: null};
-    this.http.post<{token: string, expiresIn: number}>('http://localhost:3000/user/login', authData)
+    this.http.post<{token: string}>('http://localhost:3000/user/login', authData)
       .subscribe(response => {
         const token = response.token;
         this.token = token;
         if (token) {
-          const expiresInDuration = response.expiresIn;
-          this.tokenTimer = setTimeout(() =>{
-            this.logout();
-          }, expiresInDuration * 1000);
           this.isAuthenticated = true;
           this.authStatusListener.next(true);
           this.router.navigate(['/create']);
         }
-      }, error => {
-        this.authStatusListener.next(false);
+      });
+  }
+
+  resetPassword(email: string) {
+    const authData: AuthData = {firstname: null, lastname: null, username: null, email: email, password: null, phonenumber: null};
+    this.http.post<{token: string}>('http://localhost:3000/user/reset-password', authData)
+      .subscribe(response => {
+        console.log(response);
+        this.router.navigate(['/']);
       });
   }
 
@@ -62,9 +62,17 @@ export class AuthService {
     this.token = null;
     this.isAuthenticated = false;
     this.authStatusListener.next(false);
-    clearTimeout(this.tokenTimer);
     this.router.navigate(['/']);
   }
 
+  storePassword(email: string, password: string) {
+    console.log("I am in store password");
+    const authData: AuthData = {firstname: null, lastname: null, username: null, email: email, password: password, phonenumber: null};
+    this.http.put<{token: string}>('http://localhost:3000/user/store-password', authData)
+      .subscribe(response => {
+        console.log(response);
+        this.router.navigate(['/']);
+      });
+  }
 
 }

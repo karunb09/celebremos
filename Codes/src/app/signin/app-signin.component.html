@@ -13,6 +13,6 @@
           <button mat-raised-button color="primary" class = "centerbutton" type = "Submit" *ngIf="!isLoading">Sign In</button><br>
           <mat-spinner *ngIf="isLoading"></mat-spinner>
     </form><br>
-    <p class="info-text mat-body-1"><a href = "#">Forgot your Password?</a></p>
-    <p class="info-text mat-body-1">New user? <a href = "http://localhost:4200/register">Register</a> with Celebremos</p>
+    <p class="info-text mat-body-1" ><a routerLink = "/reset">Forgot your Password?</a></p>
+    <p class="info-text mat-body-1">New user? <a routerLink = "/register">Register</a> with Celebremos</p>
   </mat-card>
