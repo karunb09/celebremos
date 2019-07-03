@@ -10,7 +10,6 @@ const router = express.Router();
 
 router.post("/user/register", (req, res, next) => {
   bcrypt.hash(req.body.password, 10)
-<<<<<<< HEAD
         .then(hash => {
   const user = new User({
     firstname: req.body.firstname,
@@ -32,16 +31,6 @@ router.post("/user/register", (req, res, next) => {
         res.status(500).json({
           message: "Username or email already taken!"
         });
-=======
-    .then(hash => {
-      const user = new User({
-        firstname: req.body.firstname,
-        lastname: req.body.lastname,
-        username: req.body.username,
-        email: req.body.email,
-        password: hash,
-        phonenumber: req.body.phone
->>>>>>> 5241625879a26d0f26152e642fea7f35c3bc8564
       });
       user
         .save()
