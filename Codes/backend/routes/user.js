@@ -22,14 +22,16 @@ router.post("/user/register", (req, res, next) => {
       user
         .save()
         .then(result => {
-          res.status(201).json({
-            message: "User created!",
+          return res.status(400).json({
+            title: "Congratulations!",
+            message: "Your account is created. You can now login with the username and password.",
             result: result
           });
         })
         .catch(err => {
           res.status(500).json({
-            message: "Username or email already taken!"
+            title: "OOPS!",
+            message: "The username or email that you have provided is already taken!"
           });
         });
     });
@@ -42,7 +44,8 @@ router.post("/user/login", (req, res, next) => {
     .then(user => {
       if (!user) {
         return res.status(401).json({
-          message: "Invalid username or password. Please try again."
+          title: "Invalid Credentails!",
+          message: "You have entered invalid username or password. Please try again."
         });
       }
       fetchedUser = user;
@@ -51,7 +54,8 @@ router.post("/user/login", (req, res, next) => {
     .then(result => {
       if (!result) {
         return res.status(401).json({
-          message: "Invalid username or password. Please try again."
+          title: "Invalid Credentails!",
+          message: "You have entered invalid username or password. Please try again."
         });
       }
       const token = jwt.sign(
@@ -66,7 +70,8 @@ router.post("/user/login", (req, res, next) => {
     })
     .catch(err => {
       return res.status(401).json({
-        message: "Invalid username or password. Please try again."
+        title: "Invalid Credentails!",
+        message: "You have entered invalid username or password. Please try again."
       });
     });
 });
@@ -81,22 +86,27 @@ router.post('/user/reset-password', function (req, res, next) {
     .then(user => {
       if (!user) {
         return res.status(401).json({
-          message: "Your email is not registered with us. Please sign up before you login."
+          title: "Not a registered user!",
+          message: "Seems like our database couldn\'t find you. Please register with us before you login."
         });
       }
       fetchedUser = user;
       let data = {
-        from: '"<Celebremos>" vishalreddy.ca@gmail.com',
+        from: '<Celebremos> vishalreddy.ca@gmail.com',
         to: fetchedUser.email,
         subject: 'Reset your account password',
         html: '<h4><b>Reset Password</b></h4>' +
-          '<p>To reset your password, complete this form:</p>' +
+          '<p>You told us you forget your password. If you really did, click below to choose a new one:</p>' +
           ' http://localhost:4200/reset/' + user.id +
-          '<br><br>' +
+          '<br><br>' + 'If you didn\'t mean to reset your password, the you can just ignore this email, your password will not change.' +
           '<p>--Team--</p><br><p>Celebremos</p>'
       };
       mailgun.messages().send(data, function (error, body) {
       });
+      res.status(500).json({
+        title: "Password Reset Email Sent",
+        message: 'An email has been sent to your provided email address. Follow the directions in the email to reset your password.'
+      })
     });
 })
 
@@ -107,6 +117,7 @@ router.put('/user/store-password', function (req, res, next) {
     .then(user => {
       if (!user) {
         return res.status(401).json({
+          title: "Email not registered!",
           message: "Your email is not registered with us. Please sign up before resetting password."
         });
       }
@@ -118,9 +129,9 @@ router.put('/user/store-password', function (req, res, next) {
           }, {
               $set: { "password": hash }
             }).then(result => {
-              console.log(result);
-              res.status(200).json({
-                message: 'User updated!'
+              res.status(500).json({
+                title: "Password Successfully Resetted.",
+                message: 'Your password is successfully changed. You can now login with the updated password.'
               });
             })
         });
