@@ -1,11 +1,11 @@
 #navbartextcolor {
   color: white;
-  font-family: 'Roboto';
+  font-family: "Roboto";
 }
 
 #titletext {
   color: white;
-  font-family: 'Roboto';
+  font-family: "Roboto";
   font-size: 20px;
 }
 
@@ -39,5 +39,3 @@ ul {
 li a b:hover {
   color: black;
 }
-
-

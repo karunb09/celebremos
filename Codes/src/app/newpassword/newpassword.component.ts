@@ -12,7 +12,7 @@ export class NewPasswordComponent {
 
   isLoading = false;
 
-  constructor(public authService: AuthService) {}
+  constructor(public authService: AuthService) { }
 
   onReset(form: NgForm) {
     if (form.invalid) {

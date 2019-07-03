@@ -27,11 +27,14 @@ export class AuthService {
   }
 
   createUser(firstname: string, lastname: string, username: string, email: string, password: string, phonenumber: string) {
-    const authData: AuthData = {firstname: firstname, lastname: lastname, username: username, email: email, password: password, phonenumber: phonenumber};
+    const authData: AuthData = {firstname: firstname, lastname: lastname,
+      username: username, email: email, password: password,
+      phonenumber: phonenumber};
     this.http.post('http://localhost:3000/user/register', authData)
       .subscribe(response => {
-        console.log(response);
         this.router.navigate(['/']);
+      }, error => {
+        this.authStatusListener.next(false);
       });
   }
 
@@ -46,6 +49,8 @@ export class AuthService {
           this.authStatusListener.next(true);
           this.router.navigate(['/create']);
         }
+      }, error => {
+        this.authStatusListener.next(false);
       });
   }
 
@@ -53,7 +58,6 @@ export class AuthService {
     const authData: AuthData = {firstname: null, lastname: null, username: null, email: email, password: null, phonenumber: null};
     this.http.post<{token: string}>('http://localhost:3000/user/reset-password', authData)
       .subscribe(response => {
-        console.log(response);
         this.router.navigate(['/']);
       });
   }
@@ -66,11 +70,10 @@ export class AuthService {
   }
 
   storePassword(email: string, password: string) {
-    console.log("I am in store password");
+    console.log('I am in store password');
     const authData: AuthData = {firstname: null, lastname: null, username: null, email: email, password: password, phonenumber: null};
     this.http.put<{token: string}>('http://localhost:3000/user/store-password', authData)
       .subscribe(response => {
-        console.log(response);
         this.router.navigate(['/']);
       });
   }

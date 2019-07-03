@@ -8,14 +8,14 @@ import { Subscription } from 'rxjs';
 @Component({
   selector: 'app-header',
   templateUrl: './app-header.component.html',
- styleUrls: ['./app-header.component.css']
+  styleUrls: ['./app-header.component.css']
 })
 export class HeaderComponent implements OnInit, OnDestroy {
 
   userIsAuthenticated = false;
   private authListenerSubs: Subscription;
 
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService) { }
 
   ngOnInit() {
     this.userIsAuthenticated = this.authService.getIsAuth();

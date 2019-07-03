@@ -31,14 +31,13 @@ router.get('/api/posts', (req, res, next) => {
 router.delete('/api/posts/:id', checkAuth, (req, res, next) => {
   Post.deleteOne({
     _id: req.params.id
-  }).then (result => {
+  }).then(result => {
     console.log(result);
     res.status(200).json({
       message: 'Posts deleted!'
     });
   })
 });
-
 
 router.put('/api/posts/:id', checkAuth, (req, res, next) => {
   const post = new Post({
@@ -48,7 +47,7 @@ router.put('/api/posts/:id', checkAuth, (req, res, next) => {
   })
   Post.updateOne({
     _id: req.params.id
-  }, post).then (result => {
+  }, post).then(result => {
     console.log(result);
     res.status(200).json({
       message: 'Posts updated!'
@@ -60,11 +59,10 @@ router.get("/api/posts/:id", (req, res, next) => {
   this.post.findById(req.params.id).then((post) => {
     if (post) {
       res.status(200).json(post);
-    }else{
-      res.status(400).json({message: 'Post not found'});
+    } else {
+      res.status(400).json({ message: 'Post not found' });
     }
   })
 });
-
 
 module.exports = router;

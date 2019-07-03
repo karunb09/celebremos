@@ -1,15 +1,15 @@
 <mat-card>
-  <form (submit)= "onSavePost(postform)" #postform="ngForm">
-      <mat-form-field>
-          <input matInput type="text" name="title" [ngModel] = "post?.title" placeholder="Event Title" #title = "ngModel" required>
-          <mat-error *ngIf="title.invalid">Please enter a valid title.</mat-error><br>
-        </mat-form-field>
-        <mat-form-field class="example-full-width">
-          <textarea matInput rows="6" name="content" [ngModel] = "post?.content"  placeholder="Event Content" #content= "ngModel" required></textarea>
-          <mat-error *ngIf="content.invalid">Please enter content.</mat-error>
-        </mat-form-field><br>
-        <button mat-raised-button color="accent" type = "Submit">Save Event</button>
+  <form (submit)="onSavePost(postform)" #postform="ngForm">
+    <mat-form-field>
+      <input matInput type="text" name="title" [ngModel]="post?.title" placeholder="Event Title" #title="ngModel"
+        required>
+      <mat-error *ngIf="title.invalid">Please enter a valid title.</mat-error><br>
+    </mat-form-field>
+    <mat-form-field class="example-full-width">
+      <textarea matInput rows="6" name="content" [ngModel]="post?.content" placeholder="Event Content"
+        #content="ngModel" required></textarea>
+      <mat-error *ngIf="content.invalid">Please enter content.</mat-error>
+    </mat-form-field><br>
+    <button mat-raised-button color="accent" type="Submit">Save Event</button>
   </form>
-
 </mat-card>
-
