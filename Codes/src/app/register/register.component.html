@@ -37,8 +37,8 @@
 
           <!-- This is phone number verification block and the phone number should be in format +1(123)123-1233 -->
           <mat-form-field class="example-full-width">
-            <input matInput type="tel" pattern='[\+]\d{1}[\(]\d{3}[\)]\d{3}[\-]\d{4}' name="phone" ngModel placeholder="Phone Number" #phone="ngModel" required>
-            <mat-hint>Phone number format : +1(123)123-1234. </mat-hint>
+            <input matInput type="tel" pattern='[\+]\d{1}[\]\d{3}[\]\d{3}[\]\d{4}' name="phone" ngModel placeholder="Phone Number" #phone="ngModel" required>
+            <mat-hint>Phone number format : +11231231234. </mat-hint>
             <mat-error *ngIf="phone.invalid">Please enter a valid phone number</mat-error><br>
           </mat-form-field>
           <br><br>
