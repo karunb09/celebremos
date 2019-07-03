@@ -50,7 +50,6 @@ router.post("/user/login", (req, res, next) => {
     })
     .then(result => {
       if (!result) {
-        console.log(result);
         return res.status(401).json({
           message: "Invalid username or password. Please try again."
         });
@@ -86,7 +85,6 @@ router.post('/user/reset-password', function (req, res, next) {
         });
       }
       fetchedUser = user;
-      console.log(user.email);
       let data = {
         from: '"<Celebremos>" vishalreddy.ca@gmail.com',
         to: fetchedUser.email,
@@ -104,7 +102,6 @@ router.post('/user/reset-password', function (req, res, next) {
 
 router.put('/user/store-password', function (req, res, next) {
   let fetchedUser;
-  console.log(req.body.email)
   User
     .findOne({ email: req.body.email })
     .then(user => {
@@ -115,18 +112,18 @@ router.put('/user/store-password', function (req, res, next) {
       }
       fetchedUser = user;
       bcrypt.hash(req.body.password, 10)
-    .then(hash => {
-      User.updateOne({
-        email: fetchedUser.email
-      }, {
-        $set: { "password": hash }
-      }).then (result => {
-        console.log(result);
-        res.status(200).json({
-          message: 'User updated!'
+        .then(hash => {
+          User.updateOne({
+            email: fetchedUser.email
+          }, {
+              $set: { "password": hash }
+            }).then(result => {
+              console.log(result);
+              res.status(200).json({
+                message: 'User updated!'
+              });
+            })
         });
-      })
-      });
     });
 });
 

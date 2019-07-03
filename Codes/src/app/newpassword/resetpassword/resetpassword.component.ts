@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { AuthService } from '../../auth.service';
 import { NgForm } from '@angular/forms';
 
-
 @Component({
   selector: 'app-resetpassword',
   templateUrl: './resetpassword.component.html',
@@ -12,7 +11,7 @@ export class ResetPasswordComponent {
 
   isLoading = false;
 
-  constructor(public authService: AuthService) {}
+  constructor(public authService: AuthService) { }
 
   onResetting(form: NgForm) {
     if (form.invalid) {

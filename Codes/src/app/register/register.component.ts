@@ -25,19 +25,8 @@ export class RegisterComponent implements OnInit, OnDestroy {
     });
   }
 
-//   function checkEmail(theForm) {
-//     if (theForm.EMAIL_1.value != theForm.EMAIL_2.value)
-//     {
-//         alert('Those emails don\'t match!');
-//         return false;
-//     } else {
-//         return true;
-//     }
-// }
-
 checkEmail(form: NgForm){
-  if (form.value.password != form.value.password1)
-    {
+  if (form.value.password !== form.value.password1) {
         alert('Passwords do not match! Please check and enter same passwords');
         return false;
     } else {
@@ -46,13 +35,14 @@ checkEmail(form: NgForm){
 }
 
   onSignUp(form: NgForm) {
-    if(this.checkEmail(form)){
+    if (this.checkEmail(form)) {
       if (form.invalid) {
         return;
       }
   // tslint:disable-next-line: max-line-length
       this.isLoading = true;
-      this.authService.createUser( form.value.firstname, form.value.lastname, form.value.username, form.value.email, form.value.password, form.value.phone);
+      this.authService.createUser( form.value.firstname, form.value.lastname,
+        form.value.username, form.value.email, form.value.password, form.value.phone);
     }
 
     }

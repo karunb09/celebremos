@@ -9,10 +9,10 @@ const userRoutes = require("./routes/user");
 const mongoose = require('mongoose');
 
 
-var db = mongoose.connect("mongodb://localhost: 27017/Posts", { useNewUrlParser: true }, function(err, response){
+var db = mongoose.connect("mongodb://localhost: 27017/Posts", { useNewUrlParser: true }, function (err, response) {
   if (err) {
     console.log(err);
-  }else{
+  } else {
     console.log('Connected to database');
   }
 });
@@ -30,6 +30,6 @@ app.use((req, res, next) => {
 
 app.use(postsRoutes);
 
-app.use( userRoutes);
+app.use(userRoutes);
 
 module.exports = app;
