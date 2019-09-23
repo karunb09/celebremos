@@ -2,3 +2,8 @@ textarea,
 mat-form-field {
   width: 90%;
 }
+
+.createpost {
+  max-width: 600px;
+  
+}
