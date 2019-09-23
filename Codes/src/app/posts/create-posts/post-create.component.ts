@@ -4,6 +4,11 @@ import { NgForm } from '@angular/forms';
 import { PostService } from '../posts.service';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 
+export interface Event {
+  value: string;
+  viewValue: string;
+}
+
 @Component({
   selector: 'app-post-create',
   templateUrl: './post-create.component.html',
@@ -11,6 +16,18 @@ import { ActivatedRoute, ParamMap } from '@angular/router';
 })
 export class PostCreateComponent implements OnInit {
   private mode = 'create';
+
+  events: Event[] = [
+    {value: 'anniversary', viewValue: 'Anniversary'},
+    {value: 'babyshower', viewValue: 'Baby Shower'},
+    {value: 'bachelorparty', viewValue: 'Bachelor Party'},
+    {value: 'wedding', viewValue: 'Wedding'},
+    {value: 'beachparty', viewValue: 'Beach Party'},
+    {value: 'dinnerparty', viewValue: 'Dinner Party'},
+    {value: 'birthday', viewValue: 'Birthday'},
+    {value: 'engagementparty', viewValue: 'Engagement Party'},
+    {value: 'housewarming', viewValue: 'Housewarming'}
+  ];
 
   private postId: string;
 
