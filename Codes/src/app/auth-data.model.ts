@@ -5,4 +5,5 @@ export interface AuthData {
   email: string;
   password: string;
   phonenumber: string;
+  activationStatus: boolean;
 }

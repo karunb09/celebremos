@@ -29,7 +29,7 @@ export class AuthService {
   createUser(firstname: string, lastname: string, username: string, email: string, password: string, phonenumber: string) {
     const authData: AuthData = {firstname: firstname, lastname: lastname,
       username: username, email: email, password: password,
-      phonenumber: phonenumber};
+      phonenumber: phonenumber, activationStatus: true};
     this.http.post('http://localhost:3000/user/register', authData)
       .subscribe(response => {
         this.router.navigate(['/']);
@@ -39,7 +39,7 @@ export class AuthService {
   }
 
   login(username: string, password: string) {
-    const authData: AuthData = {firstname: null, lastname: null, username: username, email: null, password: password, phonenumber: null};
+    const authData: AuthData = {firstname: null, lastname: null, username: username, email: null, password: password, phonenumber: null, activationStatus: true};
     this.http.post<{token: string}>('http://localhost:3000/user/login', authData)
       .subscribe(response => {
         const token = response.token;
@@ -55,7 +55,7 @@ export class AuthService {
   }
 
   resetPassword(email: string) {
-    const authData: AuthData = {firstname: null, lastname: null, username: null, email: email, password: null, phonenumber: null};
+    const authData: AuthData = {firstname: null, lastname: null, username: null, email: email, password: null, phonenumber: null, activationStatus: true};
     this.http.post<{token: string}>('http://localhost:3000/user/reset-password', authData)
       .subscribe(response => {
         this.router.navigate(['/']);
@@ -71,7 +71,7 @@ export class AuthService {
 
   storePassword(email: string, password: string) {
     console.log('I am in store password');
-    const authData: AuthData = {firstname: null, lastname: null, username: null, email: email, password: password, phonenumber: null};
+    const authData: AuthData = {firstname: null, lastname: null, username: null, email: email, password: password, phonenumber: null, activationStatus: true};
     this.http.put<{token: string}>('http://localhost:3000/user/store-password', authData)
       .subscribe(response => {
         this.router.navigate(['/']);

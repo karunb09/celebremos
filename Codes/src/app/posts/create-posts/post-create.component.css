@@ -5,5 +5,11 @@ mat-form-field {
 
 .createpost {
   max-width: 600px;
-  
+  margin-top: 16px;
+  margin-left: 25%;
+  margin-bottom: 16px;
+}
+
+.info-text {
+  text-align: center;
 }
