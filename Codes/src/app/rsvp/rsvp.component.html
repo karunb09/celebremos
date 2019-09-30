@@ -1,0 +1,19 @@
+<mat-card class="rpassword">
+  <label id="example-radio-group-label">Will you attend {{post.title}}?</label>
+  <mat-radio-group
+    aria-labelledby="example-radio-group-label"
+    class="example-radio-group"
+    [(ngModel)]="yourResponse"
+  >
+    <mat-radio-button
+      class="example-radio-button"
+      *ngFor="let response of rsvp"
+      [value]="response"
+    >
+      {{ response }}
+    </mat-radio-button>
+  </mat-radio-group>
+  <div>Your response is: {{ yourResponse }}</div>
+  <br>
+  <button mat-raised-button color="primary" class="centerbutton" (click)="sendResponse()" *ngIf="!isLoading">Submit</button><br>
+</mat-card>

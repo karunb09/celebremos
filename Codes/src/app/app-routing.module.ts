@@ -7,6 +7,9 @@ import { PostListComponent } from './posts/post-list/post-list.component';
 import { AuthGuard } from './auth.guard';
 import { NewPasswordComponent } from './newpassword/newpassword.component';
 import { ResetPasswordComponent } from './newpassword/resetpassword/resetpassword.component';
+import { AddGuestsComponent } from './add guests/addguests.component';
+import { ActivateUserComponent } from './newpassword/activateuser/activateuser.component';
+import { RSVPComponent } from './rsvp/rsvp.component';
 
 // Setting path to redirect next page
 
@@ -18,6 +21,9 @@ const routes: Routes =  [
   { path: 'list', component: PostListComponent, canActivate: [AuthGuard] },
   { path: 'reset', component: NewPasswordComponent},
   { path: 'reset/:userId', component: ResetPasswordComponent},
+  { path: 'addGuests/:eventName', component: AddGuestsComponent},
+  { path: 'activateUser/:userId', component: ActivateUserComponent},
+  { path: 'rsvp/:postId/:emailId', component: RSVPComponent},
 ];
 
 

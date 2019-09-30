@@ -1,11 +1,13 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { ReactiveFormsModule } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatInputModule, MatCardModule, MatButtonModule,
   MatToolbarModule, MatExpansionModule, MatDividerModule,
   MatListModule, MatProgressSpinnerModule, MatDialogModule, MatFormFieldModule,
-  MatSelectModule, MatDatepickerModule } from '@angular/material';
+  MatSelectModule, MatAutocompleteModule, MatDatepickerModule, MatNativeDateModule,
+  MatTableModule, MatRadioModule } from '@angular/material';
 
 import { AppComponent } from './app.component';
 import { PostCreateComponent } from './posts/create-posts/post-create.component';
@@ -22,6 +24,9 @@ import { ErrorInterceptor } from './error-interceptor';
 import { ErrorComponent } from './error/error.component';
 import { NewPasswordComponent } from './newpassword/newpassword.component';
 import { ResetPasswordComponent } from './newpassword/resetpassword/resetpassword.component';
+import { AddGuestsComponent } from './add guests/addguests.component';
+import { ActivateUserComponent } from './newpassword/activateuser/activateuser.component';
+import { RSVPComponent } from './rsvp/rsvp.component';
 
 
 @NgModule({
@@ -36,7 +41,10 @@ import { ResetPasswordComponent } from './newpassword/resetpassword/resetpasswor
     RegisterComponent,
     ErrorComponent,
     NewPasswordComponent,
-    ResetPasswordComponent
+    ResetPasswordComponent,
+    AddGuestsComponent,
+    ActivateUserComponent,
+    RSVPComponent
   ],
   imports: [
     BrowserModule,
@@ -55,12 +63,17 @@ import { ResetPasswordComponent } from './newpassword/resetpassword/resetpasswor
     MatDialogModule,
     MatFormFieldModule,
     MatSelectModule,
+    MatAutocompleteModule,
+    ReactiveFormsModule,
     MatDatepickerModule,
-
+    MatNativeDateModule,
+    MatTableModule,
+    MatRadioModule,
   ],
-  providers: [
+  providers: [ MatDatepickerModule,
     {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
-    {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }
+    {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+
   ],
   bootstrap: [AppComponent],
   entryComponents: [ErrorComponent]

@@ -51,6 +51,7 @@ router.post("/user/login", (req, res, next) => {
           message: "You have entered invalid username or password. Please try again."
         });
       }
+      console.log(user.activationStatus);
       if (user.activationStatus) {
         return res.status(401).json({
           title: "Activation Required",
@@ -154,7 +155,7 @@ router.post('/user/reset-password', function (req, res, next) {
 router.put('/user/store-password', function (req, res, next) {
   let fetchedUser;
   User
-    .findOne({ email: req.body.email })
+    .findOne({ _id: req.body.email })
     .then(user => {
       if (!user) {
         return res.status(401).json({
@@ -178,5 +179,31 @@ router.put('/user/store-password', function (req, res, next) {
         });
     });
 });
+
+router.put('/user/activateuser', function (req, res, next) {
+  let fetchedUser;
+  User
+    .findOne({ id: req.body.email })
+    .then(user => {
+      if (!user) {
+        return res.status(401).json({
+          title: "Email not registered!",
+          message: "Your email is not registered with us. Please sign up before resetting password."
+        });
+      }
+      fetchedUser = user;
+
+          User.updateOne({
+            email: fetchedUser.email
+          }, {
+              $set: { "activationStatus": true }
+            }).then(result => {
+              res.status(200).json({
+                title: "User activated.",
+                message: 'Your password is successfully changed. You can now login with the updated password.'
+              });
+            })
+        });
+    });
 
 module.exports = router;
