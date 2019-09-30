@@ -21,6 +21,7 @@ import { ErrorInterceptor } from './error-interceptor';
 import { ErrorComponent } from './error/error.component';
 import { NewPasswordComponent } from './newpassword/newpassword.component';
 import { ResetPasswordComponent } from './newpassword/resetpassword/resetpassword.component';
+import { CsvReadComponent } from './csvread/app-csvread.component';
 
 
 @NgModule({
@@ -35,7 +36,8 @@ import { ResetPasswordComponent } from './newpassword/resetpassword/resetpasswor
     RegisterComponent,
     ErrorComponent,
     NewPasswordComponent,
-    ResetPasswordComponent
+    ResetPasswordComponent,
+    CsvReadComponent
   ],
   imports: [
     BrowserModule,
