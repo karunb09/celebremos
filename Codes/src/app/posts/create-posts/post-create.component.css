@@ -5,5 +5,30 @@ mat-form-field {
 
 .createpost {
   max-width: 600px;
-  
+  margin-top: 16px;
+  margin-left: 25%;
+  margin-bottom: 16px;
+}
+
+.info-text {
+  text-align: center;
+}
+
+input[type=date]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  display: none;
+}
+input[type=time]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  display: none;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+    color: rgba(0, 0, 0, 0);
+    opacity: 1;
+    display: block;
+    background: url(https://cdn4.iconfinder.com/data/icons/small-n-flat/24/calendar-24.png) no-repeat;
+    width: 20px;
+    height: 20px;
+    border-width: thin;
 }

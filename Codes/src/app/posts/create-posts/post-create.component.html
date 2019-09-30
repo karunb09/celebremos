@@ -1,26 +1,117 @@
-<mat-card class = "createpost">
+<mat-card class="createpost">
+  <h1 class="info-text mat-headline">Create an invitation</h1>
   <form (submit)="onSavePost(postform)" #postform="ngForm">
     <mat-form-field>
-      <input matInput type="text" name="title" [ngModel]="post?.title" placeholder="Event Title" #title="ngModel"
-        required>
-      <mat-error *ngIf="title.invalid">Please enter a valid title.</mat-error><br>
+      <input
+        matInput
+        type="text"
+        name="title"
+        [ngModel]="post?.title"
+        placeholder="Event Title"
+        #title="ngModel"
+        required
+      />
+      <mat-error *ngIf="title.invalid">Please enter a valid title.</mat-error
+      ><br />
     </mat-form-field>
     <mat-form-field>
-    <mat-select placeholder = "Event type" name = "type" required>
-      <mat-option *ngFor="let event of events" [value]="event.value">
-        {{event.viewValue}}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
-  <mat-form-field>
-      <input matInput type="text" name="host" placeholder="Hosted By"
-        required>
+      <mat-select placeholder="Event type" [ngModel]="post?.type" name="type" #type="ngModel" required>
+        <mat-option *ngFor="let event of events" [value]="event.value">
+          {{ event.viewValue }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+      <input
+        matInput
+        [matDatepicker]="picker"
+        placeholder="Choose event date"
+        [ngModel]="post?.date"
+        [formControl]="date"
+      />
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+    <mat-form-field>
+      <input
+        matInput
+        type="time"
+        name="time"
+        placeholder="Choose start time"
+        value="00:00"
+        [ngModel]="post?.time"
+        #time="ngModel"
+        required
+    /></mat-form-field>
+    <mat-form-field>
+      <input matInput type="text" name="host" [ngModel]="post?.host" placeholder="Hosted By" #host="ngModel"/>
+
+    </mat-form-field>
+    <mat-form-field>
+      <input
+        matInput
+        type="text"
+        name="location"
+        [ngModel]="post?.location"
+        placeholder="Location Name"
+        #location="ngModel"
+        required
+      />
+      <mat-error *ngIf="location.invalid">Please enter a valid location.</mat-error
+        ><br />
+    </mat-form-field>
+    <mat-form-field>
+      <input
+        matInput
+        type="text"
+        name="street"
+        [ngModel]="post?.street"
+        placeholder="Street Address"
+        #street="ngModel"
+        required
+      />
+      <mat-error *ngIf="street.invalid">Please enter a valid street.</mat-error
+        ><br />
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput type="text" name="city" [ngModel]="post?.city" placeholder="City" #city= "ngModel" required />
+      <mat-error *ngIf="city.invalid">Please enter a valid city.</mat-error
+        ><br />
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput type="text" name="state" [ngModel]="post?.state" placeholder="State" #state="ngModel" required />
+      <mat-error *ngIf="state.invalid">Please enter a valid state.</mat-error
+        ><br />
     </mat-form-field>
     <mat-form-field class="example-full-width">
-      <textarea matInput rows="6" name="content" [ngModel]="post?.content" placeholder="Event Content"
-        #content="ngModel" required></textarea>
-      <mat-error *ngIf="content.invalid">Please enter content.</mat-error>
-    </mat-form-field><br>
-    <button mat-raised-button color="accent" type="Submit">Save Event</button>
+        <textarea
+          matInput
+          rows="4"
+          name="guests"
+          [ngModel]="post?.guests"
+          placeholder="Add Guests here"
+          #guests="ngModel"
+
+        ></textarea>
+        <mat-hint>Add guests by typing in thier emails or phone numbers. You can add multiple guests by seperating them by commas(,). You can add guests later as well.</mat-hint>
+
+           </mat-form-field
+      ><br /><br/>
+          <button mat-button color="primary" >Contact List</button>
+          <button mat-raised-button color="primary" >Import from CSV file</button>
+
+    <mat-form-field class="example-full-width">
+      <textarea
+        matInput
+        rows="3"
+        name="content"
+        [ngModel]="post?.content"
+        placeholder="Additional Information (If any)"
+        #content="ngModel"
+      ></textarea>
+         </mat-form-field
+    ><br />
+    <button mat-raised-button color="accent" type="Submit" >Save Event</button>
+
   </form>
 </mat-card>
