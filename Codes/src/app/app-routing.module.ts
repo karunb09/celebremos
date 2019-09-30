@@ -10,6 +10,7 @@ import { ResetPasswordComponent } from './newpassword/resetpassword/resetpasswor
 import { AddGuestsComponent } from './add guests/addguests.component';
 import { ActivateUserComponent } from './newpassword/activateuser/activateuser.component';
 import { RSVPComponent } from './rsvp/rsvp.component';
+import { CsvReadComponent } from './csvread/app-csvread.component';
 
 // Setting path to redirect next page
 
@@ -24,6 +25,7 @@ const routes: Routes =  [
   { path: 'addGuests/:eventName', component: AddGuestsComponent},
   { path: 'activateUser/:userId', component: ActivateUserComponent},
   { path: 'rsvp/:postId/:emailId', component: RSVPComponent},
+  { path: 'csvupload' , component: CsvReadComponent},
 ];
 
 
