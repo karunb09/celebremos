@@ -1,0 +1,31 @@
+main {
+  width: 60%;
+  margin: 1rem auto;
+}
+
+textarea,
+mat-form-field {
+  width: 90%;
+}
+
+.centerbutton {
+  margin-left: 40%;
+  text-align: center;
+}
+
+.addguests {
+  max-width: 600px;
+  margin-top: 16px;
+  margin-left: 25%;
+  margin-bottom: 16px;
+}
+
+.info-text {
+  text-align: center;
+}
+
+table {
+  width: 100%;
+}
+
+
