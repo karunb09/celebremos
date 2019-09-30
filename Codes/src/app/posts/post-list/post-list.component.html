@@ -1,4 +1,4 @@
-<mat-spinner *ngIf="isLoading"></mat-spinner>
+<!-- <mat-spinner *ngIf="isLoading"></mat-spinner>
 <mat-accordion multi="true" *ngIf="posts.length > 0 && !isLoading">
   <mat-expansion-panel *ngFor="let post of posts">
     <mat-expansion-panel-header>
@@ -12,5 +12,42 @@
       <button mat-button color="warn" (click)="onDelete(post.id)">DELETE</button>
     </mat-action-row>
   </mat-expansion-panel>
-</mat-accordion>
-<p *ngIf="posts.length <= 0 && !isLoading" class="info-text mat-body-1">No events added yet!</p>
+</mat-accordion> -->
+<mat-spinner *ngIf="isLoading"></mat-spinner>
+<mat-card class = "top-card" multi="true" *ngIf="posts.length > 0 && !isLoading">
+  <mat-card class="example-card" *ngFor="let post of posts">
+    <mat-card-header>
+      <div mat-card-avatar class="example-header-image"></div>
+      <mat-card-title>{{ post.title }}</mat-card-title>
+      <mat-card-subtitle>{{ post.type }}</mat-card-subtitle>
+    </mat-card-header>
+    <img
+      mat-card-image
+      src="https://images.gallerycollection.com/is/image/prucards/prod_H?$GC_product$&wid=750&hei=591&fit=crop&$design=prucards%2F300145&$back=thumb_H_cream"
+      alt="Photo of a Shiba Inu"
+    />
+    <mat-card-content>
+        <mat-list>
+            <mat-list-item>{{post.date}}</mat-list-item>
+            <mat-divider></mat-divider>
+            <mat-list-item>{{post.time}} AM</mat-list-item>
+            <mat-divider></mat-divider>
+            <mat-list-item>Hosted By: {{post.host}}</mat-list-item>
+            <mat-divider></mat-divider>
+            <mat-list-item>Where: {{post.location}}, {{post.street}}, {{post.city}}, {{post.state}}</mat-list-item>
+            <mat-divider></mat-divider>
+            <mat-list-item>Number of Guests invited: {{post.guests.length}}</mat-list-item>
+            <mat-divider></mat-divider>
+          </mat-list>
+    </mat-card-content>
+    <mat-card-actions>
+      <a mat-button color="primary" [routerLink]="['/edit', post.id]">EDIT</a>
+      <button mat-button color="warn" (click)="onDelete(post.id)">
+        DELETE
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</mat-card>
+<p *ngIf="posts.length <= 0 && !isLoading" class="info-text mat-body-1">
+  No events added yet!
+</p>
