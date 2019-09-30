@@ -8,9 +8,15 @@ mat-form-field {
   text-align: center;
 }
 
-.npassword {
+.rpassword {
   max-width: 600px;
   margin-top: 16px;
   margin-left: 25%;
   margin-bottom: 16px;
 }
+
+.info-text {
+  text-align: center;
+}
+
+
