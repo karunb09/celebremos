@@ -1,8 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Post } from '../posts.model';
 import { NgForm, FormControl } from '@angular/forms';
 import { PostService } from '../posts.service';
 import { ActivatedRoute, ParamMap } from '@angular/router';
+import { GooglePlaceDirective } from 'ngx-google-places-autocomplete';
+import { Address } from 'ngx-google-places-autocomplete/objects/address';
+import { FnParam } from '@angular/compiler/src/output/output_ast';
 
 export interface Event {
   value: string;
@@ -15,33 +18,52 @@ export interface Event {
   styleUrls: ['./post-create.component.css']
 })
 export class PostCreateComponent implements OnInit {
+  constructor(public postService: PostService, public route: ActivatedRoute) {}
   private mode = 'create';
 
+  formattedaddress = '';
+
   events: Event[] = [
-    { value: 'anniversary', viewValue: 'Anniversary' },
-    { value: 'babyshower', viewValue: 'Baby Shower' },
-    { value: 'bachelorparty', viewValue: 'Bachelor Party' },
-    { value: 'wedding', viewValue: 'Wedding' },
-    { value: 'beachparty', viewValue: 'Beach Party' },
-    { value: 'dinnerparty', viewValue: 'Dinner Party' },
-    { value: 'birthday', viewValue: 'Birthday' },
-    { value: 'engagementparty', viewValue: 'Engagement Party' },
-    { value: 'housewarming', viewValue: 'Housewarming' }
+    { value: 'Anniversary', viewValue: 'Anniversary' },
+    { value: 'Baby Shower', viewValue: 'Baby Shower' },
+    { value: 'Bachelor Party', viewValue: 'Bachelor Party' },
+    { value: 'Wedding', viewValue: 'Wedding' },
+    { value: 'Beach Party', viewValue: 'Beach Party' },
+    { value: 'Dinner Party', viewValue: 'Dinner Party' },
+    { value: 'Birthday', viewValue: 'Birthday' },
+    { value: 'Engagement Party', viewValue: 'Engagement Party' },
+    { value: 'Housewarming', viewValue: 'Housewarming' }
   ];
 
   private postId: string;
 
   post: Post;
+  newGuests: [string] = ['celebremos'];
 
   date = new FormControl(new Date().toISOString());
 
-  constructor(public postService: PostService, public route: ActivatedRoute) {}
+  placesRef: GooglePlaceDirective;
 
   onSavePost(form: NgForm) {
     if (form.invalid) {
       return;
     }
-    let newGuests =  form.value.guests.split(',');
+    if (form.value.guests.includes(',')) {
+      const anotherGuests = form.value.guests.split(',');
+      // tslint:disable-next-line: prefer-for-of
+      // tslint:disable-next-line: variable-name
+      for (let _i = 0; _i < anotherGuests.length; _i++) {
+        if (_i === 0) {
+          this.newGuests.pop();
+        }
+        this.newGuests.push(anotherGuests[_i].trim());
+      }
+    } else {
+      this.newGuests[0] = form.value.guests;
+    }
+    console.log(this.newGuests);
+    form.value.location = this.formattedaddress;
+
     if (this.mode === 'create') {
       this.postService.addPosts(
         form.value.title,
@@ -50,14 +72,11 @@ export class PostCreateComponent implements OnInit {
         form.value.time,
         form.value.host,
         form.value.location,
-        form.value.street,
-        form.value.city,
-        form.value.state,
         form.value.content,
-        newGuests,
+        this.newGuests,
         ['0'],
         ['0'],
-        ['0']
+        ['0'],
       );
     } else {
       this.postService.updatePost(
@@ -68,14 +87,11 @@ export class PostCreateComponent implements OnInit {
         form.value.time,
         form.value.host,
         form.value.location,
-        form.value.street,
-        form.value.city,
-        form.value.state,
         form.value.content,
-        newGuests,
+        this.newGuests,
         ['0'],
         ['0'],
-        ['0']
+        ['0'],
       );
     }
     form.resetForm();
@@ -96,12 +112,11 @@ export class PostCreateComponent implements OnInit {
             time: postData.time,
             host: postData.host,
             location: postData.location,
-            street: postData.street,
-            city: postData.city,
-            state: postData.state,
             content: postData.content,
             guests: postData.guests,
-            responses: postData.responses,
+            accepted: postData.accepted,
+            denied: postData.denied,
+            ambiguous: postData.ambiguous,
           };
         });
       } else {
@@ -109,5 +124,10 @@ export class PostCreateComponent implements OnInit {
         this.postId = null;
       }
     });
+  }
+
+  public handleAddressChange(address: Address) {
+    this.formattedaddress = address.formatted_address;
+
   }
 }

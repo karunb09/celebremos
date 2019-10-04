@@ -51,7 +51,7 @@ router.post("/user/login", (req, res, next) => {
           message: "You have entered invalid username or password. Please try again."
         });
       }
-      console.log(user.activationStatus);
+
       if (user.activationStatus) {
         return res.status(401).json({
           title: "Activation Required",

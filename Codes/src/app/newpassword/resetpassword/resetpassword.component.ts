@@ -34,7 +34,7 @@ export class ResetPasswordComponent {
       this.route.paramMap.subscribe((paramMap: ParamMap) => {
         if (paramMap.has('userId')) {
           let userId = paramMap.get('userId');
-          console.log(userId);
+          
           this.isLoading = true;
           this.authService.storePassword(userId, form.value.password);
         };

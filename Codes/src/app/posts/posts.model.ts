@@ -8,14 +8,9 @@ export interface Post {
   time: string;
   host: string;
   location: string;
-  street: string;
-  city: string;
-  state: string;
   content: string;
   guests: [string];
-  responses: {
-    accepted: [string];
-    denied: [string];
-    ambiguous: [string];
-  };
+  accepted: [string];
+  denied: [string];
+  ambiguous: [string];
 }

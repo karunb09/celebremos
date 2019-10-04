@@ -34,9 +34,14 @@
             <mat-divider></mat-divider>
             <mat-list-item>Hosted By: {{post.host}}</mat-list-item>
             <mat-divider></mat-divider>
-            <mat-list-item>Where: {{post.location}}, {{post.street}}, {{post.city}}, {{post.state}}</mat-list-item>
+            <mat-list-item>Where: {{post.location}}</mat-list-item>
             <mat-divider></mat-divider>
             <mat-list-item>Number of Guests invited: {{post.guests.length}}</mat-list-item>
+            <mat-divider></mat-divider>
+
+            <mat-list-item class ="green">Accepted: {{post.accepted.length - 1}}</mat-list-item>
+            <mat-list-item class = "red" >Rejected: {{post.denied.length - 1 }}</mat-list-item>
+            <mat-list-item class = "yellow" *ngIf = "post.ambiguous.length > 1">May be: {{post.ambiguous.length - 1 }}</mat-list-item>
             <mat-divider></mat-divider>
           </mat-list>
     </mat-card-content>

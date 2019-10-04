@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ɵConsole } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { NgForm } from '@angular/forms';
 
@@ -13,17 +13,17 @@ import { PostService } from '../posts/posts.service';
   styleUrls: ['./rsvp.component.css']
 })
 export class RSVPComponent implements OnInit {
-
   post: Post;
   yourResponse: string;
   rsvp: string[] = ['Yes', 'No', 'Maybe'];
+  emailId: string;
 
   constructor(public postService: PostService, public route: ActivatedRoute) {}
 
   ngOnInit() {
     this.route.paramMap.subscribe((paramMap: ParamMap) => {
       if (paramMap.has('postId')) {
-        let postId = paramMap.get('postId');
+        const postId = paramMap.get('postId');
         this.postService.getPost(postId).subscribe(postData => {
           this.post = {
             id: postData._id,
@@ -33,20 +33,81 @@ export class RSVPComponent implements OnInit {
             time: postData.time,
             host: postData.host,
             location: postData.location,
-            street: postData.street,
-            city: postData.city,
-            state: postData.state,
             content: postData.content,
             guests: postData.guests,
-            responses: postData.responses,
+            accepted: postData.accepted,
+            denied: postData.denied,
+            ambiguous: postData.ambiguous
           };
         });
       }
     });
+    this.route.paramMap.subscribe((paramMap: ParamMap) => {
+      if (paramMap.has('emailId')) {
+        this.emailId = paramMap.get('emailId');
+      }
+    });
+
   }
 
-  sendResponse(){
+  sendResponse() {
+    const acceptedEmail = this.post.accepted.find(x => x === this.emailId);
+    const rejectedEmail = this.post.denied.find(x => x === this.emailId);
+    const ambiguousEmail = this.post.ambiguous.find(x => x === this.emailId);
+    console.log(acceptedEmail);
 
-  }
-
+      switch (this.yourResponse) {
+        case 'Yes': {
+          this.post.accepted.push(this.emailId);
+          this.postService.updatePost(
+            this.post.id,
+            this.post.title,
+            this.post.type,
+            '12/13/2019',
+            this.post.time,
+            this.post.host,
+            this.post.location,
+            this.post.content,
+            this.post.guests,
+            this.post.accepted,
+            this.post.denied,
+            this.post.ambiguous);
+          break;
+        }
+        case 'No': {
+          this.post.denied.push(this.emailId);
+          this.postService.updatePost(
+            this.post.id,
+            this.post.title,
+            this.post.type,
+            '12/13/2019',
+            this.post.time,
+            this.post.host,
+            this.post.location,
+            this.post.content,
+            this.post.guests,
+            this.post.accepted,
+            this.post.denied,
+            this.post.ambiguous);
+          break;
+        }
+        case 'Maybe': {
+          this.post.ambiguous.push(this.emailId);
+          this.postService.updatePost(
+            this.post.id,
+            this.post.title,
+            this.post.type,
+            '12/13/2019',
+            this.post.time,
+            this.post.host,
+            this.post.location,
+            this.post.content,
+            this.post.guests,
+            this.post.accepted,
+            this.post.denied,
+            this.post.ambiguous);
+          break;
+        }
+      }
+    }
 }

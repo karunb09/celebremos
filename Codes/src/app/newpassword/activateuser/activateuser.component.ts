@@ -15,7 +15,7 @@ export class ActivateUserComponent implements OnInit {
 
   ngOnInit() {
     const currentURL = this.router.url;
-    console.log(currentURL.slice(currentURL.lastIndexOf('/') + 1));
+    
     this.isLoading = true;
     this.authService.activateUser(currentURL.slice(currentURL.lastIndexOf('/') + 1));
   }
