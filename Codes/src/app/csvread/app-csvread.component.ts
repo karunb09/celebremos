@@ -8,7 +8,7 @@ import { CSVRecord } from './CSVModel';
 })
 
 export class CsvReadComponent {
-  title = 'Angular7-readCSV';
+  title = 'ReadCSV';
 
   public records: any[] = [];
   @ViewChild('csvReader', {static: false}) csvReader: any;
