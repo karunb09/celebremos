@@ -12,6 +12,7 @@
   margin-left: 5px;
   display: inline-grid;
   max-width: 400px;
+  min-height: 700px;
 }
 
 .top-card {
@@ -23,4 +24,16 @@
 .example-header-image {
   background-image: url('https://cdn.shopify.com/s/files/1/0367/6021/products/Floral_Birthday_Cake_Detail.jpg?v=1558539136');
   background-size: cover;
+}
+
+.green {
+  color: green;
+}
+
+.red {
+  color: red;
+}
+
+.yellow {
+  color: yellow;
 }

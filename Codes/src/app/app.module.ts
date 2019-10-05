@@ -9,6 +9,8 @@ import { MatInputModule, MatCardModule, MatButtonModule,
   MatSelectModule, MatAutocompleteModule, MatDatepickerModule, MatNativeDateModule,
   MatTableModule, MatRadioModule } from '@angular/material';
 
+import { GooglePlaceModule } from 'ngx-google-places-autocomplete';
+
 import { AppComponent } from './app.component';
 import { PostCreateComponent } from './posts/create-posts/post-create.component';
 import { HeaderComponent } from './appheader/app-header.component';
@@ -27,7 +29,7 @@ import { ResetPasswordComponent } from './newpassword/resetpassword/resetpasswor
 import { AddGuestsComponent } from './add guests/addguests.component';
 import { ActivateUserComponent } from './newpassword/activateuser/activateuser.component';
 import { RSVPComponent } from './rsvp/rsvp.component';
-import { CsvReadComponent } from './csvread/app-csvread.component';
+	import { CsvReadComponent } from './csvread/app-csvread.component';
 
 
 @NgModule({
@@ -71,6 +73,7 @@ import { CsvReadComponent } from './csvread/app-csvread.component';
     MatNativeDateModule,
     MatTableModule,
     MatRadioModule,
+    GooglePlaceModule,
   ],
   providers: [ MatDatepickerModule,
     {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },

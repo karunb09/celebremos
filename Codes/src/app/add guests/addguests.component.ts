@@ -1,5 +1,5 @@
-import { Component, OnInit } from "@angular/core";
-import { NgForm } from "@angular/forms";
+import { Component, OnInit } from '@angular/core';
+import { NgForm } from '@angular/forms';
 import { Subscription } from 'rxjs';
 
 export interface PeriodicElement {
@@ -23,9 +23,9 @@ const ELEMENT_DATA: PeriodicElement[] = [
 ];
 
 @Component({
-  selector: "app-addguests",
-  templateUrl: "./addguests.component.html",
-  styleUrls: ["./addguests.component.css"]
+  selector: 'app-addguests',
+  templateUrl: './addguests.component.html',
+  styleUrls: ['./addguests.component.css']
 })
 export class AddGuestsComponent {
 
@@ -39,7 +39,7 @@ export class AddGuestsComponent {
 
   onInvite(form: NgForm) {
     let guest: PeriodicElement = {position: 11, name: form.value.guests, weight: 20, symbol: 'NE'};
-    console.log(guest);
+    
     ELEMENT_DATA.push(guest);
 
   }

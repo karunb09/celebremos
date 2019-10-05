@@ -50,7 +50,8 @@
     <mat-form-field>
       <input
         matInput
-        type="text"
+        ngx-google-places-autocomplete
+        (onAddressChange)="handleAddressChange($event)"
         name="location"
         [ngModel]="post?.location"
         placeholder="Location Name"
@@ -60,29 +61,7 @@
       <mat-error *ngIf="location.invalid">Please enter a valid location.</mat-error
         ><br />
     </mat-form-field>
-    <mat-form-field>
-      <input
-        matInput
-        type="text"
-        name="street"
-        [ngModel]="post?.street"
-        placeholder="Street Address"
-        #street="ngModel"
-        required
-      />
-      <mat-error *ngIf="street.invalid">Please enter a valid street.</mat-error
-        ><br />
-    </mat-form-field>
-    <mat-form-field>
-      <input matInput type="text" name="city" [ngModel]="post?.city" placeholder="City" #city= "ngModel" required />
-      <mat-error *ngIf="city.invalid">Please enter a valid city.</mat-error
-        ><br />
-    </mat-form-field>
-    <mat-form-field>
-      <input matInput type="text" name="state" [ngModel]="post?.state" placeholder="State" #state="ngModel" required />
-      <mat-error *ngIf="state.invalid">Please enter a valid state.</mat-error
-        ><br />
-    </mat-form-field>
+
     <mat-form-field class="example-full-width">
         <textarea
           matInput
