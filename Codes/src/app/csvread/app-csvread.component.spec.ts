@@ -20,16 +20,16 @@ describe('CsvReadComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have as title 'Angular7-readCSV'`, () => {
+  it(`should have as title 'Read CSV'`, () => {
     const fixture = TestBed.createComponent(CsvReadComponent);
     const app = fixture.debugElement.componentInstance;
-    expect(app.title).toEqual('Angular7-readCSV');
+    expect(app.title).toEqual('Read CSV');
   });
 
   it('should render title in a h1 tag', () => {
     const fixture = TestBed.createComponent(CsvReadComponent);
     fixture.detectChanges();
     const compiled = fixture.debugElement.nativeElement;
-    expect(compiled.querySelector('h1').textContent).toContain('Welcome to Angular7-readCSV!');
+    expect(compiled.querySelector('h1').textContent).toContain('Read CSV!');
   });
 });
