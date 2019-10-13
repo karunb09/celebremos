@@ -29,6 +29,7 @@ export class RSVPComponent implements OnInit {
             id: postData._id,
             title: postData.title,
             type: postData.type,
+            imagePath: postData.imagePath,
             date: postData.date,
             time: postData.time,
             host: postData.host,
@@ -47,7 +48,6 @@ export class RSVPComponent implements OnInit {
         this.emailId = paramMap.get('emailId');
       }
     });
-
   }
 
   sendResponse() {
@@ -56,58 +56,64 @@ export class RSVPComponent implements OnInit {
     const ambiguousEmail = this.post.ambiguous.find(x => x === this.emailId);
     console.log(acceptedEmail);
 
-      switch (this.yourResponse) {
-        case 'Yes': {
-          this.post.accepted.push(this.emailId);
-          this.postService.updatePost(
-            this.post.id,
-            this.post.title,
-            this.post.type,
-            '12/13/2019',
-            this.post.time,
-            this.post.host,
-            this.post.location,
-            this.post.content,
-            this.post.guests,
-            this.post.accepted,
-            this.post.denied,
-            this.post.ambiguous);
-          break;
-        }
-        case 'No': {
-          this.post.denied.push(this.emailId);
-          this.postService.updatePost(
-            this.post.id,
-            this.post.title,
-            this.post.type,
-            '12/13/2019',
-            this.post.time,
-            this.post.host,
-            this.post.location,
-            this.post.content,
-            this.post.guests,
-            this.post.accepted,
-            this.post.denied,
-            this.post.ambiguous);
-          break;
-        }
-        case 'Maybe': {
-          this.post.ambiguous.push(this.emailId);
-          this.postService.updatePost(
-            this.post.id,
-            this.post.title,
-            this.post.type,
-            '12/13/2019',
-            this.post.time,
-            this.post.host,
-            this.post.location,
-            this.post.content,
-            this.post.guests,
-            this.post.accepted,
-            this.post.denied,
-            this.post.ambiguous);
-          break;
-        }
+    switch (this.yourResponse) {
+      case 'Yes': {
+        this.post.accepted.push(this.emailId);
+        this.postService.updatePost(
+          this.post.id,
+          this.post.title,
+          this.post.type,
+          this.post.imagePath,
+          this.post.date,
+          this.post.time,
+          this.post.host,
+          this.post.location,
+          this.post.content,
+          this.post.guests,
+          this.post.accepted,
+          this.post.denied,
+          this.post.ambiguous
+        );
+        break;
+      }
+      case 'No': {
+        this.post.denied.push(this.emailId);
+        this.postService.updatePost(
+          this.post.id,
+          this.post.title,
+          this.post.type,
+          this.post.imagePath,
+          this.post.date,
+          this.post.time,
+          this.post.host,
+          this.post.location,
+          this.post.content,
+          this.post.guests,
+          this.post.accepted,
+          this.post.denied,
+          this.post.ambiguous
+        );
+        break;
+      }
+      case 'Maybe': {
+        this.post.ambiguous.push(this.emailId);
+        this.postService.updatePost(
+          this.post.id,
+          this.post.title,
+          this.post.type,
+          this.post.imagePath,
+          this.post.date,
+          this.post.time,
+          this.post.host,
+          this.post.location,
+          this.post.content,
+          this.post.guests,
+          this.post.accepted,
+          this.post.denied,
+          this.post.ambiguous
+        );
+        break;
       }
     }
+  }
 }
