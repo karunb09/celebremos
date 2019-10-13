@@ -1,32 +1,53 @@
 <mat-card class="rpassword">
-    <div *ngIf = "!post">
-        <label id="example-radio-group-label" >We are really sorry that the event that you are looking for is not found. The host might have cancelled the event. </label>
-    </div>
-    <div *ngIf = "!emailId">
-        <label id="example-radio-group-label" >Sorry!!! Your are not invited to the event {{post.title}}.  </label>
-    </div>
-  <div *ngIf = "post && emailId">
-  <label id="example-radio-group-label" >Will you attend {{post.title}}?</label>
-  <mat-radio-group
-    aria-labelledby="example-radio-group-label"
-    class="example-radio-group"
-    [(ngModel)]="yourResponse"
-  >
-    <mat-radio-button
-      class="example-radio-button"
-      *ngFor="let response of rsvp"
-      [value]="response"
-    >
-      {{ response }}
-    </mat-radio-button>
-  </mat-radio-group>
-  <div>Your response is: {{ yourResponse }}</div>
-  <br>
-  <button mat-raised-button color="primary" class="centerbutton" (click)="sendResponse()" [routerLink] = "['/']" *ngIf="!isLoading">Submit</button><br>
+  <div *ngIf="!post">
+    <label id="example-radio-group-label"
+      >We are really sorry that the event that you are looking for is not found.
+      The host might have cancelled the event.
+    </label>
   </div>
+  <div *ngIf="!emailId">
+    <label id="example-radio-group-label"
+      >Sorry!!! Your are not invited to the event {{ post.title }}.
+    </label>
+  </div>
+  <div *ngIf="post && emailId">
+    <label id="example-radio-group-label"
+      >Will you attend {{ post.title }}?</label
+    >
+    <mat-radio-group
+      aria-labelledby="example-radio-group-label"
+      class="example-radio-group"
+      [(ngModel)]="yourResponse"
+    >
+      <mat-radio-button
+        class="example-radio-button"
+        *ngFor="let response of rsvp"
+        [value]="response"
+      >
+        {{ response }}
+      </mat-radio-button>
+    </mat-radio-group>
+    <mat-form-field *ngIf="yourResponse == 'Yes' || yourResponse == 'Maybe'">
+      <input
+        matInput
+        type="text"
+        name="guestsNumber"
+        placeholder="Enter number of guests"
+        required
+      />
+    </mat-form-field>
 
-
+    <div>Your response is: {{ yourResponse }}</div>
+    <br />
+    <button
+      mat-raised-button
+      color="primary"
+      class="centerbutton"
+      (click)="sendResponse()"
+      [routerLink]="['/']"
+      *ngIf="!isLoading"
+    >
+      Submit</button
+    ><br />
+  </div>
 </mat-card>
-
-
-
