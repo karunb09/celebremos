@@ -1,33 +1,44 @@
 <mat-card class="createpost">
   <h1 class="info-text mat-headline">Create an invitation</h1>
-  <form (submit)="onSavePost(postform)" #postform="ngForm">
+  <form [formGroup]= "form" (submit)="onSavePost()" >
     <mat-form-field>
       <input
         matInput
         type="text"
-        name="title"
-        [ngModel]="post?.title"
-        placeholder="Event Title"
-        #title="ngModel"
-        required
+        formControlName="title"
+        placeholder="Event title"
       />
-      <mat-error *ngIf="title.invalid">Please enter a valid title.</mat-error
+      <mat-error *ngIf="form.get('title').invalid">Please enter a valid title.</mat-error
       ><br />
     </mat-form-field>
     <mat-form-field>
-      <mat-select placeholder="Event type" [ngModel]="post?.type" name="type" #type="ngModel" required>
+      <mat-select
+        placeholder="Event type"
+        formControlName="type"
+      >
         <mat-option *ngFor="let event of events" [value]="event.value">
           {{ event.viewValue }}
         </mat-option>
       </mat-select>
     </mat-form-field>
+    <div>
+        <button mat-stroked-button type = "button" (click)="filePicker.click()">Choose template</button>
+        <input type = "file" #filePicker (change) = "onImagePicked($event)">
+      </div>
+      <div class="image-preview" *ngIf = "imagePreview !== '' && imagePreview && form.get('image').valid">
+        <img [src] = "imagePreview" [alt] = "form.value.title">
+      </div>
+      <br>
+
     <mat-form-field>
       <input
         matInput
+        [min]="minDate"
         [matDatepicker]="picker"
         placeholder="Choose event date"
-        [ngModel]="post?.date"
-        [formControl]="date"
+        (dateInput)="addEvent('input', $event)"
+        (dateChange)="addEvent('change', $event)"
+        [formControlName]="'date'"
       />
       <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
       <mat-datepicker #picker></mat-datepicker>
@@ -36,60 +47,57 @@
       <input
         matInput
         type="time"
-        name="time"
+        formControlName="time"
         placeholder="Choose start time"
-        value="00:00"
-        [ngModel]="post?.time"
-        #time="ngModel"
-        required
     /></mat-form-field>
     <mat-form-field>
-      <input matInput type="text" name="host" [ngModel]="post?.host" placeholder="Hosted By" #host="ngModel"/>
-
+      <input
+        matInput
+        type="text"
+        name="host"
+        formControlName="host"
+        placeholder="Hosted by"
+      />
     </mat-form-field>
     <mat-form-field>
       <input
         matInput
         ngx-google-places-autocomplete
         (onAddressChange)="handleAddressChange($event)"
-        name="location"
-        [ngModel]="post?.location"
-        placeholder="Location Name"
-        #location="ngModel"
-        required
+        formControlName="location"
+        placeholder="Location name"
       />
-      <mat-error *ngIf="location.invalid">Please enter a valid location.</mat-error
-        ><br />
+      <mat-error *ngIf="form.get('location').invalid"
+        >Please enter a valid location.</mat-error
+      ><br />
     </mat-form-field>
 
     <mat-form-field class="example-full-width">
-        <textarea
-          matInput
-          rows="4"
-          name="guests"
-          [ngModel]="post?.guests"
-          placeholder="Add Guests here"
-          #guests="ngModel"
+      <textarea
+        matInput
+        rows="4"
+        formControlName="guests"
+        placeholder="Add guests here"
+      ></textarea>
+      <mat-hint
+        >Add guests by typing in thier emails or phone numbers. You can add
+        multiple guests by seperating them by commas(,). You can add guests
+        later as well.</mat-hint
+      > </mat-form-field
+    ><br /><br />
+    <button mat-stroked-button color="primary">Contact list</button>&nbsp; &nbsp;
+    <button mat-raised-button color="primary">Import from CSV file</button>
 
-        ></textarea>
-        <mat-hint>Add guests by typing in thier emails or phone numbers. You can add multiple guests by seperating them by commas(,). You can add guests later as well.</mat-hint>
-
-           </mat-form-field
-      ><br /><br/>
-          <button mat-button color="primary" >Contact List</button>
-          <button mat-raised-button color="primary" (click)="importcsv()">Import from CSV file</button>
     <mat-form-field class="example-full-width">
       <textarea
         matInput
         rows="3"
-        name="content"
-        [ngModel]="post?.content"
+        formControlName="content"
         placeholder="Additional Information (If any)"
-        #content="ngModel"
-      ></textarea>
-         </mat-form-field
+      ></textarea> </mat-form-field
     ><br />
-    <button mat-raised-button color="accent" type="Submit" >Save Event</button>
+    <button mat-raised-button color="primary" type="Submit">Save for later use</button> &nbsp; &nbsp;
+    <button mat-raised-button color="accent" type="Submit">Send Invitation</button>
 
   </form>
 </mat-card>

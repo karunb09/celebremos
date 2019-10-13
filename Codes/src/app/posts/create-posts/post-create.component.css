@@ -14,21 +14,16 @@ mat-form-field {
   text-align: center;
 }
 
-input[type=date]::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  display: none;
-}
-input[type=time]::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  display: none;
+
+input[type="file"]{
+  visibility: hidden;
 }
 
-input[type="date"]::-webkit-calendar-picker-indicator {
-    color: rgba(0, 0, 0, 0);
-    opacity: 1;
-    display: block;
-    background: url(https://cdn4.iconfinder.com/data/icons/small-n-flat/24/calendar-24.png) no-repeat;
-    width: 20px;
-    height: 20px;
-    border-width: thin;
+.image-preview {
+  height: 15rem;
+  margin: 1rem 0;
+}
+
+.image-preview img {
+  height: 100%;
 }
