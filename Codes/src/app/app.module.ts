@@ -29,7 +29,7 @@ import { ResetPasswordComponent } from './newpassword/resetpassword/resetpasswor
 import { AddGuestsComponent } from './add guests/addguests.component';
 import { ActivateUserComponent } from './newpassword/activateuser/activateuser.component';
 import { RSVPComponent } from './rsvp/rsvp.component';
-	import { CsvReadComponent } from './csvread/app-csvread.component';
+import { CsvReadComponent } from './csvread/app-csvread.component';
 
 
 @NgModule({

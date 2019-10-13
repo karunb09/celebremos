@@ -1,17 +1,17 @@
-textarea, mat-form-field {
-  width: 90%;
+textarea,
+mat-form-field {
+    width: 90%;
 }
 
 .centerbutton {
-  margin-left: 40%;
-  text-align: center;
+    margin-left: 40%;
+    text-align: center;
 }
 
 .info-text {
-  text-align: center;
+    text-align: center;
 }
 
-
 mat-spinner {
-  margin: auto;
+    margin: auto;
 }

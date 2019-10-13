@@ -130,4 +130,9 @@ export class PostCreateComponent implements OnInit {
     this.formattedaddress = address.formatted_address;
 
   }
+
+  importcsv(){
+    console.log("in function")
+    window.location.href = "/csvupload";
+  }
 }

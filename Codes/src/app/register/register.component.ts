@@ -17,7 +17,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
 
   private authStatusSub: Subscription;
 
-  constructor(public authService: AuthService) {}
+  constructor(public authService: AuthService) { }
 
   ngOnInit() {
     this.authStatusSub = this.authService.getAuthStatusListener().subscribe(authStatus => {
@@ -25,27 +25,27 @@ export class RegisterComponent implements OnInit, OnDestroy {
     });
   }
 
-checkEmail(form: NgForm){
-  if (form.value.password !== form.value.password1) {
-        alert('Passwords do not match! Please check and enter same passwords');
-        return false;
+  checkEmail(form: NgForm) {
+    if (form.value.password !== form.value.password1) {
+      alert('Passwords do not match! Please check and enter same passwords');
+      return false;
     } else {
-        return true;
+      return true;
     }
-}
+  }
 
   onSignUp(form: NgForm) {
     if (this.checkEmail(form)) {
       if (form.invalid) {
         return;
       }
-  // tslint:disable-next-line: max-line-length
+      // tslint:disable-next-line: max-line-length
       this.isLoading = true;
-      this.authService.createUser( form.value.firstname, form.value.lastname,
+      this.authService.createUser(form.value.firstname, form.value.lastname,
         form.value.username, form.value.email, form.value.password, form.value.phone);
     }
 
-    }
+  }
 
   ngOnDestroy() {
     this.authStatusSub.unsubscribe();
