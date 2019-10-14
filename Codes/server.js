@@ -2,6 +2,10 @@ const app = require("./backend/app");
 const debug = require("debug")("node-angular");
 const http = require("http");
 
+const Nexmo = require('nexmo');
+
+const socketio = require('socket.io');
+
 const normalizePort = val => {
   var port = parseInt(val, 10);
 

@@ -1,9 +1,36 @@
-<h1 mat-dialog-title>{{ data.title }}</h1>
+<img
+  src="./assets/9423cc10-a935-45dc-a5d7-8497444f4f29_200x200.png"
+  alt="Celebremos"
+  class="rounded float-left"
+/>
+<h1 mat-dialog-title class="centeralign">{{ data.title }}</h1>
 <div mat-dialog-content>
-  <p class="mat-body-1">{{ data.message }} </p>
+  <p class="mat-body-1">{{ data.message }}</p>
 </div>
 <div mat-dialog-actions>
-
-  <button mat-button mat-dialog-close class="centeralignment" routerLink = "/" >Okay</button>
-  <button mat-button mat-dialog-close class="centeralignment">Cancel</button>
+  <div>
+    <button
+      mat-button
+      mat-dialog-close
+      class="centeralignment"
+      routerLink="/"
+      *ngIf="!userIsAuthenticated"
+    >
+      Okay
+    </button>
+  </div>
+  <div>
+    <button
+      mat-button
+      mat-dialog-close
+      class="centeralignment"
+      routerLink="/create"
+      *ngIf="userIsAuthenticated"
+    >
+      Okay
+    </button>
+  </div>
+  <div>
+    <button mat-button mat-dialog-close class="centeralignment">Cancel</button>
+  </div>
 </div>
