@@ -33,7 +33,7 @@ router.post("/user/register", (req, res, next) => {
         })
         .catch(err => {
           res.status(500).json({
-            title: "OOPS!",
+            title: "OOPS! Username/Email is already taken.",
             message: "The username or email that you have provided is already taken!"
           });
         });
@@ -187,8 +187,8 @@ router.put('/user/activateuser', function (req, res, next) {
     .then(user => {
       if (!user) {
         return res.status(401).json({
-          title: "Email not registered!",
-          message: "Your email is not registered with us. Please sign up before resetting password."
+          title: "User is not active",
+          message: "Please activate your username by clicking on the link sent to your email address."
         });
       }
       fetchedUser = user;
@@ -200,7 +200,7 @@ router.put('/user/activateuser', function (req, res, next) {
             }).then(result => {
               res.status(200).json({
                 title: "User activated.",
-                message: 'Your password is successfully changed. You can now login with the updated password.'
+                message: 'You can now login with the username and password.'
               });
             })
         });
