@@ -104,7 +104,7 @@ export class PostCreateComponent implements OnInit {
         this.postId,
         this.form.value.title,
         this.form.value.type,
-        this.form.value.imagePath,
+        this.form.value.image,
         this.newDate,
         this.form.value.time,
         this.form.value.host,
@@ -170,6 +170,7 @@ export class PostCreateComponent implements OnInit {
             content: this.post.content,
             guests: this.post.guests
           });
+          this.imagePreview = '';
         });
       } else {
         this.mode = 'create';

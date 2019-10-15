@@ -22,22 +22,22 @@ export class ErrorInterceptor implements HttpInterceptor {
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
     return next.handle(req).pipe(
-      // map((event: HttpEvent<any>) => {
-      //   let successMessage = 'Successfully completed';
-      //   let titleMessage = 'Success';
-      //   if (event instanceof HttpResponse) {
-      //     if (event.body.title) {
-      //       titleMessage = event.body.title;
-      //     }
-      //     if (event.body.message) {
-      //       successMessage = event.body.message;
-      //     }
-      //     this.dialog.open(ErrorComponent, {
-      //       data: { title: titleMessage, message: successMessage }
-      //     });
-      //   }
-      //   return event;
-      // }),
+      map((event: HttpEvent<any>) => {
+        let successMessage = 'Successfully completed';
+        let titleMessage = 'Success';
+        if (event instanceof HttpResponse && event.status === 201) {
+          if (event.body.title) {
+            titleMessage = event.body.title;
+          }
+          if (event.body.message) {
+            successMessage = event.body.message;
+          }
+          this.dialog.open(ErrorComponent, {
+            data: { title: titleMessage, message: successMessage }
+          });
+        }
+        return event;
+      }),
       catchError((error: HttpErrorResponse) => {
         let errorMessage = 'An unknown error occurred!';
         let titleMessage = 'Error';

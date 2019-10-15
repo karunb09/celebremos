@@ -108,7 +108,7 @@ router.post('/api/posts', checkAuth, multer({ storage: storage }).single("image"
         }
       }
     });
-    res.status(400).json({
+    res.status(201).json({
       title: "Event created succesfully",
       message: "The event has been successfully created and invitations are sent to your guests email address/phone numbers.",
       post: {
@@ -133,7 +133,7 @@ router.delete('/api/posts/:id', checkAuth, (req, res, next) => {
     _id: req.params.id
   }).then(result => {
     console.log(result);
-    res.status(500).json({
+    res.status(201).json({
       title: 'Are you sure you want to delete the event?',
       message: 'If you click Okay the event will be deleted. To remain on this page click cancel.',
       result: result
@@ -216,7 +216,7 @@ router.put('/api/posts/:id', multer({ storage: storage }).single("image"), (req,
         }
       }
     });
-    res.status(400).json({
+    res.status(201).json({
       title: "Event updated succesfully",
       message: "The event has been successfully updated and updated invitations are sent to your guests email address/phone numbers.",
       postId: post._id

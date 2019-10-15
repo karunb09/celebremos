@@ -9,7 +9,7 @@
 
 .example-card {
   margin-top: 10px;
-  margin-left: 5px;
+  margin-left: 10px;
   display: inline-grid;
   max-width: 400px;
   min-height: 700px;
@@ -25,7 +25,9 @@
   padding-left: 60px;
 }
 
-
+.mat-card:not([class*=mat-elevation-z]) {
+    box-shadow: 3px 3px 3px 1px rgba(0,0,0,.2), 3px 3px 3px 1px rgba(0,0,0,.14), 0 1px 3px 0 rgba(0,0,0,.12);
+}
 
 .green {
   color: green;

@@ -5,8 +5,9 @@ mat-form-field {
 
 .createpost {
   max-width: 600px;
+  margin: 0 auto;
+  display: block;
   margin-top: 16px;
-  margin-left: 25%;
   margin-bottom: 16px;
 }
 
@@ -26,4 +27,8 @@ input[type="file"]{
 
 .image-preview img {
   height: 100%;
+}
+
+.mat-card:not([class*=mat-elevation-z]) {
+  box-shadow: 3px 3px 3px 1px rgba(0,0,0,.2), 3px 3px 3px 1px rgba(0,0,0,.14), 0 1px 3px 0 rgba(0,0,0,.12);
 }

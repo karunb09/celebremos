@@ -4,8 +4,9 @@ mat-form-field {
 }
 
 .centerbutton {
-    margin-left: 40%;
-    text-align: center;
+  margin: 0 auto;
+  display: block;
+  text-align: center;
 }
 
 .info-text {
@@ -14,4 +15,8 @@ mat-form-field {
 
 mat-spinner {
     margin: auto;
+}
+
+.mat-card:not([class*=mat-elevation-z]) {
+  box-shadow: 3px 3px 3px 1px rgba(0,0,0,.2), 3px 3px 3px 1px rgba(0,0,0,.14), 0 1px 3px 0 rgba(0,0,0,.12);
 }

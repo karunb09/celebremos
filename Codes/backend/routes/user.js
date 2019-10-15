@@ -25,7 +25,7 @@ router.post("/user/register", (req, res, next) => {
       user
         .save()
         .then(result => {
-          return res.status(400).json({
+          return res.status(201).json({
             title: "Congratulations!",
             message: "Your account is created. In order to login you have to activate your username by clicking on the link that is mailed to your email address.",
             result: result
@@ -145,7 +145,7 @@ router.post('/user/reset-password', function (req, res, next) {
             console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
         });
     });
-      res.status(500).json({
+      res.status(201).json({
         title: "Password Reset Email Sent",
         message: 'An email has been sent to your provided email address. Follow the directions in the email to reset your password.'
       })
@@ -171,7 +171,7 @@ router.put('/user/store-password', function (req, res, next) {
           }, {
               $set: { "password": hash }
             }).then(result => {
-              res.status(500).json({
+              res.status(201).json({
                 title: "Password Successfully Resetted.",
                 message: 'Your password is successfully changed. You can now login with the updated password.'
               });
@@ -198,7 +198,7 @@ router.put('/user/activateuser', function (req, res, next) {
           }, {
               $set: { "activationStatus": true }
             }).then(result => {
-              res.status(200).json({
+              res.status(201).json({
                 title: "User activated.",
                 message: 'You can now login with the username and password.'
               });
