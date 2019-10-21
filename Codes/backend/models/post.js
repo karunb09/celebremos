@@ -1,5 +1,6 @@
-const mongoose = require("mongoose");
+const contact = require('./contact')
 
+const mongoose = require("mongoose");
 
 const postScheme = mongoose.Schema({
   title: { type: String, required: true },
@@ -13,9 +14,7 @@ const postScheme = mongoose.Schema({
   guests: { type: [String], required: false },
   accepted: { type: [String], required: false },
   denied: { type: [String], required: false },
-  ambiguous: { type: [String], required: false }
+  ambiguous: { type: [String], required: false },
 });
-
-
 
 module.exports = mongoose.model('Post', postScheme);

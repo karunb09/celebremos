@@ -51,7 +51,6 @@ router.post("/user/login", (req, res, next) => {
           message: "You have entered invalid username or password. Please try again."
         });
       }
-
       if (user.activationStatus) {
         return res.status(401).json({
           title: "Activation Required",
@@ -91,7 +90,6 @@ router.post('/user/reset-password', function (req, res, next) {
   // var api_key = '7c42837cae0148e75ba4cf0213a7f8f4-2b0eef4c-907a95af';
   // var domain = 'sandbox697917eb3f2a4e3494a68f32c844e693.mailgun.org';
   // var mailgun = require('mailgun-js')({ apiKey: api_key, domain: domain });
-
   User
     .findOne({ email: req.body.email })
     .then(user => {
@@ -104,47 +102,42 @@ router.post('/user/reset-password', function (req, res, next) {
       fetchedUser = user;
       nodemailer.createTestAccount((err, account) => {
         if (err) {
-            console.error('Failed to create a testing account. ' + err.message);
-            return process.exit(1);
+          console.error('Failed to create a testing account. ' + err.message);
+          return process.exit(1);
         }
-
         console.log('Credentials obtained, sending message...');
-
         // Create a SMTP transporter object
         let transporter = nodemailer.createTransport({
           host: 'smtp.ethereal.email',
           port: 587,
           security: false,
           auth: {
-              user: 'linda41@ethereal.email',
-              pass: 'vkBejPYGRFBtzNWeHZ'
+            user: 'linda41@ethereal.email',
+            pass: 'vkBejPYGRFBtzNWeHZ'
           }
         });
-
         // Message object
         let message = {
           from: 'Celebremos <haripriyarao.jupally@gmail.com>',
           to: fetchedUser.email,
           subject: 'Reset your account password',
           text: 'CELEBREMOS',
-          html: fetchedUser.firstname+ ", <br>" +
+          html: fetchedUser.firstname + ", <br>" +
             '<p>You told us you forget your password. If you really did, click below to choose a new one:</p>' +
             'http://localhost:4200/reset/' + user.id +
             '<br><br>' + 'If you didn\'t mean to reset your password, the you can just ignore this email, your password will not change.' +
             '<p>--Team--</p><br><p>Celebremos</p>'
         };
-
         transporter.sendMail(message, (err, info) => {
-            if (err) {
-                console.log('Error occurred. ' + err.message);
-                return process.exit(1);
-            }
-
-            console.log('Message sent: %s', info.messageId);
-            // Preview only available when sending through an Ethereal account
-            console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
+          if (err) {
+            console.log('Error occurred. ' + err.message);
+            return process.exit(1);
+          }
+          console.log('Message sent: %s', info.messageId);
+          // Preview only available when sending through an Ethereal account
+          console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
         });
-    });
+      });
       res.status(201).json({
         title: "Password Reset Email Sent",
         message: 'An email has been sent to your provided email address. Follow the directions in the email to reset your password.'
@@ -169,13 +162,13 @@ router.put('/user/store-password', function (req, res, next) {
           User.updateOne({
             email: fetchedUser.email
           }, {
-              $set: { "password": hash }
-            }).then(result => {
-              res.status(201).json({
-                title: "Password Successfully Resetted.",
-                message: 'Your password is successfully changed. You can now login with the updated password.'
-              });
-            })
+            $set: { "password": hash }
+          }).then(result => {
+            res.status(201).json({
+              title: "Password Successfully Resetted.",
+              message: 'Your password is successfully changed. You can now login with the updated password.'
+            });
+          })
         });
     });
 });
@@ -192,18 +185,17 @@ router.put('/user/activateuser', function (req, res, next) {
         });
       }
       fetchedUser = user;
-
-          User.updateOne({
-            email: fetchedUser.email
-          }, {
-              $set: { "activationStatus": true }
-            }).then(result => {
-              res.status(201).json({
-                title: "User activated.",
-                message: 'You can now login with the username and password.'
-              });
-            })
+      User.updateOne({
+        email: fetchedUser.email
+      }, {
+        $set: { "activationStatus": true }
+      }).then(result => {
+        res.status(201).json({
+          title: "User activated.",
+          message: 'You can now login with the username and password.'
         });
+      })
     });
+});
 
 module.exports = router;
