@@ -22,7 +22,7 @@ const routes: Routes =  [
   { path: 'list', component: PostListComponent, canActivate: [AuthGuard] },
   { path: 'reset', component: NewPasswordComponent},
   { path: 'reset/:userId', component: ResetPasswordComponent},
-  { path: 'addGuests/:eventName', component: AddGuestsComponent},
+  { path: 'addGuests/:eventName', component: AddGuestsComponent, canActivate: [AuthGuard] },
   { path: 'activateUser/:userId', component: ActivateUserComponent},
   { path: 'rsvp/:postId/:emailId', component: RSVPComponent},
   { path: 'csvupload' , component: CsvReadComponent},
