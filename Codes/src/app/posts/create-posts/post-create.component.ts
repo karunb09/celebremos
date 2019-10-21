@@ -1,12 +1,21 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Post } from '../posts.model';
-import { NgForm, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { PostService } from '../posts.service';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { GooglePlaceDirective } from 'ngx-google-places-autocomplete';
 import { Address } from 'ngx-google-places-autocomplete/objects/address';
-import { MatDatepickerInputEvent } from '@angular/material';
+import {
+  MatDatepickerInputEvent,
+  MatSnackBar,
+  MatBottomSheet
+} from '@angular/material';
 import { mimeType } from './mime-type.validator';
+import { AuthService } from 'src/app/auth.service';
+import { Subscription } from 'rxjs';
+import { BottomSheetOverviewExampleSheet } from './bottom-sheet-overview';
+import { ContactService } from 'src/app/csvread/contact.service';
+import { Contact } from 'src/app/csvread/contact-model';
 
 export interface Eventss {
   value: string;
@@ -19,13 +28,28 @@ export interface Eventss {
   styleUrls: ['./post-create.component.css']
 })
 export class PostCreateComponent implements OnInit {
-  constructor(public postService: PostService, public route: ActivatedRoute) {}
+  constructor(
+    public postService: PostService,
+    private authService: AuthService,
+    public route: ActivatedRoute,
+    private snackBar: MatSnackBar,
+    private _bottomSheet: MatBottomSheet,
+    private contactService: ContactService
+  ) {}
 
+  public contacts: any[] = [];
+
+  title = 'ReadCSV';
+
+  public records: Contact[] = [];
+  @ViewChild('csvReader', { static: false }) csvReader: any;
   mode = 'create';
 
   minDate = new Date();
 
   formattedaddress = '';
+
+  username: string;
 
   events: Eventss[] = [
     { value: 'Anniversary', viewValue: 'Anniversary' },
@@ -52,6 +76,8 @@ export class PostCreateComponent implements OnInit {
 
   newDate;
 
+  myDate;
+
   image;
 
   form: FormGroup;
@@ -64,6 +90,12 @@ export class PostCreateComponent implements OnInit {
     if (this.form.invalid) {
       return;
     }
+    if (this.newDate == null) {
+      this.myDate = this.post.date;
+    } else {
+      this.myDate = this.newDate;
+    }
+    console.log(this.myDate);
     if (this.form.value.guests == null) {
       this.newGuests.pop();
     } else if (this.form.value.guests.includes(',')) {
@@ -79,14 +111,13 @@ export class PostCreateComponent implements OnInit {
     } else {
       this.newGuests[0] = this.form.value.guests;
     }
-
     if (this.mode === 'create') {
       this.form.value.location = this.formattedaddress;
       this.postService.addPosts(
         this.form.value.title,
         this.form.value.type,
         this.form.value.image,
-        this.newDate,
+        this.myDate,
         this.form.value.time,
         this.form.value.host,
         this.form.value.location,
@@ -94,7 +125,8 @@ export class PostCreateComponent implements OnInit {
         this.newGuests,
         ['0'],
         ['0'],
-        ['0']
+        ['0'],
+        this.username
       );
     } else {
       if (this.formattedaddress) {
@@ -105,7 +137,7 @@ export class PostCreateComponent implements OnInit {
         this.form.value.title,
         this.form.value.type,
         this.form.value.image,
-        this.newDate,
+        this.myDate,
         this.form.value.time,
         this.form.value.host,
         this.form.value.location,
@@ -125,7 +157,10 @@ export class PostCreateComponent implements OnInit {
         validators: [Validators.required, Validators.minLength(8)]
       }),
       type: new FormControl(null, { validators: [Validators.required] }),
-      image: new FormControl(null, { validators: [Validators.required], asyncValidators: [mimeType] }),
+      image: new FormControl(null, {
+        validators: [Validators.required],
+        asyncValidators: [mimeType]
+      }),
       date: new FormControl(null, { validators: [Validators.required] }),
       time: new FormControl(null, { validators: [Validators.required] }),
       host: new FormControl(null, { validators: [] }),
@@ -133,12 +168,18 @@ export class PostCreateComponent implements OnInit {
       guests: new FormControl(null, { validators: [] }),
       content: new FormControl('', { validators: [] })
     });
+
+    this.authService
+      .getAuthUsernameListener()
+      .subscribe(message => (this.username = message));
     this.route.paramMap.subscribe((paramMap: ParamMap) => {
       if (paramMap.has('postId')) {
         this.mode = 'edit';
         this.postId = paramMap.get('postId');
+        console.log(this.postId);
         this.postService.getPost(this.postId).subscribe(postData => {
           const nowDate = postData.date.slice(postData.date.indexOf(', ') + 2);
+          console.log(nowDate);
           const dateArray = nowDate.split('/');
           this.post = {
             id: postData._id,
@@ -181,7 +222,6 @@ export class PostCreateComponent implements OnInit {
 
   public handleAddressChange(address: Address) {
     this.formattedaddress = address.formatted_address;
-    console.log(this.formattedaddress);
   }
 
   addEvent(type: string, event: MatDatepickerInputEvent<Date>) {
@@ -196,19 +236,203 @@ export class PostCreateComponent implements OnInit {
           '/' +
           `${event.value.getFullYear()}`
       );
-    console.log(this.newDate);
   }
 
   onImagePicked(event: Event) {
     const file = (event.target as HTMLInputElement).files[0];
     this.form.patchValue({ image: file });
     this.form.get('image').updateValueAndValidity();
-    console.log(file);
-    console.log(this.form);
     const reader = new FileReader();
     reader.onload = () => {
       this.imagePreview = reader.result as string;
     };
     reader.readAsDataURL(file);
+  }
+
+  openSnackBar() {
+    if (this.form.invalid) {
+      return;
+    } else {
+      this.onSavePost();
+      this.snackBar.open('Events Saved!', 'Dismiss', {
+        duration: 2000
+      });
+    }
+  }
+
+  openBottomSheet(): void {
+    this._bottomSheet.open(BottomSheetOverviewExampleSheet);
+    this.contactService
+      .getselectedContactList()
+      .subscribe((list: Contact[]) => {
+        console.log(list.length);
+        let newFormValue: string = '';
+        console.log(this.form.value.guests);
+        if (this.form.value.guests) {
+          newFormValue = this.form.value.guests + ',' ;
+          for (let i = 0; i < list.length; i++) {
+            let concatenatedString = '';
+            if (list[i].emailid === null || list[i].emailid === '') {
+              concatenatedString = list[i].mobilenumber;
+            } else {
+              concatenatedString = list[i].emailid;
+            }
+            if (newFormValue.includes(concatenatedString )) {
+            } else {
+              if (i === list.length - 1) {
+                newFormValue += concatenatedString;
+              } else {
+                newFormValue += concatenatedString + ',';
+              }
+            }
+          }
+        } else {
+          for (let i = 0; i < list.length; i++) {
+            let concatenatedString = '';
+            if (list[i].emailid === null || list[i].emailid === '') {
+              concatenatedString = list[i].mobilenumber;
+            } else {
+              concatenatedString = list[i].emailid;
+            }
+            if (newFormValue.includes(concatenatedString)) {
+            } else {
+
+              if (i === list.length - 1) {
+                newFormValue += concatenatedString;
+              } else {
+                newFormValue += concatenatedString + ',';
+              }
+            }
+          }
+        }
+        while(newFormValue.endsWith(',')){
+          newFormValue = newFormValue.substring(0, newFormValue.length - 1);
+        }
+        this.form.patchValue({ guests: newFormValue });
+        // this.form.setValue({
+        //   title: this.form.value.title,
+        //   type: this.form.value.type,
+        //   image: this.form.value.image,
+        //   date: this.form.value.date,
+        //   time: this.form.value.time,
+        //   host: this.form.value.host,
+        //   location: this.form.value.location,
+        //   content: this.form.value.content,
+        //   guests: newFormValue
+        // });
+      });
+  }
+
+
+
+  uploadListener($event: any): void {
+    const text = [];
+    const files = $event.srcElement.files;
+    if (this.isValidCSVFile(files[0])) {
+      const input = $event.target;
+      const reader = new FileReader();
+      reader.readAsText(input.files[0]);
+      reader.onload = () => {
+        const csvData = reader.result;
+        const csvRecordsArray = (csvData as string).split(/\r\n|\n/);
+        const headersRow = this.getHeaderArray(csvRecordsArray);
+        this.contacts.push(
+          this.getDataRecordsArrayFromCSVFile(
+            csvRecordsArray,
+            headersRow.length
+          )
+        );
+        this.records = this.getDataRecordsArrayFromCSVFile(
+          csvRecordsArray,
+          headersRow.length
+        );
+        let newContacts: string = '';
+        for (let i = 0; i < this.records.length; i++) {
+          newContacts += (this.records[i].emailid) + ',';
+        }
+        while(newContacts.endsWith(',')){
+          newContacts = newContacts.substring(0, newContacts.length - 1);
+        }
+
+        this.form.patchValue({ guests: newContacts });
+      };
+      reader.onerror = function() {
+        console.log('error is occured while reading file!');
+      };
+    } else {
+      alert('Please import valid .csv file.');
+      this.fileReset();
+    }
+  }
+
+  getDataRecordsArrayFromCSVFile(csvRecordsArray: any, headerLength: any) {
+    let csvArr = [];
+    for (let i = 1; i < csvRecordsArray.length; i++) {
+      let curruntRecord = (csvRecordsArray[i] as string).split(',');
+      if (curruntRecord.length === headerLength) {
+        let csvRecord: Contact = {
+          firstname: curruntRecord[0].trim(),
+          lastname: curruntRecord[1].trim(),
+          mobilenumber: curruntRecord[2].trim(),
+          emailid: curruntRecord[3].trim()
+        };
+        csvArr.push(csvRecord);
+      }
+    }
+    return csvArr;
+  }
+
+
+  isValidCSVFile(file: any) {
+    return file.name.endsWith('.csv');
+  }
+
+  getHeaderArray(csvRecordsArr: any) {
+    let headers = (csvRecordsArr[0] as string).split(',');
+    let headerArray = [];
+    for (let j = 0; j < headers.length; j++) {
+      headerArray.push(headers[j]);
+    }
+    return headerArray;
+  }
+
+  fileReset() {
+    this.csvReader.nativeElement.value = '';
+  }
+
+  onInvite() {
+    let newGuests: Contact[] = [];
+    let record: Contact[] = [];
+    if (this.form.value.guests == null) {
+      return;
+    }
+    if (this.form.value.guests.includes(',')) {
+      const anotherGuests = this.form.value.guests.split(',');
+      for (let _i = 0; _i < anotherGuests.length; _i++) {
+        newGuests.push(anotherGuests[_i].trim());
+      }
+    } else {
+      newGuests[0] = this.form.value.guests;
+    }
+    for (let i = 0; i < newGuests.length; i++) {
+      let csvRecord;
+      if (Number(newGuests[i])) {
+        csvRecord = {
+          emailid: '',
+          firstname: '',
+          lastname: '',
+          mobilenumber: newGuests[i]
+        };
+      } else {
+        csvRecord = {
+          emailid: newGuests[i],
+          firstname: '',
+          lastname: '',
+          mobilenumber: ''
+        };
+      }
+      record.push(csvRecord);
+    }
+    this.records = record;
   }
 }
