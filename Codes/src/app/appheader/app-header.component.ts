@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AuthService } from '../auth.service';
 
 import { Subscription } from 'rxjs';
+import { MatSnackBar } from '@angular/material';
 /**
  * @title Basic toolbar
  */
@@ -15,7 +16,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   userIsAuthenticated = false;
   private authListenerSubs: Subscription;
 
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService, private snackBar: MatSnackBar) { }
 
   ngOnInit() {
     this.userIsAuthenticated = this.authService.getIsAuth();
@@ -24,10 +25,14 @@ export class HeaderComponent implements OnInit, OnDestroy {
       .subscribe(isAuthenticated => {
         this.userIsAuthenticated = isAuthenticated;
       });
+
   }
 
   onLogout() {
     this.authService.logout();
+    this.snackBar.open('Log out Successful!', 'Dismiss', {
+      duration: 2000
+    });
   }
 
   ngOnDestroy() {
