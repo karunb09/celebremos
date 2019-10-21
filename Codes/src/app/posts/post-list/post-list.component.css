@@ -40,3 +40,7 @@
 .yellow {
   color: orange;
 }
+
+mat-spinner {
+  margin: auto;
+}
