@@ -101,7 +101,7 @@
         placeholder="Additional Information (If any)"
       ></textarea> </mat-form-field
     ><br />
-    <button mat-raised-button color="primary"  matTooltip="Invitations will not be sent to your guests by clicking here." (click)="openSnackBar()">Save for later use</button> &nbsp; &nbsp;
+    <button mat-raised-button color="primary" type = "button" matTooltip="Invitations will not be sent to your guests by clicking here." (click)="onSaveforLaterUse(); $event.preventDefault()">Save for later use</button> &nbsp; &nbsp;
     <button mat-raised-button color="accent" type="Submit" matTooltip="Invitations will be sent to your guests by clicking here.">Send Invitation</button>
 
   </form>
