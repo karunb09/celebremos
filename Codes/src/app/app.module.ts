@@ -7,11 +7,9 @@ import { MatInputModule, MatCardModule, MatButtonModule,
   MatToolbarModule, MatExpansionModule, MatDividerModule,
   MatListModule, MatProgressSpinnerModule, MatDialogModule, MatFormFieldModule,
   MatSelectModule, MatAutocompleteModule, MatDatepickerModule, MatNativeDateModule,
-  MatTableModule, MatRadioModule } from '@angular/material';
+  MatTableModule, MatRadioModule, MatTooltipModule, MatSnackBarModule, MatBottomSheetModule, MatCheckboxModule } from '@angular/material';
 
 import { GooglePlaceModule } from 'ngx-google-places-autocomplete';
-
-
 
 import { AppComponent } from './app.component';
 import { PostCreateComponent } from './posts/create-posts/post-create.component';
@@ -32,6 +30,7 @@ import { AddGuestsComponent } from './add guests/addguests.component';
 import { ActivateUserComponent } from './newpassword/activateuser/activateuser.component';
 import { RSVPComponent } from './rsvp/rsvp.component';
 import { CsvReadComponent } from './csvread/app-csvread.component';
+import { BottomSheetOverviewExampleSheet } from './posts/create-posts/bottom-sheet-overview';
 
 
 @NgModule({
@@ -50,7 +49,8 @@ import { CsvReadComponent } from './csvread/app-csvread.component';
     AddGuestsComponent,
     ActivateUserComponent,
     RSVPComponent,
-    CsvReadComponent
+    CsvReadComponent,
+    BottomSheetOverviewExampleSheet,
   ],
   imports: [
     BrowserModule,
@@ -76,6 +76,10 @@ import { CsvReadComponent } from './csvread/app-csvread.component';
     MatTableModule,
     MatRadioModule,
     GooglePlaceModule,
+    MatTooltipModule,
+    MatSnackBarModule,
+    MatBottomSheetModule,
+    MatCheckboxModule
   ],
   providers: [ MatDatepickerModule,
     {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
@@ -83,6 +87,6 @@ import { CsvReadComponent } from './csvread/app-csvread.component';
 
   ],
   bootstrap: [AppComponent],
-  entryComponents: [ErrorComponent]
+  entryComponents: [ErrorComponent, BottomSheetOverviewExampleSheet]
 })
 export class AppModule { }

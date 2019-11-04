@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Post } from '../posts.model';
 import { PostService } from '../posts.service';
 import { Subscription } from 'rxjs';
+import { AuthService } from 'src/app/auth.service';
 
 @Component({
   selector: 'app-post-list',
@@ -11,21 +12,26 @@ import { Subscription } from 'rxjs';
 export class PostListComponent implements OnInit, OnDestroy {
   posts: Post[] = [];
 
-  isLoading = false;
+  isLoading: boolean;
 
-  constructor(public postService: PostService) { }
+  username: string;
+
+  constructor(public postService: PostService, private authService: AuthService) { }
 
   private postsSub: Subscription;
 
   ngOnInit() {
-    this.postService.getPosts();
+    this.isLoading = false;
+    this.authService.getAuthUsernameListener().subscribe(message => this.username = message);
+    this.postService.getPosts(this.username);
     this.postService.getPostUpdateListener().subscribe((posts: Post[]) => {
       this.posts = posts;
+
     });
   }
 
   onDelete(post: string) {
-    this.postService.deletePost(post);
+    this.postService.deletePost(post, this.username);
   }
 
   ngOnDestroy() {

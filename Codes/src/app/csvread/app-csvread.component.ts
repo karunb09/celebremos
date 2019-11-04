@@ -1,5 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
-import { CSVRecord } from './CSVModel';
+import { Contact } from './contact-model';
+
 
 @Component({
   selector: 'app-root',
@@ -49,10 +50,12 @@ export class CsvReadComponent {
     for (let i = 1; i < csvRecordsArray.length; i++) {
       let curruntRecord = (<string>csvRecordsArray[i]).split(',');
       if (curruntRecord.length == headerLength) {
-        let csvRecord: CSVRecord = new CSVRecord();
-        csvRecord.name = curruntRecord[0].trim();
-        csvRecord.mobilenumber = curruntRecord[1].trim();
-        csvRecord.emailid = curruntRecord[2].trim();        
+        let csvRecord: Contact = {
+        firstname: curruntRecord[0].trim(),
+        lastname: curruntRecord[0].trim(),
+        mobilenumber: curruntRecord[1].trim(),
+        emailid: curruntRecord[2].trim(),
+        }
         csvArr.push(csvRecord);
       }
     }

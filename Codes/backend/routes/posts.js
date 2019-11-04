@@ -8,6 +8,8 @@ const router = express.Router();
 
 const nodemailer = require('nodemailer');
 
+const User = require("../models/user");
+
 const Nexmo = require('nexmo');
 
 const multer = require('multer');
@@ -41,6 +43,7 @@ const nexmo = new Nexmo({
 
 
 router.post('/api/posts', checkAuth, multer({ storage: storage }).single("image"), (req, res, next) => {
+  const username = req.body.username;
   const url = req.protocol + '://' + req.get('host');
   console.log(url + "/images/" + req.file.filename);
   const post = new Post({
@@ -57,7 +60,25 @@ router.post('/api/posts', checkAuth, multer({ storage: storage }).single("image"
     denied: req.body.denied,
     ambiguous: req.body.ambiguous
   });
+
   post.save().then(createdPost => {
+    let fetchedUser;
+    User
+      .findOne({ username: username })
+      .then(user => {
+        fetchedUser = user;
+        fetchedUser.createdEvents.push(createdPost._id)
+        User.updateOne({
+          username: fetchedUser.username
+        }, {
+          $set: { "createdEvents": fetchedUser.createdEvents }
+        }).then(result => {
+          res.status(200).json({
+            title: "Event id added to event successfully. ",
+            message: 'Your password is successfully changed. You can now login with the updated password.'
+          });
+        })
+      });
     nodemailer.createTestAccount((err, account) => {
       if (err) {
         console.error('Failed to create a testing account. ' + err.message);
@@ -108,7 +129,7 @@ router.post('/api/posts', checkAuth, multer({ storage: storage }).single("image"
         }
       }
     });
-    res.status(201).json({
+    res.status(200).json({
       title: "Event created succesfully",
       message: "The event has been successfully created and invitations are sent to your guests email address/phone numbers.",
       post: {
@@ -119,19 +140,67 @@ router.post('/api/posts', checkAuth, multer({ storage: storage }).single("image"
   });
 });
 
-router.get('/api/posts', (req, res, next) => {
-  Post.find().then(documents => {
-    res.status(200).json({
-      message: 'Events fetched successfully!',
-      posts: documents
-    });
+router.get('/api/postslist/:id', checkAuth, (req, res, next) => {
+  const username = req.params.id;
+
+  let posts = [];
+  let fetchedUser;
+    User
+      .findOne({ username: username })
+      .then(user => {
+        fetchedUser = user;
+
+    for(let i = 0; i < fetchedUser.createdEvents.length-1; i++) {
+      Post.findById(fetchedUser.createdEvents[i]).then((post) => {
+        if (post) {
+          posts.push(post);
+        } else {
+          res.status(400).json({ message: 'Post not found' });
+        }
+      })
+    }
+    Post.findById(fetchedUser.createdEvents[fetchedUser.createdEvents.length - 1 ]).then((post) => {
+      if (post) {
+        posts.push(post);
+        res.status(200).json({
+          message: "Events fetched Successfully!!",
+          posts: posts
+        });
+      }else {
+        res.status(200).json("Events not found");
+      }
+    })
   });
 });
 
-router.delete('/api/posts/:id', checkAuth, (req, res, next) => {
+router.delete('/api/posts/:id/:user', checkAuth, (req, res, next) => {
+  const username = req.params.user;
+
   Post.deleteOne({
     _id: req.params.id
   }).then(result => {
+    User
+      .findOne({ username: username })
+      .then(user => {
+        fetchedUser = user;
+        console.log(fetchedUser.createdEvents);
+        for( let i = 0; i < fetchedUser.createdEvents.length; i++){
+          if ( fetchedUser.createdEvents[i] === req.params.id) {
+            fetchedUser.createdEvents.splice(i, 1);
+          }
+       }
+       console.log(fetchedUser.createdEvents);
+        User.updateOne({
+          username: fetchedUser.username
+        }, {
+          $set: { "createdEvents": fetchedUser.createdEvents }
+        }).then(result => {
+          res.status(200).json({
+            title: "Event id added to event successfully. ",
+            message: 'Your password is successfully changed. You can now login with the updated password.'
+          });
+        })
+      });
     console.log(result);
     res.status(201).json({
       title: 'Are you sure you want to delete the event?',
@@ -152,7 +221,7 @@ router.put('/api/posts/:id', multer({ storage: storage }).single("image"), (req,
     _id: req.body.id,
     title: req.body.title,
     type: req.body.type,
-    imagePath: this.imagePath,
+    imagePath: imagePath,
     date: req.body.date,
     time: req.body.time,
     host: req.body.host,
@@ -216,7 +285,7 @@ router.put('/api/posts/:id', multer({ storage: storage }).single("image"), (req,
         }
       }
     });
-    res.status(201).json({
+    res.status(200).json({
       title: "Event updated succesfully",
       message: "The event has been successfully updated and updated invitations are sent to your guests email address/phone numbers.",
       postId: post._id

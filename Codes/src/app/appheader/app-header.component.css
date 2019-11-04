@@ -9,6 +9,12 @@
   font-size: 20px;
 }
 
+#titletext1 {
+  color: white;
+  font-family: "Roboto";
+  font-size: 33px;
+}
+
 ul {
   list-style: none;
   padding: 0;

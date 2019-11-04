@@ -20,6 +20,7 @@
             <mat-list-item>Where: {{post.location}}</mat-list-item>
             <mat-divider></mat-divider>
             <mat-list-item>Number of Guests invited: {{post.guests.length}}</mat-list-item>
+            <a mat-button color="primary" [routerLink]="['/addGuests', post.id]">Add more guests</a>
             <mat-divider></mat-divider>
             <mat-list-item class ="green">Accepted: {{ post.accepted.length}}</mat-list-item>
             <mat-divider></mat-divider>
@@ -32,7 +33,7 @@
     <mat-card-actions>
       <a mat-button color="primary" [routerLink]="['/edit', post.id]">EDIT</a>
       <button mat-button color="warn" (click)="onDelete(post.id)">
-        DELETE
+        CANCEL
       </button>
     </mat-card-actions>
   </mat-card>

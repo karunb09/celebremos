@@ -1,15 +1,16 @@
-import { Injectable } from "@angular/core";
-import { HttpClient } from "@angular/common/http";
-import { Router } from "@angular/router";
-import { AuthData } from "./auth-data.model";
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
+import { AuthData } from './auth-data.model';
 
-import { Subject } from "rxjs";
+import { Subject, BehaviorSubject } from 'rxjs';
 
-@Injectable({ providedIn: "root" })
+@Injectable({ providedIn: 'root' })
 export class AuthService {
   private isAuthenticated = false;
   private token: string;
   private authStatusListener = new Subject<boolean>();
+  private authUsernameListener = new BehaviorSubject<string>("Hello from APP");
 
   constructor(private http: HttpClient, private router: Router) {}
 
@@ -21,8 +22,13 @@ export class AuthService {
     return this.isAuthenticated;
   }
 
+
   getAuthStatusListener() {
     return this.authStatusListener.asObservable();
+  }
+
+  getAuthUsernameListener() {
+    return this.authUsernameListener.asObservable();
   }
 
   createUser(
@@ -40,11 +46,13 @@ export class AuthService {
       email: email,
       password: password,
       phonenumber: phonenumber,
-      activationStatus: true
+      activationStatus: true,
+      createdEvents: ['0'],
+      contacts: [{firstname: '', lastname: '', mobilenumber: '', emailid: ''}]
     };
-    this.http.post("http://localhost:3000/user/register", authData).subscribe(
+    this.http.post('http://localhost:3000/user/register', authData).subscribe(
       response => {
-        this.router.navigate(["/"]);
+        this.router.navigate(['/']);
       },
       error => {
         this.authStatusListener.next(false);
@@ -60,18 +68,21 @@ export class AuthService {
       email: null,
       password: password,
       phonenumber: null,
-      activationStatus: true
+      activationStatus: true,
+      createdEvents: ['0'],
+      contacts: [{firstname: '', lastname: '', mobilenumber: '', emailid: ''}]
     };
     this.http
-      .post<{ token: string }>("http://localhost:3000/user/login", authData)
+      .post<{ token: string }>('http://localhost:3000/user/login', authData)
       .subscribe(
         response => {
           const token = response.token;
           this.token = token;
           if (token) {
             this.isAuthenticated = true;
+            this.authUsernameListener.next(authData.username);
             this.authStatusListener.next(true);
-            this.router.navigate(["/create"]);
+            this.router.navigate(['/create']);
           }
         },
         error => {
@@ -88,15 +99,17 @@ export class AuthService {
       email: email,
       password: null,
       phonenumber: null,
-      activationStatus: true
+      activationStatus: true,
+      createdEvents: ['0'],
+      contacts: [{firstname: '', lastname: '', mobilenumber: '', emailid: ''}]
     };
     this.http
       .post<{ token: string }>(
-        "http://localhost:3000/user/reset-password",
+        'http://localhost:3000/user/reset-password',
         authData
       )
       .subscribe(response => {
-        this.router.navigate(["/"]);
+        this.router.navigate(['/']);
       });
   }
 
@@ -104,7 +117,7 @@ export class AuthService {
     this.token = null;
     this.isAuthenticated = false;
     this.authStatusListener.next(false);
-    this.router.navigate(["/"]);
+    this.router.navigate(['/']);
   }
 
   storePassword(id: string, password: string) {
@@ -115,15 +128,17 @@ export class AuthService {
       email: id,
       password: password,
       phonenumber: null,
-      activationStatus: true
+      activationStatus: true,
+      createdEvents: ['0'],
+      contacts: [{firstname: '', lastname: '', mobilenumber: '', emailid: ''}]
     };
     this.http
       .put<{ token: string }>(
-        "http://localhost:3000/user/store-password",
+        'http://localhost:3000/user/store-password',
         authData
       )
       .subscribe(response => {
-        this.router.navigate(["/"]);
+        this.router.navigate(['/']);
       });
   }
 
@@ -135,10 +150,12 @@ export class AuthService {
       email: id,
       password: null,
       phonenumber: null,
-      activationStatus: true
+      activationStatus: true,
+      createdEvents: ['0'],
+      contacts: [{firstname: '', lastname: '', mobilenumber: '', emailid: ''}]
     };
     this.http.put<{ token: string }>(
-      "http://localhost:3000/user/activateuser",
+      'http://localhost:3000/user/activateuser',
       authData
     );
   }

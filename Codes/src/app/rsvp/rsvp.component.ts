@@ -54,7 +54,7 @@ export class RSVPComponent implements OnInit {
     const acceptedEmail = this.post.accepted.find(x => x === this.emailId);
     const rejectedEmail = this.post.denied.find(x => x === this.emailId);
     const ambiguousEmail = this.post.ambiguous.find(x => x === this.emailId);
-    console.log(acceptedEmail);
+
 
     switch (this.yourResponse) {
       case 'Yes': {

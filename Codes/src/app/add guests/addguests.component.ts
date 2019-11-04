@@ -1,47 +1,150 @@
-import { Component, OnInit } from '@angular/core';
-import { NgForm } from '@angular/forms';
-import { Subscription } from 'rxjs';
-
-export interface PeriodicElement {
-  name: string;
-  position: number;
-  weight: number;
-  symbol: string;
-}
-
-const ELEMENT_DATA: PeriodicElement[] = [
-  {position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H'},
-  {position: 2, name: 'Helium', weight: 4.0026, symbol: 'He'},
-  {position: 3, name: 'Lithium', weight: 6.941, symbol: 'Li'},
-  {position: 4, name: 'Beryllium', weight: 9.0122, symbol: 'Be'},
-  {position: 5, name: 'Boron', weight: 10.811, symbol: 'B'},
-  {position: 6, name: 'Carbon', weight: 12.0107, symbol: 'C'},
-  {position: 7, name: 'Nitrogen', weight: 14.0067, symbol: 'N'},
-  {position: 8, name: 'Oxygen', weight: 15.9994, symbol: 'O'},
-  {position: 9, name: 'Fluorine', weight: 18.9984, symbol: 'F'},
-  {position: 10, name: 'Neon', weight: 20.1797, symbol: 'Ne'},
-];
+import { Component, ViewChild, OnInit } from '@angular/core';
+import {
+  NgForm,
+  NgFormSelectorWarning,
+  FormControl,
+  FormGroup,
+  Validators
+} from '@angular/forms';
+import { Subscription, Subject } from 'rxjs';
+import { Contact } from '../csvread/contact-model';
 
 @Component({
   selector: 'app-addguests',
   templateUrl: './addguests.component.html',
   styleUrls: ['./addguests.component.css']
 })
-export class AddGuestsComponent {
+export class AddGuestsComponent implements OnInit {
+  displayedColumns: string[] = [
+    'firstname',
+    'lastname',
+    'mobilenumber',
+    'emailid'
+  ];
 
+  form: FormGroup;
+  public contacts: any[] = [];
 
-  displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];
-  dataSource = ELEMENT_DATA;
+  title = 'ReadCSV';
 
-  private postsSub: Subscription;
+  public records: Contact[] = [];
+  @ViewChild('csvReader', { static: false }) csvReader: any;
 
+  uploadListener($event: any): void {
+    const text = [];
+    const files = $event.srcElement.files;
+    if (this.isValidCSVFile(files[0])) {
+      const input = $event.target;
+      const reader = new FileReader();
+      reader.readAsText(input.files[0]);
+      reader.onload = () => {
+        const csvData = reader.result;
+        const csvRecordsArray = (csvData as string).split(/\r\n|\n/);
+        const headersRow = this.getHeaderArray(csvRecordsArray);
+        this.contacts.push(
+          this.getDataRecordsArrayFromCSVFile(
+            csvRecordsArray,
+            headersRow.length
+          )
+        );
+        this.records = this.getDataRecordsArrayFromCSVFile(
+          csvRecordsArray,
+          headersRow.length
+        );
+        let newContacts: string = '';
+        for (let i = 0; i < this.records.length; i++) {
+          newContacts += (this.records[i].emailid) + ',';
+        }
+        while(newContacts.endsWith(',')){
+          newContacts = newContacts.substring(0, newContacts.length - 1);
+        }
 
+        this.form.patchValue({ guests: newContacts });
+      };
+      reader.onerror = function() {
+        console.log('error is occured while reading file!');
+      };
+    } else {
+      alert('Please import valid .csv file.');
+      this.fileReset();
+    }
+  }
 
-  onInvite(form: NgForm) {
-    let guest: PeriodicElement = {position: 11, name: form.value.guests, weight: 20, symbol: 'NE'};
-    
-    ELEMENT_DATA.push(guest);
+  getDataRecordsArrayFromCSVFile(csvRecordsArray: any, headerLength: any) {
+    let csvArr = [];
+    for (let i = 1; i < csvRecordsArray.length; i++) {
+      let curruntRecord = (csvRecordsArray[i] as string).split(',');
+      if (curruntRecord.length === headerLength) {
+        let csvRecord: Contact = {
+          firstname: curruntRecord[0].trim(),
+          lastname: curruntRecord[1].trim(),
+          mobilenumber: curruntRecord[2].trim(),
+          emailid: curruntRecord[3].trim()
+        };
+        csvArr.push(csvRecord);
+      }
+    }
+    return csvArr;
+  }
 
+  ngOnInit() {
+    this.form = new FormGroup({
+      guests: new FormControl(null, {
+        validators: [Validators.required]
+      })
+    });
+  }
+
+  isValidCSVFile(file: any) {
+    return file.name.endsWith('.csv');
+  }
+
+  getHeaderArray(csvRecordsArr: any) {
+    let headers = (csvRecordsArr[0] as string).split(',');
+    let headerArray = [];
+    for (let j = 0; j < headers.length; j++) {
+      headerArray.push(headers[j]);
+    }
+    return headerArray;
+  }
+
+  fileReset() {
+    this.csvReader.nativeElement.value = '';
+  }
+
+  onInvite() {
+    let newGuests: Contact[] = [];
+    let record: Contact[] = [];
+    if (this.form.value.guests == null) {
+      return;
+    }
+    if (this.form.value.guests.includes(',')) {
+      const anotherGuests = this.form.value.guests.split(',');
+      for (let _i = 0; _i < anotherGuests.length; _i++) {
+        newGuests.push(anotherGuests[_i].trim());
+      }
+    } else {
+      newGuests[0] = this.form.value.guests;
+    }
+    for (let i = 0; i < newGuests.length; i++) {
+      let csvRecord;
+      if (Number(newGuests[i])) {
+        csvRecord = {
+          emailid: '',
+          firstname: '',
+          lastname: '',
+          mobilenumber: newGuests[i]
+        };
+      } else {
+        csvRecord = {
+          emailid: newGuests[i],
+          firstname: '',
+          lastname: '',
+          mobilenumber: ''
+        };
+      }
+      record.push(csvRecord);
+    }
+    this.records = record;
   }
 }
-

@@ -10,6 +10,14 @@ const userScheme = mongoose.Schema({
   email: { type: String, required: true, unique: true },
   phonenumber: { type: String, required: false },
   activationStatus: { type: Boolean, required: true},
+  createdEvents: { type: [String], required: false},
+  contacts: { type: [ {
+    firstname: { type: String, required: false },
+    lastname: { type: String, required: false },
+    mobilenumber: { type: String, required: false },
+    emailid: { type: String, required: false },
+  }
+  ]},
 });
 
 userScheme.plugin(uniqueValidator);

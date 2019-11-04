@@ -11,9 +11,9 @@ export class PostService {
 
   constructor(private httpClient: HttpClient) {}
 
-  getPosts() {
+  getPosts(username: string) {
     this.httpClient
-      .get<{ message: string; posts: any }>("http://localhost:3000/api/posts")
+      .get<{ message: string; posts: any }>("http://localhost:3000/api/postslist/"+username)
       .pipe(
         map(postData => {
           return postData.posts.map(post => {
@@ -57,7 +57,8 @@ export class PostService {
     guests: [string],
     accepted: [string],
     denied: [string],
-    ambiguous: [string]
+    ambiguous: [string],
+    username: string
   ) {
     const post = new FormData();
     post.append("title", title);
@@ -83,6 +84,7 @@ export class PostService {
     for (let i = 0; i < ambiguous.length; i++) {
       post.append("ambiguous[]", ambiguous[i]);
     }
+    post.append("username", username);
     this.httpClient
       .post<{ message: string; post: Post }>(
         "http://localhost:3000/api/posts",
@@ -109,9 +111,9 @@ export class PostService {
       });
   }
 
-  deletePost(postId: string) {
+  deletePost(postId: string, username: string) {
     this.httpClient
-      .delete("http://localhost:3000/api/posts/" + postId)
+      .delete("http://localhost:3000/api/posts/" + postId+ "/" + username)
       .subscribe(() => {
         console.log("Deleted");
         const updatedPosts = this.posts.filter(post => post.id !== postId);
@@ -153,7 +155,7 @@ export class PostService {
     guests: [string],
     accepted: [string],
     denied: [string],
-    ambiguous: [string]
+    ambiguous: [string],
   ) {
     let post: Post | FormData;
     if (typeof image === "object") {

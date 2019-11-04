@@ -22,7 +22,7 @@
       </mat-select>
     </mat-form-field>
     <div>
-        <button mat-stroked-button type = "button" (click)="filePicker.click()">Choose template</button>
+        <button mat-stroked-button type = "button" (click)="filePicker.click()" matTooltip="You can either choose a predefined template or a template of your own.">Choose template</button>
         <input type = "file" #filePicker (change) = "onImagePicked($event)">
       </div>
       <div class="image-preview" *ngIf = "(imagePreview !== '' && imagePreview && form.get('image').valid) ">
@@ -83,13 +83,15 @@
         placeholder="Add guests here"
       ></textarea>
       <mat-hint
-        >Add guests by typing in thier emails or phone numbers. You can add
+        >Add guests by typing in their emails or phone numbers. You can add
         multiple guests by seperating them by commas(,). You can add guests
         later as well.</mat-hint
       > </mat-form-field
     ><br /><br />
-    <button mat-stroked-button color="primary">Contact list</button>&nbsp; &nbsp;
-    <button mat-raised-button color="primary">Import from CSV file</button>
+    <button mat-stroked-button color="primary"matTooltip="Choose from your contact list" (click)="openBottomSheet(); $event.preventDefault()" >Contact list</button>&nbsp; &nbsp;
+    <!-- <button mat-raised-button color="primary" matTooltip="Import contacts from CSV file">Upload file</button> -->
+    <button mat-stroked-button  type = "button" (click)="csvReader.click()" matTooltip="">Choose a file</button>
+      <input type="file" #csvReader name="Upload CSV" id="txtFileUpload" (change)="uploadListener($event)" accept=".csv" />
 
     <mat-form-field class="example-full-width">
       <textarea
@@ -99,8 +101,8 @@
         placeholder="Additional Information (If any)"
       ></textarea> </mat-form-field
     ><br />
-    <button mat-raised-button color="primary" type="Submit">Save for later use</button> &nbsp; &nbsp;
-    <button mat-raised-button color="accent" type="Submit">Send Invitation</button>
+    <button mat-raised-button color="primary"  matTooltip="Invitations will not be sent to your guests by clicking here." (click)="openSnackBar()">Save for later use</button> &nbsp; &nbsp;
+    <button mat-raised-button color="accent" type="Submit" matTooltip="Invitations will be sent to your guests by clicking here.">Send Invitation</button>
 
   </form>
 </mat-card>

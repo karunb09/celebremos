@@ -6,4 +6,11 @@ export interface AuthData {
   password: string;
   phonenumber: string;
   activationStatus: boolean;
+  createdEvents: [string];
+  contacts: [ {
+    firstname: string;
+    lastname: string;
+    mobilenumber: string;
+    emailid: string;
+  }];
 }
