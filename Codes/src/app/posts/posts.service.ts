@@ -3,15 +3,13 @@ import { Injectable } from "@angular/core";
 import { Subject } from "rxjs";
 import { HttpClient } from "@angular/common/http";
 import { map } from "rxjs/operators";
-import { Contact } from '../csvread/contact-model';
-import { Router } from '@angular/router';
 
 @Injectable({ providedIn: "root" })
 export class PostService {
   private posts: Post[] = [];
   private postsUpdated = new Subject<Post[]>();
 
-  constructor(private httpClient: HttpClient, private router: Router) {}
+  constructor(private httpClient: HttpClient) {}
 
   getPosts(username: string) {
     this.httpClient
@@ -43,101 +41,11 @@ export class PostService {
       });
   }
 
-  getSavedPosts(username: string) {
-    this.httpClient
-      .get<{ message: string; posts: any }>("http://localhost:3000/api/savedlist/"+username)
-      .pipe(
-        map(postData => {
-          return postData.posts.map(post => {
-            return {
-              title: post.title,
-              content: post.content,
-              id: post._id,
-              type: post.type,
-              imagePath: post.imagePath,
-              date: post.date,
-              time: post.time,
-              host: post.host,
-              location: post.location,
-              guests: post.guests,
-              accepted: post.accepted,
-              denied: post.denied,
-              ambiguous: post.ambiguous
-            };
-          });
-        })
-      )
-      .subscribe(transformedPosts => {
-        this.posts = transformedPosts;
-        this.postsUpdated.next([...this.posts]);
-      });
-  }
-
-  getAllPosts(username: string) {
-    this.httpClient
-      .get<{ message: string; posts: any }>("http://localhost:3000/api/alleventslist/"+username)
-      .pipe(
-        map(postData => {
-          return postData.posts.map(post => {
-            return {
-              title: post.title,
-              content: post.content,
-              id: post._id,
-              type: post.type,
-              imagePath: post.imagePath,
-              date: post.date,
-              time: post.time,
-              host: post.host,
-              location: post.location,
-              guests: post.guests,
-              accepted: post.accepted,
-              denied: post.denied,
-              ambiguous: post.ambiguous
-            };
-          });
-        })
-      )
-      .subscribe(transformedPosts => {
-        this.posts = transformedPosts;
-        this.postsUpdated.next([...this.posts]);
-      });
-  }
-
-  getInvitedPosts(username: string) {
-    console.log("Getting Invited Posts");
-    this.httpClient
-      .get<{ message: string; posts: any }>("http://localhost:3000/api/invitedlist/"+username)
-      .pipe(
-        map(postData => {
-          return postData.posts.map(post => {
-            return {
-              title: post.title,
-              content: post.content,
-              id: post._id,
-              type: post.type,
-              imagePath: post.imagePath,
-              date: post.date,
-              time: post.time,
-              host: post.host,
-              location: post.location,
-              guests: post.guests,
-              accepted: post.accepted,
-              denied: post.denied,
-              ambiguous: post.ambiguous
-            };
-          });
-        })
-      )
-      .subscribe(transformedPosts => {
-        this.posts = transformedPosts;
-        this.postsUpdated.next([...this.posts]);
-      });
-  }
   getPostUpdateListener() {
     return this.postsUpdated.asObservable();
   }
 
-  savePosts(
+  addPosts(
     title: string,
     type: string,
     image: File,
@@ -150,8 +58,7 @@ export class PostService {
     accepted: [string],
     denied: [string],
     ambiguous: [string],
-    username: string,
-    contacts: Contact[]
+    username: string
   ) {
     const post = new FormData();
     post.append("title", title);
@@ -178,84 +85,6 @@ export class PostService {
       post.append("ambiguous[]", ambiguous[i]);
     }
     post.append("username", username);
-    for (let i = 0; i < contacts.length; i++) {
-      let contact = contacts[i].firstname + '$' + contacts[i].lastname + '$' + contacts[i].emailid + '$' + contacts[i].mobilenumber ;
-      post.append("contacts[]", contact  );
-    }
-    this.httpClient
-      .post<{ message: string; post: Post }>(
-        "http://localhost:3000/api/saveposts",
-        post
-      )
-      .subscribe(responseData => {
-        const post: Post = {
-          id: responseData.post.id,
-          title: title,
-          type: type,
-          imagePath: responseData.post.imagePath,
-          date: date,
-          time: time,
-          host: host,
-          location: location,
-          content: content,
-          guests: guests,
-          accepted: accepted,
-          denied: denied,
-          ambiguous: ambiguous
-        };
-        this.posts.push(post);
-        this.postsUpdated.next([...this.posts]);
-        this.router.navigate(['/allevents']);
-      });
-  }
-
-  addPosts(
-    title: string,
-    type: string,
-    image: File | string,
-    date: string,
-    time: string,
-    host: string,
-    location: string,
-    content: string,
-    guests: [string],
-    accepted: [string],
-    denied: [string],
-    ambiguous: [string],
-    username: string,
-    contacts: Contact[]
-  ) {
-    const post = new FormData();
-    post.append("title", title);
-    post.append("type", type);
-    post.append("image", image, title);
-    post.append("date", date);
-    post.append("time", time);
-    post.append("host", host);
-    post.append("location", location);
-    post.append("content", content);
-    accepted.pop();
-    denied.pop();
-    ambiguous.pop();
-    for (let i = 0; i < guests.length; i++) {
-      post.append("guests[]", guests[i]);
-    }
-    for (let i = 0; i < accepted.length; i++) {
-      post.append("accepted[]", accepted[i]);
-    }
-    for (let i = 0; i < denied.length; i++) {
-      post.append("denied[]", denied[i]);
-    }
-    for (let i = 0; i < ambiguous.length; i++) {
-      post.append("ambiguous[]", ambiguous[i]);
-    }
-    post.append("username", username);
-    for (let i = 0; i < contacts.length; i++) {
-      let contact = contacts[i].firstname + '$' + contacts[i].lastname + '$' + contacts[i].emailid + '$' + contacts[i].mobilenumber ;
-      post.append("contacts[]", contact  );
-
-    }
-
     this.httpClient
       .post<{ message: string; post: Post }>(
         "http://localhost:3000/api/posts",
@@ -279,7 +108,6 @@ export class PostService {
         };
         this.posts.push(post);
         this.postsUpdated.next([...this.posts]);
-        this.router.navigate(['/allevents']);
       });
   }
 
@@ -393,66 +221,6 @@ export class PostService {
         updatedPosts[oldPostIndex] = post;
         this.posts = updatedPosts;
         this.postsUpdated.next([...this.posts]);
-        this.router.navigate(['/allevents']);
-      });
-  }
-
-
-  sendInvitations(
-    id: string,
-    title: string,
-    type: string,
-    image: string,
-    date: string,
-    time: string,
-    host: string,
-    location: string,
-    content: string,
-    guests: [string],
-    accepted: [string],
-    denied: [string],
-    ambiguous: [string],
-    username: string
-  ) {
-    let post: Post = {
-      id: id,
-      title: title,
-      type: type,
-      imagePath: image,
-      date: date,
-      time: time,
-      host: host,
-      location: location,
-      content: content,
-      guests: guests,
-      accepted: accepted,
-      denied: denied,
-      ambiguous: ambiguous
-    };
-    this.httpClient
-      .post("http://localhost:3000/api/posts/update/" + id+ "/"+ username, post)
-      .subscribe(responseData => {
-        const updatedPosts = [...this.posts];
-        const oldPostIndex = updatedPosts.findIndex(p => p.id === id);
-        const post  = {
-          id: id,
-          title: title,
-          type: type,
-          imagePath: "",
-          date: date,
-          time: time,
-          host: host,
-          location: location,
-          content: content,
-          guests: guests,
-          accepted: accepted,
-          denied: denied,
-          ambiguous: ambiguous
-        };
-        updatedPosts[oldPostIndex] = post;
-        this.posts = updatedPosts;
-        this.postsUpdated.next([...this.posts]);
-        this.router.navigate(['/hostedevents']);
       });
   }
 }
