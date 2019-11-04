@@ -1,20 +1,22 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Post } from '../posts.model';
-import { PostService } from '../posts.service';
+
 import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/auth.service';
 import { MatDialog } from '@angular/material';
 import { ConfirmationDialogComponent } from 'src/app/confirmation-dialog/confirmation-dialog.component';
 import { Router } from '@angular/router';
+import { Post } from '../../posts.model';
+import { PostService } from '../../posts.service';
 
 @Component({
-  selector: 'app-post-list',
-  templateUrl: './post-list.component.html',
-  styleUrls: ['./post-list.component.css']
+  selector: 'app-allevents-list',
+  templateUrl: './allevents-list.component.html',
+  styleUrls: ['./allevents-list.component.css']
 })
-export class PostListComponent implements OnInit, OnDestroy {
+export class AllEventsComponent implements OnInit, OnDestroy {
   posts: Post[] = [];
 
+  postsAdded: Post[] = [];
   isLoading = false;
 
   username: string;
@@ -22,7 +24,6 @@ export class PostListComponent implements OnInit, OnDestroy {
   title = 'angular-material-tab-router';
   navLinks: any[];
   activeLinkIndex = -1;
-
 
   constructor(
     public postService: PostService,
@@ -64,7 +65,7 @@ export class PostListComponent implements OnInit, OnDestroy {
     this.authService
       .getAuthUsernameListener()
       .subscribe(message => (this.username = message));
-    this.postService.getPosts(this.username);
+    this.postService.getAllPosts(this.username);
     this.postService.getPostUpdateListener().subscribe((posts: Post[]) => {
       this.isLoading = false;
       this.posts = posts;
@@ -88,7 +89,6 @@ export class PostListComponent implements OnInit, OnDestroy {
       if (result) {
         console.log('Yes clicked');
         this.onDelete(postId);
-        // DO SOMETHING
       }
     });
   }

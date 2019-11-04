@@ -20,6 +20,8 @@
     {{link.label}} &nbsp;<span [matBadge]="posts.length"  matBadgeOverlap="false" matBadgeColor="warn"></span>
     </a>
   </nav>
+
+
   <router-outlet></router-outlet>
   <mat-spinner *ngIf="isLoading"></mat-spinner>
   <p *ngIf="posts.length <= 0" class="info-text mat-body-1">
@@ -79,3 +81,4 @@
       </mat-card-actions>
     </mat-card>
   </mat-card>
+
