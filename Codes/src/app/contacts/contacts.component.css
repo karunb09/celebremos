@@ -1,0 +1,57 @@
+main {
+  width: 60%;
+  margin: 1rem auto;
+}
+
+.searchBar {
+  width: 30%;
+  margin-left: 10px;
+}
+
+mat-form-field {
+  width: 90%;
+}
+.centerbutton {
+  margin: 0 auto;
+  display: block;
+  text-align: center;
+}
+
+.addguests {
+  margin-top: 10px;
+  margin-left: 10px;
+  display: inline-grid;
+  min-width: 65%;
+  min-height: 700px;
+}
+
+.addguests1 {
+  margin-top: 6px;
+  margin-left: 10px;
+  display: inline-grid;
+  min-width: 30%;
+  min-height: 700px;
+}
+.info-text {
+  text-align: center;
+}
+
+.mat-elevation-z8 {
+  width: 100%;
+}
+
+table {
+  width: 100%;
+}
+
+input[type="file"]{
+  visibility: hidden;
+}
+
+.mat-card:not([class*=mat-elevation-z]) {
+  box-shadow: 3px 3px 3px 1px rgba(0,0,0,.2), 3px 3px 3px 1px rgba(0,0,0,.14), 0 1px 3px 0 rgba(0,0,0,.12);
+}
+
+mat-spinner {
+  margin: auto;
+}
