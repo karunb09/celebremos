@@ -8,6 +8,10 @@ const jwt = require("jsonwebtoken");
 
 const nodemailer = require('nodemailer');
 
+const checkAuth = require('../middleware/check-auth');
+
+const Contact = require('../models/contact');
+
 const router = express.Router();
 
 router.post("/user/register", (req, res, next) => {
@@ -20,7 +24,11 @@ router.post("/user/register", (req, res, next) => {
         email: req.body.email,
         password: hash,
         phonenumber: req.body.phone,
-        activationStatus: false
+        activationStatus: false,
+        createdEvents: [],
+        savedEvents: [],
+        invitedEvents: [],
+        contacts: []
       });
       user
         .save()
@@ -86,10 +94,6 @@ router.post("/user/login", (req, res, next) => {
 });
 
 router.post('/user/reset-password', function (req, res, next) {
-  // let fetchedUser;
-  // var api_key = '7c42837cae0148e75ba4cf0213a7f8f4-2b0eef4c-907a95af';
-  // var domain = 'sandbox697917eb3f2a4e3494a68f32c844e693.mailgun.org';
-  // var mailgun = require('mailgun-js')({ apiKey: api_key, domain: domain });
   User
     .findOne({ email: req.body.email })
     .then(user => {
@@ -146,6 +150,7 @@ router.post('/user/reset-password', function (req, res, next) {
 })
 
 router.put('/user/store-password', function (req, res, next) {
+  console.log(req.body);
   let fetchedUser;
   User
     .findOne({ _id: req.body.email })
@@ -197,5 +202,157 @@ router.put('/user/activateuser', function (req, res, next) {
       })
     });
 });
+
+
+router.get('/contacts/:userId', function (req, res, next) {
+  let fetchedUser;
+  User
+    .findOne({ username: req.params.userId })
+    .then(user => {
+      if (!user) {
+        return res.status(401).json({
+          title: "User is not active",
+          message: "Please activate your username by clicking on the link sent to your email address."
+        });
+      }
+      fetchedUser = user;
+    }).then(result => {
+      res.status(200).json({
+        contacts: fetchedUser.contacts,
+        message: "Fetched Contacts Successfuly",
+      });
+    });
+});
+
+router.put('/user/contacts/:userId', checkAuth, (req, res, next) => {
+  console.log(req.body);
+  const username = req.params.userId;
+  console.log(username);
+  console.log(req.body.firstname);
+  const contact = new Contact({
+    firstname: req.body.firstname,
+    lastname: req.body.lastname,
+    emailid: req.body.emailid,
+    mobilenumber: req.body.mobilenumber,
+  });
+  console.log(contact.firstname);
+
+  User
+    .findOne({ username: username })
+    .then(user => {
+      if (!user) {
+        return res.status(401).json({
+          title: "User is not active",
+          message: "Please activate your username by clicking on the link sent to your email address."
+        });
+      }
+      fetchedUser = user;
+      fetchedUser.contacts.push(contact)
+      User.updateOne({
+        username: fetchedUser.username
+      }, {
+        $set: {
+          "contacts": fetchedUser.contacts
+        }
+      }).then(result => {
+        res.status(200).json({
+          message: "The event has been successfully created and invitations are sent to your guests email address/phone numbers.",
+          contact: {
+            id: createdContact._id
+          }
+        });
+      })
+    });
+});
+
+router.get('/contacts/:userId/:contactId', checkAuth, (req, res, next) => {
+  const username = req.params.userId;
+  const contactIds = req.params.contactId;
+  let fetchedUser;
+  User
+    .findOne({ username: username })
+    .then(user => {
+      fetchedUser = user;
+      for (let i = 0; i < fetchedUser.contacts.length; i++) {
+        let arr2 = JSON.stringify(fetchedUser.contacts[i]._id);
+        const contactID = arr2.replace(/"/g, '');
+        if (contactID === req.params.contactId) {
+          res.status(200).json(fetchedUser.contacts[i]);
+        }
+      }
+    });
+});
+
+router.put('/user/contacts/:userId/:contactId', checkAuth, (req, res, next) => {
+  const username = req.params.userId;
+  const contactIds = req.params.contactId;
+  const contact = req.body.contact
+  console.log(req.body.firstname);
+  let contacting = {
+    firstname: req.body.firstname,
+    lastname: req.body.lastname,
+    emailid: req.body.emailid,
+    mobilenumber: req.body.mobilenumber
+  }
+  console.log(contactIds);
+  let fetchedUser;
+  User
+    .findOne({ username: username })
+    .then(user => {
+      fetchedUser = user;
+      for (let i = 0; i < fetchedUser.contacts.length; i++) {
+        let arr2 = JSON.stringify(fetchedUser.contacts[i]._id);
+        const contactID = arr2.replace(/"/g, '');
+        if (contactID === req.params.contactId) {
+          fetchedUser.contacts[i] = contacting;
+          User.updateOne({
+            username: fetchedUser.username
+          }, {
+            $set: {
+              "contacts": fetchedUser.contacts
+            }
+          }).then(result => {
+            res.status(200).json({
+              title: "Contact id added to user successfully. ",
+              message: 'Chill mama'
+            });
+          })
+        }
+      }
+    });
+});
+
+router.delete('/api/contacts/:id/:user', checkAuth, (req, res, next) => {
+  const username = req.params.user;
+  let contacting = [];
+  console.log(username);
+  User
+    .findOne({ username: username })
+    .then(user => {
+      fetchedUser = user;
+      for (let i = 0; i < fetchedUser.contacts.length; i++) {
+        let arr2 = JSON.stringify(fetchedUser.contacts[i]._id);
+        const contactID = arr2.replace(/"/g, '');
+        if (contactID === req.params.id) {
+          console.log(fetchedUser.contacts[i]);
+        }else{
+          contacting.push(fetchedUser.contacts[i]);
+        }
+      }
+      User.updateOne({
+        username: fetchedUser.username
+      }, {
+        $set: {
+          "contacts": contacting
+        }
+      }).then(result => {
+        res.status(200).json({
+          title: "Deleted successfully",
+          message: 'Deleted!!'
+        });
+      })
+    });
+});
+
 
 module.exports = router;
