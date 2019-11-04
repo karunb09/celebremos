@@ -1,18 +1,19 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Post } from '../posts.model';
-import { PostService } from '../posts.service';
+
 import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/auth.service';
 import { MatDialog } from '@angular/material';
 import { ConfirmationDialogComponent } from 'src/app/confirmation-dialog/confirmation-dialog.component';
 import { Router } from '@angular/router';
+import { Post } from '../../posts.model';
+import { PostService } from '../../posts.service';
 
 @Component({
-  selector: 'app-post-list',
-  templateUrl: './post-list.component.html',
-  styleUrls: ['./post-list.component.css']
+  selector: 'app-invitedevents-list',
+  templateUrl: './invitedevents-list.component.html',
+  styleUrls: ['./invitedevents-list.component.css']
 })
-export class PostListComponent implements OnInit, OnDestroy {
+export class InvitedEventComponent implements OnInit, OnDestroy {
   posts: Post[] = [];
 
   isLoading = false;
@@ -42,14 +43,19 @@ export class PostListComponent implements OnInit, OnDestroy {
         index: 1
       },
       {
-        label: 'Saved Events',
-        link: '/savedevents',
+        label: 'Invited Events',
+        link: '/invitedevents',
         index: 2
       },
       {
-        label: 'Invited Events',
-        link: '/pastevents',
+        label: 'Saved Events',
+        link: '/savedevents',
         index: 3
+      },
+      {
+        label: 'Past Events',
+        link: '/pastevents',
+        index: 4
       }
     ];
   }
@@ -64,7 +70,7 @@ export class PostListComponent implements OnInit, OnDestroy {
     this.authService
       .getAuthUsernameListener()
       .subscribe(message => (this.username = message));
-    this.postService.getPosts(this.username);
+    this.postService.getInvitedPosts(this.username);
     this.postService.getPostUpdateListener().subscribe((posts: Post[]) => {
       this.isLoading = false;
       this.posts = posts;
@@ -91,6 +97,31 @@ export class PostListComponent implements OnInit, OnDestroy {
         // DO SOMETHING
       }
     });
+  }
+
+  onSendInvitations(postId: string) {
+    let requiredPost: Post;
+    for(let i = 0; i < this.posts.length; i++) {
+      if(postId === this.posts[i].id){
+        requiredPost = this.posts[i];
+      }
+    }
+    this.postService.sendInvitations(
+      requiredPost.id,
+      requiredPost.title,
+      requiredPost.type,
+      requiredPost.imagePath,
+      requiredPost.date,
+      requiredPost.time,
+      requiredPost.host,
+      requiredPost.location,
+      requiredPost.content,
+      requiredPost.guests,
+      requiredPost.accepted,
+      requiredPost.denied,
+      requiredPost.ambiguous,
+      this.username
+    );
   }
 
 }
