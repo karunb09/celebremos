@@ -1,18 +1,20 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Post } from '../posts.model';
-import { PostService } from '../posts.service';
+
 import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/auth.service';
 import { MatDialog } from '@angular/material';
 import { ConfirmationDialogComponent } from 'src/app/confirmation-dialog/confirmation-dialog.component';
 import { Router } from '@angular/router';
+import { Post } from '../../posts.model';
+import { PostService } from '../../posts.service';
+
 
 @Component({
-  selector: 'app-post-list',
-  templateUrl: './post-list.component.html',
-  styleUrls: ['./post-list.component.css']
+  selector: 'app-pastevent-list',
+  templateUrl: './pastevent-list.component.html',
+  styleUrls: ['./pastevent-list.component.css']
 })
-export class PostListComponent implements OnInit, OnDestroy {
+export class PastEventComponent implements OnInit, OnDestroy {
   posts: Post[] = [];
 
   isLoading = false;
@@ -64,7 +66,7 @@ export class PostListComponent implements OnInit, OnDestroy {
     this.authService
       .getAuthUsernameListener()
       .subscribe(message => (this.username = message));
-    this.postService.getPosts(this.username);
+    this.postService.getInvitedPosts(this.username);
     this.postService.getPostUpdateListener().subscribe((posts: Post[]) => {
       this.isLoading = false;
       this.posts = posts;
