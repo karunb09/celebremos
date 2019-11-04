@@ -11,6 +11,13 @@ import { AddGuestsComponent } from './add guests/addguests.component';
 import { ActivateUserComponent } from './newpassword/activateuser/activateuser.component';
 import { RSVPComponent } from './rsvp/rsvp.component';
 import { CsvReadComponent } from './csvread/app-csvread.component';
+import { ContactsComponent } from './contacts/contacts.component';
+import { SavedEventComponent } from './posts/post-list/savedevents/savedevents-list.component';
+import { PastEventComponent } from './posts/post-list/pastevents/pastevent-list.component';
+import { AllEventsComponent } from './posts/post-list/allevents/allevents-list.component';
+import { InvitedEventComponent } from './posts/post-list/invitedevents/invitedevents-list.component';
+
+
 
 // Setting path to redirect next page
 
@@ -19,13 +26,19 @@ const routes: Routes =  [
   { path: 'register', component: RegisterComponent},
   { path: 'create', component: PostCreateComponent, canActivate: [AuthGuard] },
   { path: 'edit/:postId', component: PostCreateComponent, canActivate: [AuthGuard] },
-  { path: 'list', component: PostListComponent, canActivate: [AuthGuard] },
+  { path: 'hostedevents', component: PostListComponent, canActivate: [AuthGuard] },
+  { path: 'savedevents', component: SavedEventComponent, canActivate: [AuthGuard] },
+  { path: 'invitedevents', component: InvitedEventComponent, canActivate: [AuthGuard] },
+  { path: 'pastevents', component: PastEventComponent, canActivate: [AuthGuard] },
+  { path: 'allevents', component: AllEventsComponent, canActivate: [AuthGuard] },
   { path: 'reset', component: NewPasswordComponent},
   { path: 'reset/:userId', component: ResetPasswordComponent},
   { path: 'addGuests/:eventName', component: AddGuestsComponent, canActivate: [AuthGuard] },
   { path: 'activateUser/:userId', component: ActivateUserComponent},
   { path: 'rsvp/:postId/:emailId', component: RSVPComponent},
   { path: 'csvupload' , component: CsvReadComponent},
+  { path: 'contacts' , component: ContactsComponent, canActivate: [AuthGuard]},
+  { path: 'contacts/edit/:contactId' , component: ContactsComponent, canActivate: [AuthGuard]},
 ];
 
 
