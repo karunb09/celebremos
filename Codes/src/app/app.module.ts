@@ -7,7 +7,9 @@ import { MatInputModule, MatCardModule, MatButtonModule,
   MatToolbarModule, MatExpansionModule, MatDividerModule,
   MatListModule, MatProgressSpinnerModule, MatDialogModule, MatFormFieldModule,
   MatSelectModule, MatAutocompleteModule, MatDatepickerModule, MatNativeDateModule,
-  MatTableModule, MatRadioModule, MatTooltipModule, MatSnackBarModule, MatBottomSheetModule, MatCheckboxModule } from '@angular/material';
+  MatTableModule, MatRadioModule, MatTooltipModule, MatSnackBarModule,
+  MatBottomSheetModule, MatCheckboxModule, MatPaginatorModule, MatSortModule, MatIconModule, MatTabsModule,
+  MatBadgeModule } from '@angular/material';
 
 import { GooglePlaceModule } from 'ngx-google-places-autocomplete';
 
@@ -31,7 +33,12 @@ import { ActivateUserComponent } from './newpassword/activateuser/activateuser.c
 import { RSVPComponent } from './rsvp/rsvp.component';
 import { CsvReadComponent } from './csvread/app-csvread.component';
 import { BottomSheetOverviewExampleSheet } from './posts/create-posts/bottom-sheet-overview';
-import { BirthdayTemplateComponent } from './birthday-template/birthday-template.component';
+import { ContactsComponent } from './contacts/contacts.component';
+import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-dialog.component';
+import { SavedEventComponent } from './posts/post-list/savedevents/savedevents-list.component';
+import { PastEventComponent } from './posts/post-list/pastevents/pastevent-list.component';
+import { AllEventsComponent } from './posts/post-list/allevents/allevents-list.component';
+import { InvitedEventComponent } from './posts/post-list/invitedevents/invitedevents-list.component';
 
 
 @NgModule({
@@ -52,7 +59,13 @@ import { BirthdayTemplateComponent } from './birthday-template/birthday-template
     RSVPComponent,
     CsvReadComponent,
     BottomSheetOverviewExampleSheet,
-    BirthdayTemplateComponent,
+    ContactsComponent,
+    ContactsComponent,
+    ConfirmationDialogComponent,
+    SavedEventComponent,
+    InvitedEventComponent,
+    PastEventComponent,
+    AllEventsComponent
   ],
   imports: [
     BrowserModule,
@@ -81,7 +94,12 @@ import { BirthdayTemplateComponent } from './birthday-template/birthday-template
     MatTooltipModule,
     MatSnackBarModule,
     MatBottomSheetModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatPaginatorModule,
+    MatSortModule,
+    MatIconModule,
+    MatTabsModule,
+    MatBadgeModule
   ],
   providers: [ MatDatepickerModule,
     {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
@@ -89,6 +107,6 @@ import { BirthdayTemplateComponent } from './birthday-template/birthday-template
 
   ],
   bootstrap: [AppComponent],
-  entryComponents: [ErrorComponent, BottomSheetOverviewExampleSheet]
+  entryComponents: [ErrorComponent, BottomSheetOverviewExampleSheet, ConfirmationDialogComponent]
 })
 export class AppModule { }

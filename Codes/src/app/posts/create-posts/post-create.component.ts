@@ -126,7 +126,8 @@ export class PostCreateComponent implements OnInit {
         ['0'],
         ['0'],
         ['0'],
-        this.username
+        this.username,
+        this.records
       );
     } else {
       if (this.formattedaddress) {
@@ -149,6 +150,49 @@ export class PostCreateComponent implements OnInit {
       );
     }
     this.form.reset();
+  }
+
+  onSaveforLaterUse() {
+    if (this.form.invalid) {
+      return;
+    }
+    if (this.newDate == null) {
+      this.myDate = this.post.date;
+    } else {
+      this.myDate = this.newDate;
+    }
+    console.log(this.myDate);
+    if (this.form.value.guests == null) {
+      this.newGuests.pop();
+    } else if (this.form.value.guests.includes(',')) {
+      const anotherGuests = this.form.value.guests.split(',');
+      for (let _i = 0; _i < anotherGuests.length; _i++) {
+        if (_i === 0) {
+          this.newGuests.pop();
+        }
+        this.newGuests.push(anotherGuests[_i].trim());
+      }
+    } else {
+      this.newGuests[0] = this.form.value.guests;
+    }
+    this.form.value.location = this.formattedaddress;
+    this.postService.savePosts(
+        this.form.value.title,
+        this.form.value.type,
+        this.form.value.image,
+        this.myDate,
+        this.form.value.time,
+        this.form.value.host,
+        this.form.value.location,
+        this.form.value.content,
+        this.newGuests,
+        ['0'],
+        ['0'],
+        ['0'],
+        this.username,
+        this.records
+      );
+    this.openSnackBar();
   }
 
   ngOnInit() {
@@ -253,7 +297,7 @@ export class PostCreateComponent implements OnInit {
     if (this.form.invalid) {
       return;
     } else {
-      this.onSavePost();
+      //this.onSaveforLaterUse();
       this.snackBar.open('Events Saved!', 'Dismiss', {
         duration: 2000
       });
