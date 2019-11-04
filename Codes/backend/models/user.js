@@ -10,7 +10,9 @@ const userScheme = mongoose.Schema({
   email: { type: String, required: true, unique: true },
   phonenumber: { type: String, required: false },
   activationStatus: { type: Boolean, required: true},
-  createdEvents: { type: [String], required: false},
+  createdEvents: { type: [mongoose.Schema.Types.ObjectId], ref: "Post", required: false},
+  savedEvents: { type: [mongoose.Schema.Types.ObjectId], ref: "Post", required: false},
+  invitedEvents: { type: [mongoose.Schema.Types.ObjectId], ref: "Post", required: false},
   contacts: { type: [ {
     firstname: { type: String, required: false },
     lastname: { type: String, required: false },

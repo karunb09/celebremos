@@ -31,6 +31,7 @@ import { ActivateUserComponent } from './newpassword/activateuser/activateuser.c
 import { RSVPComponent } from './rsvp/rsvp.component';
 import { CsvReadComponent } from './csvread/app-csvread.component';
 import { BottomSheetOverviewExampleSheet } from './posts/create-posts/bottom-sheet-overview';
+import { BirthdayTemplateComponent } from './birthday-template/birthday-template.component';
 
 
 @NgModule({
@@ -51,6 +52,7 @@ import { BottomSheetOverviewExampleSheet } from './posts/create-posts/bottom-she
     RSVPComponent,
     CsvReadComponent,
     BottomSheetOverviewExampleSheet,
+    BirthdayTemplateComponent,
   ],
   imports: [
     BrowserModule,
