@@ -394,7 +394,7 @@ export class PostCreateComponent implements OnInit {
         for (let i = 0; i < this.records.length; i++) {
           newContacts += (this.records[i].emailid) + ',';
         }
-        while(newContacts.endsWith(',')){
+        while (newContacts.endsWith(',')) {
           newContacts = newContacts.substring(0, newContacts.length - 1);
         }
 

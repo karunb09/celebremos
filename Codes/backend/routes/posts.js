@@ -81,24 +81,24 @@ router.post('/api/posts', checkAuth, multer({ storage: storage }).single("image"
     let fetchedInvitedUser;
     console.log(createdPost);
     User.find().then(users => {
-      for(let i =0; i< createdPost.guests.length; i++){
-        for(let j=0; j< users.length; j++){
-          if(createdPost.guests[i] === users[j].email){
+      for (let i = 0; i < createdPost.guests.length; i++) {
+        for (let j = 0; j < users.length; j++) {
+          if (createdPost.guests[i] === users[j].email) {
             User.findOne({ email: users[j].email }).then(user => {
-                  fetchedInvitedUser = user;
-                  console.log(fetchedInvitedUser.username);
-                  fetchedInvitedUser.invitedEvents.push(createdPost._id)
-                  console.log(fetchedInvitedUser.invitedEvents)
-                  User.updateOne({
-                    email: users[j].email
-                  }, {
-                    $set: { "invitedEvents": fetchedInvitedUser.invitedEvents}
-                  }).then(result => {
-                    res.status(200).json({
-                      title: "Invited Successfully",
-                      message: 'Your password is successfully changed.'
-                    });
-                  })
+              fetchedInvitedUser = user;
+              console.log(fetchedInvitedUser.username);
+              fetchedInvitedUser.invitedEvents.push(createdPost._id)
+              console.log(fetchedInvitedUser.invitedEvents)
+              User.updateOne({
+                email: users[j].email
+              }, {
+                $set: { "invitedEvents": fetchedInvitedUser.invitedEvents }
+              }).then(result => {
+                res.status(200).json({
+                  title: "Invited Successfully",
+                  message: 'Your password is successfully changed.'
+                });
+              })
             });
           }
         }
@@ -113,8 +113,10 @@ router.post('/api/posts', checkAuth, multer({ storage: storage }).single("image"
         User.updateOne({
           username: fetchedUser.username
         }, {
-          $set: { "createdEvents": fetchedUser.createdEvents,
-         "contacts": fetchedUser.contacts}
+          $set: {
+            "createdEvents": fetchedUser.createdEvents,
+            "contacts": fetchedUser.contacts
+          }
         }).then(result => {
           res.status(200).json({
             title: "Event id added to event successfully. ",
@@ -226,8 +228,10 @@ router.post('/api/saveposts', checkAuth, multer({ storage: storage }).single("im
         User.updateOne({
           username: fetchedUser.username
         }, {
-          $set: { "savedEvents": fetchedUser.savedEvents,
-         "contacts": fetchedUser.contacts}
+          $set: {
+            "savedEvents": fetchedUser.savedEvents,
+            "contacts": fetchedUser.contacts
+          }
         }).then(result => {
           res.status(200).json({
             title: "Event id added to event successfully. ",
@@ -235,16 +239,18 @@ router.post('/api/saveposts', checkAuth, multer({ storage: storage }).single("im
           });
         })
       });
-      res.status(200).json({
-        title: "Event saved succesfully",
-        message: "The event has been successfully saved and invitations are not sent to your guests email address/phone numbers.",
-        post: {
-          ...savedPost,
-          id: savedPost._id
-        }
-      });
+    res.status(200).json({
+      title: "Event saved succesfully",
+      message: "The event has been successfully saved and invitations are not sent to your guests email address/phone numbers.",
+      post: {
+        ...savedPost,
+        id: savedPost._id
+      }
     });
   });
+});
+
+
 
 router.get('/api/postslist/:id', checkAuth, (req, res, next) => {
   const username = req.params.id;
@@ -276,6 +282,22 @@ router.get('/api/postslist/:id', checkAuth, (req, res, next) => {
       })
     });
 });
+
+router.get('/api/posts/:id', checkAuth, (req, res, next) => {
+  Post.findById(req.params.id)
+    .then(post => {
+      if (post) {
+        res.status(200).json(post);
+      } else {
+        res.status(404).json({ message: "Post not found!" });
+      }
+    })
+    .catch(error => {
+      res.status(500).json({
+        message: "Fetching post failed!"
+      });
+    });
+})
 
 router.get('/api/savedlist/:id', checkAuth, (req, res, next) => {
   const username = req.params.id;
@@ -385,11 +407,11 @@ router.delete('/api/posts/:id/:user', checkAuth, (req, res, next) => {
         let fetchedEvents = [];
         console.log(fetchedUser.createdEvents);
         let arr2 = JSON.stringify(fetchedUser.createdEvents[i]);
-          const contactID = arr2.replace(/"/g, '');
+        const contactID = arr2.replace(/"/g, '');
         for (let i = 0; i < fetchedUser.createdEvents.length; i++) {
           if (contactID === req.params.id) {
 
-          }else{
+          } else {
             fetchedEvents.push(fetchedUser.createdEvents[i]);
           }
         }
@@ -521,20 +543,22 @@ router.post('/api/posts/update/:id/:username', multer({ storage: storage }).sing
       .then(user => {
         fetchedUser = user;
         fetchedUser.createdEvents.push(createdPost._id);
-        for(let i = 0; i< fetchedUser.savedEvents.length; i++){
+        for (let i = 0; i < fetchedUser.savedEvents.length; i++) {
           let arr2 = JSON.stringify(fetchedUser.savedEvents[i]);
           const contactID = arr2.replace(/"/g, '');
-          if(req.body.id === contactID){
+          if (req.body.id === contactID) {
             console.log(fetchedUser.savedEvents[i])
-          }else{
+          } else {
             contacting.push(fetchedUser.savedEvents[i])
           }
         }
         User.updateOne({
           username: fetchedUser.username
         }, {
-          $set: { "createdEvents": fetchedUser.createdEvents,
-        "savedEvents": contacting}
+          $set: {
+            "createdEvents": fetchedUser.createdEvents,
+            "savedEvents": contacting
+          }
         }).then(result => {
           res.status(200).json({
             title: "Event id added to event successfully. ",
