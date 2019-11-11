@@ -16,6 +16,9 @@ import { SavedEventComponent } from './posts/post-list/savedevents/savedevents-l
 import { PastEventComponent } from './posts/post-list/pastevents/pastevent-list.component';
 import { AllEventsComponent } from './posts/post-list/allevents/allevents-list.component';
 import { InvitedEventComponent } from './posts/post-list/invitedevents/invitedevents-list.component';
+import { BirthdayCardsComponent } from './cards/birthday-cards/birthday-cards.component';
+import { WeddingCardsComponent } from './cards/wedding-cards/wedding-cards.component';
+import { PartyCardsComponent } from './cards/party-cards/party-cards.component';
 
 
 
@@ -39,6 +42,9 @@ const routes: Routes =  [
   { path: 'csvupload' , component: CsvReadComponent},
   { path: 'contacts' , component: ContactsComponent, canActivate: [AuthGuard]},
   { path: 'contacts/edit/:contactId' , component: ContactsComponent, canActivate: [AuthGuard]},
+  { path: 'birthdaycards' , component: BirthdayCardsComponent},
+  { path: 'weddingcards' , component: WeddingCardsComponent},
+  { path: 'partycards' , component: PartyCardsComponent},
 ];
 
 

@@ -12,7 +12,7 @@
   <div class="collapse-navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item" *ngIf="userIsAuthenticated">
-        <a class="nav-link" routerLink="/create" id="navbartextcolor" id="titletext"><b>Create Events</b></a>
+        <a class="nav-link" routerLink="/create" id="navbartextcolor" id="titletext" routerLinkActive="mat-primary"><b>Create Events</b></a>
       </li>
       <li class="nav-item" *ngIf="userIsAuthenticated">
         <a class="nav-link" routerLink="/allevents" id="navbartextcolor" id="titletext"><b>Dashboard</b></a>
@@ -23,11 +23,11 @@
           <b>Cards</b>
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="#" id="dropdowntext">Birthday</a>
+          <a class="dropdown-item" [routerLink]="['/birthdaycards']" routerLinkActive="router-link-active"  id="dropdowntext">Birthday</a>
           <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="#" id="dropdowntext">Baby Shower</a>
+          <a class="dropdown-item" [routerLink]="['/partycards']" id="dropdowntext">Party</a>
           <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="#" id="dropdowntext">Wedding</a>
+          <a class="dropdown-item" [routerLink]="['/weddingcards']" id="dropdowntext">Wedding</a>
         </div>
       </li>
       <li class="nav-item" *ngIf="userIsAuthenticated">
