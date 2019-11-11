@@ -36,9 +36,13 @@ export class BottomSheetOverviewExampleSheet implements OnInit {
   dataSource;
 
   constructor(private _bottomSheetRef: MatBottomSheetRef<BottomSheetOverviewExampleSheet>, private formbuilder: FormBuilder, private contactService: ContactService, private authService: AuthService) {
-    for(let i = 0; i< 60; i++){
+    for (let i = 0; i < 60; i++){
       this.contactsArry.push(this.contact);
     }
+    // console.log(this.contact.mobilenumber);
+    // while (this.contact.mobilenumber !== '13124312') {
+    //   this.contactsArry.push(this.contact);
+    // }
   this.contacts = this.contactsArry;
   }
 

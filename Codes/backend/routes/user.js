@@ -4,6 +4,8 @@ const bcrypt = require("bcrypt");
 
 const User = require("../models/user");
 
+const Post = require("../models/post");
+
 const jwt = require("jsonwebtoken");
 
 const nodemailer = require('nodemailer');
@@ -33,6 +35,26 @@ router.post("/user/register", (req, res, next) => {
       user
         .save()
         .then(result => {
+          Post.find().then(posts => {
+            for(let i = 0; i< posts.length; i++) {
+              for(let j=0; j< posts[i].guests.length; j++ ) {
+                if(posts[i].guests[j] === result.email) {
+                  result.invitedEvents.push(posts[i]._id)
+                }
+              }
+            }
+            User.updateOne({
+              email: result.email
+            }, {
+              $set: { "invitedEvents": result.invitedEvents }
+            }).then(result1 => {
+              res.status(200).json({
+                title: "Event updated",
+                message: 'You can now login with the username and password.'
+              });
+            });
+          });
+
           return res.status(201).json({
             title: "Congratulations!",
             message: "Your account is created. In order to login you have to activate your username by clicking on the link that is mailed to your email address.",
@@ -82,7 +104,8 @@ router.post("/user/login", (req, res, next) => {
       );
       res.status(200).json({
         token: token,
-        expiresIn: 3600
+        expiresIn: 3600,
+        userId: fetchedUser._id
       });
     })
     .catch(err => {
