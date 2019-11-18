@@ -14,11 +14,12 @@ import { PostService } from '../../posts.service';
   styleUrls: ['./invitedevents-list.component.css']
 })
 export class InvitedEventComponent implements OnInit, OnDestroy {
-  posts: Post[] = [];
+  posts = [];
 
   isLoading = false;
 
   username: string;
+  getresponses = [];
 
   title = 'angular-material-tab-router';
   navLinks: any[];
@@ -73,8 +74,30 @@ export class InvitedEventComponent implements OnInit, OnDestroy {
     this.postService.getInvitedPosts(this.username);
     this.postService.getPostUpdateListener().subscribe((posts: Post[]) => {
       this.isLoading = false;
-      this.posts = posts;
+      const sortedArray: Post[] = posts.sort((obj1, obj2) => {
+        const obj1Date = obj1.date.slice(0, obj1.date.indexOf(', '));
+        const obj2Date = obj2.date.slice(0, obj2.date.indexOf(', '));
+        const obj1DateFormat = new Date(obj1Date);
+        const obj2DateFormat = new Date(obj2Date);
+        if (obj1DateFormat > obj2DateFormat) {
+          return 1;
+        } else if (obj1DateFormat < obj2DateFormat) {
+          return -1;
+        } else if (obj1DateFormat === obj2DateFormat) {
+          if (obj1.time > obj2.title) {
+            return 1;
+          } else {
+            return -1;
+          }
+        }
+        return 0;
     });
+      this.posts = sortedArray;
+      this.findresponses();
+    });
+    if (this.posts.length === 0 ) {
+      this.isLoading = false;
+    }
   }
 
   onDelete(post: string) {
@@ -101,8 +124,8 @@ export class InvitedEventComponent implements OnInit, OnDestroy {
 
   onSendInvitations(postId: string) {
     let requiredPost: Post;
-    for(let i = 0; i < this.posts.length; i++) {
-      if(postId === this.posts[i].id){
+    for (let i = 0; i < this.posts.length; i++) {
+      if (postId === this.posts[i].id) {
         requiredPost = this.posts[i];
       }
     }
@@ -117,11 +140,23 @@ export class InvitedEventComponent implements OnInit, OnDestroy {
       requiredPost.location,
       requiredPost.content,
       requiredPost.guests,
-      requiredPost.accepted,
-      requiredPost.denied,
-      requiredPost.ambiguous,
       this.username
     );
   }
 
+  findresponses() {
+    for (let i = 0; i < this.posts.length; i++ ) {
+      for (let j = 0; j < this.posts[i].responses.length; j++ ) {
+        if (this.posts[i].responses[j].status === 'no reply') {
+          this.getresponses.push(this.posts[i].responses[j].status);
+        } else if (this.posts[i].responses[j].status === 'accepted') {
+          this.getresponses.push(this.posts[i].responses[j].status);
+        } else if (this.posts[i].responses[j].status === 'denied') {
+          this.getresponses.push(this.posts[i].responses[j].status);
+        } else if (this.posts[i].responses[j].status === 'may be') {
+          this.getresponses.push(this.posts[i].responses[j].status);
+        }
+      }
+    }
+  }
 }

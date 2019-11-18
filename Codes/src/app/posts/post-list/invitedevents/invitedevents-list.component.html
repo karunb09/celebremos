@@ -22,11 +22,11 @@
   </nav>
   <router-outlet></router-outlet>
   <mat-spinner *ngIf="isLoading"></mat-spinner>
-  <p *ngIf="posts.length <= 0" class="info-text mat-body-1">
+  <p *ngIf="posts.length <= 0 && !isLoading" class="info-text mat-body-1">
       No events added yet!
     </p>
   <mat-card class="top-card" multi="true" *ngIf="posts.length > 0 && !isLoading">
-    <mat-card class="example-card" *ngFor="let post of posts">
+    <mat-card class="example-card" *ngFor="let post of posts; let i = index;">
       <mat-card-header>
         <div mat-card-avatar class="example-header-image"></div>
         <mat-card-title>  {{ (post.title.length>20)? (post.title | slice:0:20)+'..':(post.title) }}
@@ -55,6 +55,11 @@
           >
           <a mat-button color="primary" [routerLink]="['/addGuests', post.id]"
             >Add more guests</a
+          >
+
+        <mat-divider></mat-divider>
+        <mat-list-item
+            >Your response: {{ getresponses[i] }}</mat-list-item
           >
         </mat-list>
         <mat-divider></mat-divider>

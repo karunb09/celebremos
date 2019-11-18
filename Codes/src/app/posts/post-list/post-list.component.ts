@@ -13,12 +13,16 @@ import { Router } from '@angular/router';
   styleUrls: ['./post-list.component.css']
 })
 export class PostListComponent implements OnInit, OnDestroy {
-  posts: Post[] = [];
+  posts = [];
 
   isLoading = false;
 
   username: string;
-
+  accepted = [];
+  denied = [];
+  ambiguous = [];
+  noreply = [];
+  totalguests = [];
   title = 'angular-material-tab-router';
   navLinks: any[];
   activeLinkIndex = -1;
@@ -65,10 +69,32 @@ export class PostListComponent implements OnInit, OnDestroy {
       .getAuthUsernameListener()
       .subscribe(message => (this.username = message));
     this.postService.getPosts(this.username);
-    this.postService.getPostUpdateListener().subscribe((posts: Post[]) => {
-      this.isLoading = false;
-      this.posts = posts;
+    this.postService.getPostUpdateListener().subscribe(async (posts: Post[]) => {
+      const sortedArray: Post[] = await posts.sort((obj1, obj2) => {
+        const obj1Date = obj1.date.slice(0, obj1.date.indexOf(', '));
+        const obj2Date = obj2.date.slice(0, obj2.date.indexOf(', '));
+        const obj1DateFormat = new Date(obj1Date);
+        const obj2DateFormat = new Date(obj2Date);
+        if (obj1DateFormat > obj2DateFormat) {
+          return 1;
+        } else if (obj1DateFormat < obj2DateFormat) {
+          return -1;
+        } else if (obj1DateFormat === obj2DateFormat) {
+          if (obj1.time > obj2.title) {
+            return 1;
+          } else {
+            return -1;
+          }
+        }
+        return 0;
     });
+      this.posts = sortedArray;
+      this.findaccepted();
+      this.isLoading = false;
+    });
+      this.isLoading = false;
+
+
   }
 
   onDelete(post: string) {
@@ -93,4 +119,33 @@ export class PostListComponent implements OnInit, OnDestroy {
     });
   }
 
+  findaccepted() {
+    for (let i = 0; i < this.posts.length; i++ ) {
+      let noreplycounter = 0;
+      let acceptedcounter = 0;
+      let deniedcounter = 0;
+      let ambiguouscounter = 0;
+      let totalguestscounter = 0;
+      for (let j = 0; j < this.posts[i].responses.length; j++ ) {
+        if (this.posts[i].responses[j].status === 'no reply') {
+          noreplycounter++;
+        } else if (this.posts[i].responses[j].status === 'accepted') {
+          acceptedcounter++;
+          const guestsss = + this.posts[i].responses[j].numberofguests;
+          totalguestscounter += guestsss;
+        } else if (this.posts[i].responses[j].status === 'denied') {
+          deniedcounter++;
+        } else if (this.posts[i].responses[j].status === 'may be') {
+          ambiguouscounter++;
+          const guestsss = + this.posts[i].responses[j].numberofguests;
+          totalguestscounter += guestsss;
+        }
+      }
+      this.noreply.push(noreplycounter);
+      this.accepted.push(acceptedcounter);
+      this.denied.push(deniedcounter);
+      this.ambiguous.push(ambiguouscounter);
+      this.totalguests.push(totalguestscounter);
+    }
+  }
 }
