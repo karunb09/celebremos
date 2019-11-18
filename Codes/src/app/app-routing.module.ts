@@ -37,6 +37,7 @@ const routes: Routes =  [
   { path: 'reset', component: NewPasswordComponent},
   { path: 'reset/:userId', component: ResetPasswordComponent},
   { path: 'addGuests/:eventName', component: AddGuestsComponent, canActivate: [AuthGuard] },
+
   { path: 'activateUser/:userId', component: ActivateUserComponent},
   { path: 'rsvp/:postId/:emailId', component: RSVPComponent},
   { path: 'csvupload' , component: CsvReadComponent},
@@ -44,6 +45,7 @@ const routes: Routes =  [
   { path: 'contacts/edit/:contactId' , component: ContactsComponent, canActivate: [AuthGuard]},
   { path: 'birthdaycards' , component: BirthdayCardsComponent},
   { path: 'weddingcards' , component: WeddingCardsComponent},
+
   { path: 'partycards' , component: PartyCardsComponent},
 ];
 

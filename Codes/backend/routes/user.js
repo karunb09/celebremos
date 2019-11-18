@@ -54,7 +54,6 @@ router.post("/user/register", (req, res, next) => {
               });
             });
           });
-
           return res.status(201).json({
             title: "Congratulations!",
             message: "Your account is created. In order to login you have to activate your username by clicking on the link that is mailed to your email address.",
@@ -69,7 +68,6 @@ router.post("/user/register", (req, res, next) => {
         });
     });
 });
-
 
 router.post("/user/login", (req, res, next) => {
   let fetchedUser;
@@ -173,7 +171,6 @@ router.post('/user/reset-password', function (req, res, next) {
 })
 
 router.put('/user/store-password', function (req, res, next) {
-  console.log(req.body);
   let fetchedUser;
   User
     .findOne({ _id: req.body.email })
@@ -226,7 +223,6 @@ router.put('/user/activateuser', function (req, res, next) {
     });
 });
 
-
 router.get('/contacts/:userId', function (req, res, next) {
   let fetchedUser;
   User
@@ -248,18 +244,13 @@ router.get('/contacts/:userId', function (req, res, next) {
 });
 
 router.put('/user/contacts/:userId', checkAuth, (req, res, next) => {
-  console.log(req.body);
   const username = req.params.userId;
-  console.log(username);
-  console.log(req.body.firstname);
   const contact = new Contact({
     firstname: req.body.firstname,
     lastname: req.body.lastname,
     emailid: req.body.emailid,
     mobilenumber: req.body.mobilenumber,
   });
-  console.log(contact.firstname);
-
   User
     .findOne({ username: username })
     .then(user => {
@@ -310,14 +301,12 @@ router.put('/user/contacts/:userId/:contactId', checkAuth, (req, res, next) => {
   const username = req.params.userId;
   const contactIds = req.params.contactId;
   const contact = req.body.contact
-  console.log(req.body.firstname);
   let contacting = {
     firstname: req.body.firstname,
     lastname: req.body.lastname,
     emailid: req.body.emailid,
     mobilenumber: req.body.mobilenumber
   }
-  console.log(contactIds);
   let fetchedUser;
   User
     .findOne({ username: username })
@@ -348,7 +337,6 @@ router.put('/user/contacts/:userId/:contactId', checkAuth, (req, res, next) => {
 router.delete('/api/contacts/:id/:user', checkAuth, (req, res, next) => {
   const username = req.params.user;
   let contacting = [];
-  console.log(username);
   User
     .findOne({ username: username })
     .then(user => {
@@ -357,7 +345,6 @@ router.delete('/api/contacts/:id/:user', checkAuth, (req, res, next) => {
         let arr2 = JSON.stringify(fetchedUser.contacts[i]._id);
         const contactID = arr2.replace(/"/g, '');
         if (contactID === req.params.id) {
-          console.log(fetchedUser.contacts[i]);
         }else{
           contacting.push(fetchedUser.contacts[i]);
         }
@@ -377,5 +364,15 @@ router.delete('/api/contacts/:id/:user', checkAuth, (req, res, next) => {
     });
 });
 
+router.get('/api/getuseremail/:username', checkAuth, (req, res, next) => {
+  const username = req.params.username;
+  let fetchedUser;
+  User
+    .findOne({ username: username })
+    .then(user => {
+      fetchedUser = user;
+        res.status(200).json(fetchedUser.email);
+    });
+});
 
 module.exports = router;

@@ -1,11 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AuthService } from '../auth.service';
-
 import { Subscription } from 'rxjs';
 import { MatSnackBar } from '@angular/material';
-/**
- * @title Basic toolbar
- */
+
 @Component({
   selector: 'app-header',
   templateUrl: './app-header.component.html',
@@ -16,7 +13,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
   userIsAuthenticated = false;
   private authListenerSubs: Subscription;
 
-  constructor(private authService: AuthService, private snackBar: MatSnackBar) { }
+  constructor(
+    private authService: AuthService,
+    private snackBar: MatSnackBar
+  ) {}
 
   ngOnInit() {
     this.userIsAuthenticated = this.authService.getIsAuth();
@@ -25,7 +25,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
       .subscribe(isAuthenticated => {
         this.userIsAuthenticated = isAuthenticated;
       });
-
   }
 
   onLogout() {
@@ -38,5 +37,4 @@ export class HeaderComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.authListenerSubs.unsubscribe();
   }
-
 }

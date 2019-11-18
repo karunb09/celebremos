@@ -24,7 +24,7 @@
 
   <router-outlet></router-outlet>
   <mat-spinner *ngIf="isLoading"></mat-spinner>
-  <p *ngIf="posts.length <= 0" class="info-text mat-body-1">
+  <p *ngIf="posts.length <= 0 && !isLoading" class="info-text mat-body-1">
       No events added yet!
     </p>
   <mat-card class="top-card" multi="true" *ngIf="posts.length > 0 && !isLoading">
@@ -60,15 +60,15 @@
           >
           <mat-divider></mat-divider>
           <mat-list-item class="green"
-            >Accepted: {{ post.accepted.length }}</mat-list-item
+            >Accepted: </mat-list-item
           >
           <mat-divider></mat-divider>
           <mat-list-item class="red"
-            >Rejected: {{ post.denied.length }}</mat-list-item
+            >Rejected:</mat-list-item
           >
           <mat-divider></mat-divider>
           <mat-list-item class="yellow"
-            >Maybe: {{ post.ambiguous.length }}</mat-list-item
+            >Maybe:</mat-list-item
           >
           <mat-divider></mat-divider>
         </mat-list>

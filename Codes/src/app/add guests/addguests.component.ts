@@ -1,12 +1,5 @@
 import { Component, ViewChild, OnInit } from '@angular/core';
-import {
-  NgForm,
-  NgFormSelectorWarning,
-  FormControl,
-  FormGroup,
-  Validators
-} from '@angular/forms';
-import { Subscription, Subject } from 'rxjs';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Contact } from '../csvread/contact-model';
 
 @Component({
@@ -21,13 +14,11 @@ export class AddGuestsComponent implements OnInit {
     'mobilenumber',
     'emailid'
   ];
-
   form: FormGroup;
   public contacts: any[] = [];
-
   title = 'ReadCSV';
-
   public records: Contact[] = [];
+
   @ViewChild('csvReader', { static: false }) csvReader: any;
 
   uploadListener($event: any): void {
@@ -53,7 +44,7 @@ export class AddGuestsComponent implements OnInit {
         );
         let newContacts: string = '';
         for (let i = 0; i < this.records.length; i++) {
-          newContacts += (this.records[i].emailid) + ',';
+          newContacts += this.records[i].emailid + ',';
         }
         while (newContacts.endsWith(',')) {
           newContacts = newContacts.substring(0, newContacts.length - 1);

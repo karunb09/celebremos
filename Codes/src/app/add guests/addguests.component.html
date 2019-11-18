@@ -12,7 +12,6 @@
     <button mat-stroked-button  type = "button" (click)="csvReader.click()" matTooltip="">Choose a file</button>
       <input type="file" #csvReader name="Upload CSV" id="txtFileUpload" (change)="uploadListener($event)" accept=".csv" />
     <button mat-raised-button color="accent" class = "centerbutton" (change)="uploadListener($event)" type="Submit">Add</button>
-
   </form>
 </mat-card>
 <mat-card>

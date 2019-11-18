@@ -1,5 +1,4 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-
 import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/auth.service';
 import { MatDialog } from '@angular/material';
@@ -13,17 +12,15 @@ import { PostService } from '../../posts.service';
   templateUrl: './savedevents-list.component.html',
   styleUrls: ['./savedevents-list.component.css']
 })
+
 export class SavedEventComponent implements OnInit, OnDestroy {
+
   posts: Post[] = [];
-
   isLoading = false;
-
   username: string;
-
   title = 'angular-material-tab-router';
   navLinks: any[];
   activeLinkIndex = -1;
-
 
   constructor(
     public postService: PostService,
@@ -68,8 +65,28 @@ export class SavedEventComponent implements OnInit, OnDestroy {
     this.postService.getSavedPosts(this.username);
     this.postService.getPostUpdateListener().subscribe((posts: Post[]) => {
       this.isLoading = false;
-      this.posts = posts;
+      const sortedArray: Post[] = posts.sort((obj1, obj2) => {
+        const obj1Date = obj1.date.slice(0, obj1.date.indexOf(', '));
+        const obj2Date = obj2.date.slice(0, obj2.date.indexOf(', '));
+        const obj1DateFormat = new Date(obj1Date);
+        const obj2DateFormat = new Date(obj2Date);
+        if (obj1DateFormat > obj2DateFormat) {
+          return 1;
+        } else if (obj1DateFormat < obj2DateFormat) {
+          return -1;
+        } else if (obj1DateFormat === obj2DateFormat) {
+          if (obj1.time > obj2.title) {
+            return 1;
+          } else {
+            return -1;
+          }
+        }
+        return 0;
     });
+      this.posts = sortedArray;
+    });
+    this.isLoading = false;
+
   }
 
   onDelete(post: string) {
@@ -89,15 +106,14 @@ export class SavedEventComponent implements OnInit, OnDestroy {
       if (result) {
         console.log('Yes clicked');
         this.onDelete(postId);
-        // DO SOMETHING
       }
     });
   }
 
   onSendInvitations(postId: string) {
     let requiredPost: Post;
-    for(let i = 0; i < this.posts.length; i++) {
-      if(postId === this.posts[i].id){
+    for (let i = 0; i < this.posts.length; i++) {
+      if (postId === this.posts[i].id) {
         requiredPost = this.posts[i];
       }
     }
@@ -112,9 +128,6 @@ export class SavedEventComponent implements OnInit, OnDestroy {
       requiredPost.location,
       requiredPost.content,
       requiredPost.guests,
-      requiredPost.accepted,
-      requiredPost.denied,
-      requiredPost.ambiguous,
       this.username
     );
   }

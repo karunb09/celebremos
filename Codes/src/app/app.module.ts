@@ -45,6 +45,7 @@ import { PartyCardsComponent } from './cards/party-cards/party-cards.component';
 
 
 
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -72,7 +73,8 @@ import { PartyCardsComponent } from './cards/party-cards/party-cards.component';
     AllEventsComponent,
     BirthdayCardsComponent,
     WeddingCardsComponent,
-    PartyCardsComponent
+    PartyCardsComponent,
+
   ],
   imports: [
     BrowserModule,
