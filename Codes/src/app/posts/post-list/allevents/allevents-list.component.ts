@@ -68,8 +68,27 @@ export class AllEventsComponent implements OnInit, OnDestroy {
     this.postService.getAllPosts(this.username);
     this.postService.getPostUpdateListener().subscribe((posts: Post[]) => {
       this.isLoading = false;
-      this.posts = posts;
+      const sortedArray: Post[] = posts.sort((obj1, obj2) => {
+        const obj1Date = obj1.date.slice(0, obj1.date.indexOf(', '));
+        const obj2Date = obj2.date.slice(0, obj2.date.indexOf(', '));
+        const obj1DateFormat = new Date(obj1Date);
+        const obj2DateFormat = new Date(obj2Date);
+        if (obj1DateFormat > obj2DateFormat) {
+          return 1;
+        } else if (obj1DateFormat < obj2DateFormat) {
+          return -1;
+        } else if (obj1DateFormat === obj2DateFormat) {
+          if (obj1.time > obj2.title) {
+            return 1;
+          } else {
+            return -1;
+          }
+        }
+        return 0;
     });
+      this.posts = sortedArray;
+    });
+
   }
 
   onDelete(post: string) {
