@@ -39,6 +39,11 @@ import { SavedEventComponent } from './posts/post-list/savedevents/savedevents-l
 import { PastEventComponent } from './posts/post-list/pastevents/pastevent-list.component';
 import { AllEventsComponent } from './posts/post-list/allevents/allevents-list.component';
 import { InvitedEventComponent } from './posts/post-list/invitedevents/invitedevents-list.component';
+import { BirthdayCardsComponent } from './cards/birthday-cards/birthday-cards.component';
+import { WeddingCardsComponent } from './cards/wedding-cards/wedding-cards.component';
+import { PartyCardsComponent } from './cards/party-cards/party-cards.component';
+import { PostQuestionaireComponent } from './posts/create-posts/post-questionaire/post-questionaire.component';
+
 
 
 @NgModule({
@@ -65,7 +70,11 @@ import { InvitedEventComponent } from './posts/post-list/invitedevents/invitedev
     SavedEventComponent,
     InvitedEventComponent,
     PastEventComponent,
-    AllEventsComponent
+    AllEventsComponent,
+    BirthdayCardsComponent,
+    WeddingCardsComponent,
+    PartyCardsComponent,
+    PostQuestionaireComponent
   ],
   imports: [
     BrowserModule,
