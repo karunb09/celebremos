@@ -11,10 +11,24 @@
     </label>
   </div>
   <div *ngIf="post && emailId">
+      <img
+      mat-card-image
+      class="matcardimage"
+      [src]="post.imagePath"
+      [alt]="post.title"
+    /><br>
+
     <label id="example-radio-group-label"
-      >Will you attend {{ post.title }}?</label
+      >Will you attend <b>{{ post.title }}</b>?</label
+    ><br>
+    <label id="example-radio-group-label"
+      ><b>When:</b> {{ post.date }}</label
     >
-    <mat-radio-group
+    <label id="example-radio-group-label"
+      ><b>Where:</b> {{ post.location }}</label
+      >
+
+    <mat-radio-group *ngIf="emailDetails?.status === 'no reply' || mode === 'edit'"
       aria-labelledby="example-radio-group-label"
       class="example-radio-group"
       [(ngModel)]="yourResponse"
@@ -27,27 +41,41 @@
         {{ response }}
       </mat-radio-button>
     </mat-radio-group>
+    <form name="user_reg" #rsvpform="ngForm">
     <mat-form-field *ngIf="yourResponse == 'Yes' || yourResponse == 'Maybe'">
       <input
         matInput
         type="text"
+        [ngModel] = emailDetails?.numberofguests
         name="guestsNumber"
+        #guestsNumber='ngModel'
         placeholder="Enter number of guests"
         required
       />
     </mat-form-field>
 
-    <div>Your response is: {{ yourResponse }}</div>
+    <div *ngIf="emailDetails?.status === 'no reply'">Your response is: {{ yourResponse }}</div>
+    <div *ngIf="emailDetails?.status !== 'no reply'">Your response is: {{ emailDetails?.status }}</div>
     <br />
-    <button
+    <button *ngIf="emailDetails?.status === 'no reply' && !isLoading || mode === 'edit'"
       mat-raised-button
       color="primary"
+      type="button"
+      (click)="sendResponse(rsvpform)"
       class="centerbutton"
-      (click)="sendResponse()"
-      [routerLink]="['/']"
-      *ngIf="!isLoading"
+      [routerLink]="['/pastevents']"
     >
       Submit</button
+    >
+    <button *ngIf="emailDetails?.status !== 'no reply' && !isLoading && mode !== 'edit'"
+      mat-raised-button
+      color="primary"
+      type="button"
+      class="centerbutton"
+      [routerLink]="['/edit/rsvp', postId, emailId]"
+    >
+      Edit RSVP</button
     ><br />
+    </form>
   </div>
 </mat-card>

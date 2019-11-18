@@ -1,11 +1,9 @@
-import { Component, OnInit, OnDestroy, ɵConsole } from '@angular/core';
-import { Router, ActivatedRoute, ParamMap } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, ParamMap } from '@angular/router';
 import { NgForm } from '@angular/forms';
-
-import { AuthService } from '../auth.service';
-import { Subscription } from 'rxjs';
 import { Post } from '../posts/posts.model';
 import { PostService } from '../posts/posts.service';
+import { MatSnackBar } from '@angular/material';
 
 @Component({
   selector: 'app-rsvp',
@@ -15,15 +13,24 @@ import { PostService } from '../posts/posts.service';
 export class RSVPComponent implements OnInit {
   post: Post;
   yourResponse: string;
+  guestsNumber = 0;
   rsvp: string[] = ['Yes', 'No', 'Maybe'];
   emailId: string;
+  postId: string;
+  emailDetails;
+  mode: string;
 
-  constructor(public postService: PostService, public route: ActivatedRoute) {}
+  constructor(
+    public postService: PostService,
+    public route: ActivatedRoute,
+    private snackBar: MatSnackBar
+  ) {}
 
   ngOnInit() {
     this.route.paramMap.subscribe((paramMap: ParamMap) => {
       if (paramMap.has('postId')) {
         const postId = paramMap.get('postId');
+        this.postId = postId;
         this.postService.getPost(postId).subscribe(postData => {
           this.post = {
             id: postData._id,
@@ -35,10 +42,7 @@ export class RSVPComponent implements OnInit {
             host: postData.host,
             location: postData.location,
             content: postData.content,
-            guests: postData.guests,
-            accepted: postData.accepted,
-            denied: postData.denied,
-            ambiguous: postData.ambiguous
+            guests: postData.guests
           };
         });
       }
@@ -46,74 +50,68 @@ export class RSVPComponent implements OnInit {
     this.route.paramMap.subscribe((paramMap: ParamMap) => {
       if (paramMap.has('emailId')) {
         this.emailId = paramMap.get('emailId');
+        this.postService
+          .getEmailDetails(this.postId, this.emailId)
+          .subscribe(email => {
+            this.emailDetails = {
+              _id: email._id,
+              email: email.email,
+              numberofguests: email.numberofguests,
+              status: email.status
+            };
+            console.log(this.emailDetails);
+          });
+      }
+    });
+    this.route.paramMap.subscribe((paramMap: ParamMap) => {
+      if (paramMap.has('email')) {
+        this.emailId = paramMap.get('email');
+        console.log(this.emailId);
+        this.mode = 'edit';
+        this.postService
+          .getEmailDetails(this.postId, this.emailId)
+          .subscribe(email => {
+            this.emailDetails = {
+              _id: email._id,
+              email: email.email,
+              numberofguests: email.numberofguests,
+              status: email.status
+            };
+            if (this.emailDetails.status === 'accepted') {
+              this.yourResponse = 'Yes';
+            } else if (this.emailDetails === 'denied') {
+              this.yourResponse = 'No';
+            } else {
+              this.yourResponse = 'Maybe';
+            }
+          });
       }
     });
   }
 
-  sendResponse() {
-    const acceptedEmail = this.post.accepted.find(x => x === this.emailId);
-    const rejectedEmail = this.post.denied.find(x => x === this.emailId);
-    const ambiguousEmail = this.post.ambiguous.find(x => x === this.emailId);
+  sendResponse(form: NgForm) {
+    let guests;
+    if (form.value.guestsNumber) {
+      guests = form.value.guestsNumber;
+    } else {
+      guests = this.guestsNumber;
+    }
+    this.postService.updateRSVP(
+      this.post.id,
+      this.emailId,
+      this.yourResponse,
+      Number(guests)
+    );
+    this.openSnackBar(form);
+  }
 
-
-    switch (this.yourResponse) {
-      case 'Yes': {
-        this.post.accepted.push(this.emailId);
-        this.postService.updatePost(
-          this.post.id,
-          this.post.title,
-          this.post.type,
-          this.post.imagePath,
-          this.post.date,
-          this.post.time,
-          this.post.host,
-          this.post.location,
-          this.post.content,
-          this.post.guests,
-          this.post.accepted,
-          this.post.denied,
-          this.post.ambiguous
-        );
-        break;
-      }
-      case 'No': {
-        this.post.denied.push(this.emailId);
-        this.postService.updatePost(
-          this.post.id,
-          this.post.title,
-          this.post.type,
-          this.post.imagePath,
-          this.post.date,
-          this.post.time,
-          this.post.host,
-          this.post.location,
-          this.post.content,
-          this.post.guests,
-          this.post.accepted,
-          this.post.denied,
-          this.post.ambiguous
-        );
-        break;
-      }
-      case 'Maybe': {
-        this.post.ambiguous.push(this.emailId);
-        this.postService.updatePost(
-          this.post.id,
-          this.post.title,
-          this.post.type,
-          this.post.imagePath,
-          this.post.date,
-          this.post.time,
-          this.post.host,
-          this.post.location,
-          this.post.content,
-          this.post.guests,
-          this.post.accepted,
-          this.post.denied,
-          this.post.ambiguous
-        );
-        break;
-      }
+  openSnackBar(form: NgForm) {
+    if (form.invalid) {
+      return;
+    } else {
+      this.snackBar.open('RSVP Saved!', 'Dismiss', {
+        duration: 2000
+      });
     }
   }
 }
