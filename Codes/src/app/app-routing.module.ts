@@ -19,6 +19,7 @@ import { InvitedEventComponent } from './posts/post-list/invitedevents/invitedev
 import { BirthdayCardsComponent } from './cards/birthday-cards/birthday-cards.component';
 import { WeddingCardsComponent } from './cards/wedding-cards/wedding-cards.component';
 import { PartyCardsComponent } from './cards/party-cards/party-cards.component';
+import { PostQuestionaireComponent } from './posts/create-posts/post-questionaire/post-questionaire.component';
 
 
 
@@ -37,9 +38,10 @@ const routes: Routes =  [
   { path: 'reset', component: NewPasswordComponent},
   { path: 'reset/:userId', component: ResetPasswordComponent},
   { path: 'addGuests/:eventName', component: AddGuestsComponent, canActivate: [AuthGuard] },
-
+  { path: 'questionaire' , component: PostQuestionaireComponent, canActivate: [AuthGuard]},
   { path: 'activateUser/:userId', component: ActivateUserComponent},
   { path: 'rsvp/:postId/:emailId', component: RSVPComponent},
+  { path: 'edit/rsvp/:postId/:email', component: RSVPComponent},
   { path: 'csvupload' , component: CsvReadComponent},
   { path: 'contacts' , component: ContactsComponent, canActivate: [AuthGuard]},
   { path: 'contacts/edit/:contactId' , component: ContactsComponent, canActivate: [AuthGuard]},

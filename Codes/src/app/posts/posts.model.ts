@@ -1,5 +1,3 @@
-import { Time } from '@angular/common';
-
 export interface Post {
   id: string;
   title: string;
@@ -11,7 +9,4 @@ export interface Post {
   location: string;
   content: string;
   guests: [string];
-  accepted: [string];
-  denied: [string];
-  ambiguous: [string];
 }

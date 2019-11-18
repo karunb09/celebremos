@@ -38,19 +38,13 @@ export class PostCreateComponent implements OnInit {
   ) {}
 
   public contacts: any[] = [];
-
   title = 'ReadCSV';
-
   public records: Contact[] = [];
   @ViewChild('csvReader', { static: false }) csvReader: any;
   mode = 'create';
-
   minDate = new Date();
-
   formattedaddress = '';
-
   username: string;
-
   events: Eventss[] = [
     { value: 'Anniversary', viewValue: 'Anniversary' },
     { value: 'Baby Shower', viewValue: 'Baby Shower' },
@@ -63,34 +57,23 @@ export class PostCreateComponent implements OnInit {
     { value: 'Housewarming', viewValue: 'Housewarming' },
     { value: 'Custom', viewValue: 'Custom' }
   ];
-
   private postId: string;
-
   post: Post;
-
   imagePreview: string;
-
   newGuests: [string] = ['celebremos'];
-
   date = new FormControl(new Date());
-
   newDate;
-
   myDate;
-
   image;
-
   form: FormGroup;
-
   customType: string;
-
   placesRef: GooglePlaceDirective;
 
   onSavePost() {
     if (this.form.invalid) {
       return;
     }
-    if (this.newDate == null) {
+    if (this.newDate == null  ) {
       this.myDate = this.post.date;
     } else {
       this.myDate = this.newDate;
@@ -123,9 +106,6 @@ export class PostCreateComponent implements OnInit {
         this.form.value.location,
         this.form.value.content,
         this.newGuests,
-        ['0'],
-        ['0'],
-        ['0'],
         this.username,
         this.records
       );
@@ -144,9 +124,6 @@ export class PostCreateComponent implements OnInit {
         this.form.value.location,
         this.form.value.content,
         this.newGuests,
-        ['0'],
-        ['0'],
-        ['0']
       );
     }
     this.form.reset();
@@ -186,9 +163,6 @@ export class PostCreateComponent implements OnInit {
         this.form.value.location,
         this.form.value.content,
         this.newGuests,
-        ['0'],
-        ['0'],
-        ['0'],
         this.username,
         this.records
       );
@@ -236,9 +210,6 @@ export class PostCreateComponent implements OnInit {
             location: postData.location,
             content: postData.content,
             guests: postData.guests,
-            accepted: postData.accepted,
-            denied: postData.denied,
-            ambiguous: postData.ambiguous
           };
           this.form.setValue({
             title: this.post.title,
@@ -297,7 +268,7 @@ export class PostCreateComponent implements OnInit {
     if (this.form.invalid) {
       return;
     } else {
-      //this.onSaveforLaterUse();
+      // this.onSaveforLaterUse();
       this.snackBar.open('Events Saved!', 'Dismiss', {
         duration: 2000
       });
@@ -310,7 +281,7 @@ export class PostCreateComponent implements OnInit {
       .getselectedContactList()
       .subscribe((list: Contact[]) => {
         console.log(list.length);
-        let newFormValue: string = '';
+        let newFormValue = '';
         console.log(this.form.value.guests);
         if (this.form.value.guests) {
           newFormValue = this.form.value.guests + ',' ;
@@ -349,7 +320,7 @@ export class PostCreateComponent implements OnInit {
             }
           }
         }
-        while(newFormValue.endsWith(',')){
+        while (newFormValue.endsWith(',')) {
           newFormValue = newFormValue.substring(0, newFormValue.length - 1);
         }
         this.form.patchValue({ guests: newFormValue });
@@ -390,7 +361,7 @@ export class PostCreateComponent implements OnInit {
           csvRecordsArray,
           headersRow.length
         );
-        let newContacts: string = '';
+        let newContacts = '';
         for (let i = 0; i < this.records.length; i++) {
           newContacts += (this.records[i].emailid) + ',';
         }
