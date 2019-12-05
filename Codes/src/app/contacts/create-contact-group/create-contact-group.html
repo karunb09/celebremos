@@ -1,0 +1,40 @@
+<h1 mat-dialog-title>Create contact group</h1>
+<div mat-dialog-content>
+  <form [formGroup]="form" (submit)="onClick()">
+    <mat-form-field>
+      <input matInput placeholder="Group name" formControlName="groupName" />
+    </mat-form-field>
+    <br />
+    <button mat-raised-button color="primary" (click)="SelectAll()">
+      Select All
+    </button>
+    &nbsp; &nbsp;
+    <button mat-raised-button color="secondary" (click)="SelectNone()">
+      Select None
+    </button>
+    <br />
+    <div *ngFor="let contact of contactsArray.controls; let i = index;">
+      <mat-checkbox
+        [formControl]="contact"
+        (change)="getSelectedContactsValue()"
+        >{{data[i].firstname}} {{data[i].lastname}} <br />{{data[i].emailid}}
+        <br />{{data[i].mobilenumber}}</mat-checkbox
+      >
+    </div>
+  </form>
+  <br />
+</div>
+<div mat-dialog-actions>
+  <button mat-flat-button color="accent" (click)="onNoClick()">
+    No, thanks
+  </button>
+  &nbsp;&nbsp;
+  <button
+    mat-flat-button
+    color="primary"
+    (click)="openLink($event)"
+    cdkFocusInitial
+  >
+    Create
+  </button>
+</div>

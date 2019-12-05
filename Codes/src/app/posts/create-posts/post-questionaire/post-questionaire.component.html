@@ -1,0 +1,48 @@
+<mat-card class="rpassword">
+  <div>
+    <img
+      mat-card-image
+      class="matcardimage"
+      [src]="post?.imagePath"
+      [alt]="post?.title"
+    /><br />
+    <label id="example-radio-group-label"
+      ><b>{{ post?.title }}</b></label
+    ><br />
+    <label id="example-radio-group-label"><b>When:</b> {{ post?.date }}</label>
+    <label id="example-radio-group-label"
+      ><b>Where:</b> {{ post?.location }}</label
+    > <br><mat-divider></mat-divider><br>
+    <button mat-stroked-button color="accent" (click)="openDialog()">
+      <mat-icon>poll</mat-icon>&nbsp;&nbsp;Add Poll</button
+    ><br />
+  </div><br>
+  <div *ngIf="question">
+    <b>Question: </b><i>{{ question }}</i><br>
+    <label><b>Options: </b></label>
+    <li *ngFor="let option of options">
+      <label>{{ option }}</label>
+    </li>
+  </div> <mat-divider></mat-divider><br>
+  <button mat-stroked-button color="primary" (click)="openAnotherDialog()">
+    <mat-icon>store_mall_directory</mat-icon>&nbsp;&nbsp;Items to bring
+  </button><br><br>
+  <div *ngIf="items.items[0].itemname">
+      <label><b>Items to bring: </b></label>
+      <li *ngFor="let item of items.items">
+        <label>Item: {{ item.itemname }}, &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Qty: {{item.quantity}}</label>
+      </li>
+    </div> <mat-divider></mat-divider><br>
+  <button mat-stroked-button color="primary" (click)="openFoodDialog()">
+      <mat-icon>fastfood</mat-icon>&nbsp;&nbsp;Add food menu
+    </button><br><br>
+    <div *ngIf="list[0]">
+        <label><b>Food Menu: </b></label>
+        <li *ngFor="let item of list">
+          <label> {{item}}</label>
+        </li>
+      </div> <mat-divider></mat-divider>
+      <br>
+
+      <button mat-raised-button color="accent" type="button" matTooltip="Invitations will be sent to your guests by clicking here." (click)="sendInvitationsWithOptions()"><mat-icon>send</mat-icon>&nbsp;&nbsp;Send Invitation</button>
+</mat-card>

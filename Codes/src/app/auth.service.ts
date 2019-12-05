@@ -5,9 +5,22 @@ import { AuthData } from './auth-data.model';
 import { Subject, BehaviorSubject } from 'rxjs';
 import { Contact } from './csvread/contact-model';
 import { map } from 'rxjs/operators';
+import { ContactModel } from './csvread/contact.service';
+
+export interface ContactGroups {
+  groupName: string;
+  groupcontacts: [ {
+  _id: string;
+  firstname: string;
+  lastname: string;
+  mobilenumber: string;
+  emailid: string;
+  }]
+}
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
+
   private isAuthenticated = false;
   private token: string;
   private tokenTimer: any;
@@ -17,7 +30,9 @@ export class AuthService {
   private authUsernameListener = new BehaviorSubject<string>('Hello from APP');
   private authEmailIdListener = new BehaviorSubject<string>('Hello from APP');
   private contacts: Contact[] = [];
+  private contactgroups: ContactGroups[] = [];
   private contactsUpdated = new Subject<Contact[]>();
+  private contactGroups = new Subject<ContactGroups[]>();
 
   constructor(private http: HttpClient, private router: Router) {}
 
@@ -39,6 +54,10 @@ export class AuthService {
 
   getContactsListListener() {
     return this.contactsUpdated.asObservable();
+  }
+
+  getContactGroupsListener() {
+    return this.contactGroups.asObservable();
   }
 
   getAuthEmailIdListener() {
@@ -73,7 +92,9 @@ export class AuthService {
     };
     this.http.post('http://localhost:3000/user/register', authData).subscribe(
       response => {
-        this.router.navigate(['/']);
+        setTimeout(() => {
+          this.router.navigate(['/']);
+      }, 2000);
       },
       error => {
         this.authStatusListener.next(false);
@@ -147,7 +168,9 @@ export class AuthService {
         authData
       )
       .subscribe(response => {
-        this.router.navigate(['/']);
+        setTimeout(() => {
+          this.router.navigate(['/']);
+      }, 1500);
       });
   }
 
@@ -155,7 +178,7 @@ export class AuthService {
     this.token = null;
     this.isAuthenticated = false;
     this.authStatusListener.next(false);
-    this.router.navigate(['/']);
+      this.router.navigate(['/']);
   }
 
   storePassword(id: string, password: string) {
@@ -175,26 +198,33 @@ export class AuthService {
         'http://localhost:3000/user/store-password',
         authData
       ).subscribe(response => {
-        this.router.navigate(['/']);
+        setTimeout(() => {
+          this.router.navigate(['/']);
+      }, 1500);
       });
   }
 
-  activateUser(id: string) {
+  activateNewUser(userid: string) {
     const authData: AuthData = {
       firstname: null,
       lastname: null,
-      username: null,
-      email: id,
+      username: '12312',
+      email: userid,
       password: null,
       phonenumber: null,
       activationStatus: true,
       createdEvents: ['0'],
       contacts: [{ firstname: '', lastname: '', mobilenumber: '', emailid: '' }]
     };
-    this.http.put<{ token: string }>(
-      'http://localhost:3000/user/activateuser',
-      authData
-    );
+    this.http
+      .put<{ token: string }>(
+        'http://localhost:3000/user/activate',
+        authData
+      ).subscribe(response => {
+        setTimeout(() => {
+          this.router.navigate(['/']);
+      }, 5000);
+      });
   }
 
   getUserEmailId(username: string) {
@@ -238,19 +268,55 @@ export class AuthService {
       });
   }
 
+  getContactGroups(username: string) {
+    const authData: AuthData = {
+      firstname: null,
+      lastname: null,
+      username: username,
+      email: null,
+      password: null,
+      phonenumber: null,
+      activationStatus: true,
+      createdEvents: ['0'],
+      contacts: [{ firstname: '', lastname: '', mobilenumber: '', emailid: '' }]
+    };
+    this.http
+      .get<{ contacts: any; message: string }>(
+        'http://localhost:3000/contactgroups/' + username
+      )
+      .pipe(
+        map(contacts => {
+          return contacts.contacts.map(contact => {
+            return {
+              _id: contact._id,
+              groupName: contact.groupName,
+              groupcontacts: contact.groupcontacts,
+            };
+          });
+        })
+      )
+      .subscribe(transformedContacts => {
+        this.contactgroups = transformedContacts;
+        this.contactGroups.next([...this.contactgroups]);
+      });
+  }
+
   addContact(
     firstname: string,
     lastname: string,
     emailid: string,
     mobilenumber: string,
-    username: string
+    username: string,
+    contactgroupId: string
   ) {
-    let contact: Contact = {
+    let contact = {
       firstname: firstname,
       lastname: lastname,
       emailid: emailid,
-      mobilenumber: mobilenumber
+      mobilenumber: mobilenumber,
+      contactgroupId: contactgroupId
     };
+    console.log(contact);
     this.http
       .put<{ message: string; contacts: any }>(
         'http://localhost:3000/user/contacts/' + username,
@@ -265,6 +331,26 @@ export class AuthService {
         };
         this.contacts.push(contact1);
         this.contactsUpdated.next([...this.contacts]);
+      });
+  }
+
+  addContactGroup(
+    username: string,
+    groupName: string,
+    contacts: ContactModel[]
+  ) {
+    let contactgroup = {
+      groupName: groupName,
+      groupContacts: contacts
+    };
+    console.log(contactgroup);
+    this.http
+      .put<{ message: string; contacts: any }>(
+        'http://localhost:3000/user/addcontactsgroup/' + username,
+        contactgroup
+      )
+      .subscribe(responseData => {
+
       });
   }
 
@@ -283,6 +369,17 @@ export class AuthService {
       });
   }
 
+  deleteContactGroup(contactId: string, contactgroupId: string, firstname: string, username: string) {
+    this.http
+      .delete(
+        'http://localhost:3000/api/contactgroup/' + contactId + '/' + username + '/' + contactgroupId
+      )
+      .subscribe(() => {
+        console.log('Deleted');
+
+      });
+  }
+
   getContact(username: string, id: string) {
     return this.http.get<{
       _id: string;
@@ -290,6 +387,7 @@ export class AuthService {
       lastname: string;
       emailid: string;
       mobilenumber: string;
+      contactgroup: string;
     }>('http://localhost:3000/contacts/' + username + '/' + id);
   }
 
@@ -299,14 +397,16 @@ export class AuthService {
     lastname: string,
     emailid: string,
     mobilenumber: string,
-    username: string
+    username: string,
+    contactgroupId: string
   ) {
     let contact = {
       id: id,
       firstname: firstname,
       lastname: lastname,
       emailid: emailid,
-      mobilenumber: mobilenumber
+      mobilenumber: mobilenumber,
+      contactgroupId: contactgroupId
     };
     this.http
       .put<{ message: string; contacts: any }>(

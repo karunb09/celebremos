@@ -23,6 +23,7 @@
                     <mat-form-field class="example-full-width">
                         <input matInput type="email" pattern="^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z]+$" name="email"
                             ngModel placeholder="Email" #email="ngModel" required>
+                            <mat-icon matSuffix>email</mat-icon>
                         <mat-hint>We'll never share your email address with others. </mat-hint>
                         <mat-error *ngIf="email.invalid">Please enter a valid email address</mat-error><br>
                     </mat-form-field>
@@ -55,8 +56,10 @@
                     <!--             phone number field           -->
                     <!-- This is phone number verification block and the phone number should be in format +1(123)123-1233 -->
                     <mat-form-field class="example-full-width">
-                        <input matInput type="text" pattern="\+\d(\d{3})\)?[\s-]?\d{3}[\s-]?\d{4}" name="phone" ngModel
+                        <span matPrefix>+1 &nbsp;</span>
+                        <input matInput type="text" pattern="\(\d{3})\)?[\s-]?\d{3}[\s-]?\d{4}" name="phone" ngModel
                             placeholder="Phone Number" #phone="ngModel" required>
+                            <mat-icon matSuffix>call</mat-icon>
                         <mat-hint>Phone number format : +11231231234. </mat-hint>
                         <mat-error *ngIf="phone.invalid">Please enter a valid phone number. Phone number format : +11231231234. </mat-error><br>
                     </mat-form-field>

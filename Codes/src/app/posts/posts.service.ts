@@ -1,12 +1,13 @@
-import { Post } from "./posts.model";
-import { Injectable } from "@angular/core";
-import { Subject } from "rxjs";
-import { HttpClient } from "@angular/common/http";
-import { map } from "rxjs/operators";
-import { Contact } from "../csvread/contact-model";
-import { Router } from "@angular/router";
+import { Post } from './posts.model';
+import { Injectable } from '@angular/core';
+import { Subject } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { map } from 'rxjs/operators';
+import { Contact } from '../csvread/contact-model';
+import { Router } from '@angular/router';
+import { ItemsToBring } from './create-posts/post-questionaire/post-questionaire.component';
 
-@Injectable({ providedIn: "root" })
+@Injectable({ providedIn: 'root' })
 export class PostService {
 
   private posts: Post[] = [];
@@ -17,7 +18,7 @@ export class PostService {
   getPosts(username: string) {
     this.httpClient
       .get<{ message: string; posts: any }>(
-        "http://localhost:3000/api/postslist/" + username
+        'http://localhost:3000/api/postslist/' + username
       )
       .pipe(
         map(postData => {
@@ -35,7 +36,9 @@ export class PostService {
               guests: post.guests,
               responses: post.responses,
               question: post.question,
-              itemstobring: post.itemstobring
+              itemstobring: post.itemstobring,
+              photos: post.photos,
+              foodmenu: post.foodmenu,
             };
           });
         })
@@ -49,7 +52,7 @@ export class PostService {
   getSavedPosts(username: string) {
     this.httpClient
       .get<{ message: string; posts: any }>(
-        "http://localhost:3000/api/savedlist/" + username
+        'http://localhost:3000/api/savedlist/' + username
       )
       .pipe(
         map(postData => {
@@ -67,7 +70,9 @@ export class PostService {
               guests: post.guests,
               responses: post.responses,
               question: post.question,
-              itemstobring: post.itemstobring
+              itemstobring: post.itemstobring,
+              photos: post.photos,
+              foodmenu: post.foodmenu
             };
           });
         })
@@ -81,7 +86,7 @@ export class PostService {
   getAllPosts(username: string) {
     this.httpClient
       .get<{ message: string; posts: any }>(
-        "http://localhost:3000/api/alleventslist/" + username
+        'http://localhost:3000/api/alleventslist/' + username
       )
       .pipe(
         map(postData => {
@@ -99,7 +104,9 @@ export class PostService {
               guests: post.guests,
               responses: post.responses,
               question: post.question,
-              itemstobring: post.itemstobring
+              itemstobring: post.itemstobring,
+              photos: post.photos,
+              foodmenu: post.foodmenu
             };
           });
         })
@@ -113,7 +120,7 @@ export class PostService {
   getInvitedPosts(username: string) {
     this.httpClient
       .get<{ message: string; posts: any }>(
-        "http://localhost:3000/api/invitedlist/" + username
+        'http://localhost:3000/api/invitedlist/' + username
       )
       .pipe(
         map(postData => {
@@ -131,7 +138,9 @@ export class PostService {
               guests: post.guests,
               responses: post.responses,
               question: post.question,
-              itemstobring: post.itemstobring
+              itemstobring: post.itemstobring,
+              photos: post.photos,
+              foodmenu: post.foodmenu
             };
           });
         })
@@ -160,32 +169,32 @@ export class PostService {
     contacts: Contact[]
   ) {
     const post = new FormData();
-    post.append("title", title);
-    post.append("type", type);
-    post.append("image", image, title);
-    post.append("date", date);
-    post.append("time", time);
-    post.append("host", host);
-    post.append("location", location);
-    post.append("content", content);
+    post.append('title', title);
+    post.append('type', type);
+    post.append('image', image, title);
+    post.append('date', date);
+    post.append('time', time);
+    post.append('host', host);
+    post.append('location', location);
+    post.append('content', content);
     for (let i = 0; i < guests.length; i++) {
-      post.append("guests[]", guests[i]);
+      post.append('guests[]', guests[i]);
     }
-    post.append("username", username);
+    post.append('username', username);
     for (let i = 0; i < contacts.length; i++) {
       let contact =
         contacts[i].firstname +
-        "$" +
+        '$' +
         contacts[i].lastname +
-        "$" +
+        '$' +
         contacts[i].emailid +
-        "$" +
+        '$' +
         contacts[i].mobilenumber;
-      post.append("contacts[]", contact);
+      post.append('contacts[]', contact);
     }
     this.httpClient
       .post<{ message: string; post: Post }>(
-        "http://localhost:3000/api/saveposts",
+        'http://localhost:3000/api/saveposts',
         post
       )
       .subscribe(responseData => {
@@ -203,7 +212,7 @@ export class PostService {
         };
         this.posts.push(post);
         this.postsUpdated.next([...this.posts]);
-        this.router.navigate(["/allevents"]);
+        this.router.navigate(['/questionaire', post.id]);
       });
   }
 
@@ -221,32 +230,36 @@ export class PostService {
     contacts: Contact[]
   ) {
     const post = new FormData();
-    post.append("title", title);
-    post.append("type", type);
-    post.append("image", image, title);
-    post.append("date", date);
-    post.append("time", time);
-    post.append("host", host);
-    post.append("location", location);
-    post.append("content", content);
-    for (let i = 0; i < guests.length; i++) {
-      post.append("guests[]", guests[i]);
+    post.append('title', title);
+    post.append('type', type);
+    if (typeof image === 'object') {
+      post.append('image', image, title);
+    } else {
+      post.append('image', image, title);
     }
-    post.append("username", username);
+    post.append('date', date);
+    post.append('time', time);
+    post.append('host', host);
+    post.append('location', location);
+    post.append('content', content);
+    for (let i = 0; i < guests.length; i++) {
+      post.append('guests[]', guests[i]);
+    }
+    post.append('username', username);
     for (let i = 0; i < contacts.length; i++) {
       let contact =
         contacts[i].firstname +
-        "$" +
+        '$' +
         contacts[i].lastname +
-        "$" +
+        '$' +
         contacts[i].emailid +
-        "$" +
+        '$' +
         contacts[i].mobilenumber;
-      post.append("contacts[]", contact);
+      post.append('contacts[]', contact);
     }
     this.httpClient
       .post<{ message: string; post: Post }>(
-        "http://localhost:3000/api/posts",
+        'http://localhost:3000/api/posts',
         post
       )
       .subscribe(responseData => {
@@ -264,15 +277,15 @@ export class PostService {
         };
         this.posts.push(post);
         this.postsUpdated.next([...this.posts]);
-        this.router.navigate(["/allevents"]);
+        this.router.navigate(['/hostedevents']);
       });
   }
 
   deletePost(postId: string, username: string) {
     this.httpClient
-      .delete("http://localhost:3000/api/posts/" + postId + "/" + username)
+      .delete('http://localhost:3000/api/posts/' + postId + '/' + username)
       .subscribe(() => {
-        console.log("Deleted");
+        console.log('Deleted');
         const updatedPosts = this.posts.filter(post => post.id !== postId);
         this.posts = updatedPosts;
         this.postsUpdated.next([...this.posts]);
@@ -294,7 +307,9 @@ export class PostService {
       responses: [string];
       question: [string];
       itemstobring: [string];
-    }>("http://localhost:3000/api/posts/" + id);
+      photos: [string];
+      foodmenu: [string]
+    }>('http://localhost:3000/api/posts/' + id);
   }
 
   updatePost(
@@ -310,19 +325,19 @@ export class PostService {
     guests: [string]
   ) {
     let post: Post | FormData;
-    if (typeof image === "object") {
+    if (typeof image === 'object') {
       post = new FormData();
-      post.append("id", id);
-      post.append("title", title);
-      post.append("type", type);
-      post.append("image", image, title);
-      post.append("date", date);
-      post.append("time", time);
-      post.append("host", host);
-      post.append("location", location);
-      post.append("content", content);
+      post.append('id', id);
+      post.append('title', title);
+      post.append('type', type);
+      post.append('image', image, title);
+      post.append('date', date);
+      post.append('time', time);
+      post.append('host', host);
+      post.append('location', location);
+      post.append('content', content);
       for (let i = 0; i < guests.length; i++) {
-        post.append("guests[]", guests[i]);
+        post.append('guests[]', guests[i]);
       }
     } else {
       post = {
@@ -339,7 +354,7 @@ export class PostService {
       };
     }
     this.httpClient
-      .put("http://localhost:3000/api/posts/" + id, post)
+      .put('http://localhost:3000/api/posts/' + id, post)
       .subscribe(responseData => {
         const updatedPosts = [...this.posts];
         const oldPostIndex = updatedPosts.findIndex(p => p.id === id);
@@ -347,7 +362,7 @@ export class PostService {
           id: id,
           title: title,
           type: type,
-          imagePath: "",
+          imagePath: '',
           date: date,
           time: time,
           host: host,
@@ -358,7 +373,7 @@ export class PostService {
         updatedPosts[oldPostIndex] = post;
         this.posts = updatedPosts;
         this.postsUpdated.next([...this.posts]);
-        this.router.navigate(["/allevents"]);
+        this.router.navigate(['/hostedevents']);
       });
   }
 
@@ -389,7 +404,7 @@ export class PostService {
     };
     this.httpClient
       .post(
-        "http://localhost:3000/api/posts/update/" + id + "/" + username,
+        'http://localhost:3000/api/posts/update/' + id + '/' + username,
         post
       )
       .subscribe(responseData => {
@@ -399,7 +414,7 @@ export class PostService {
           id: id,
           title: title,
           type: type,
-          imagePath: "",
+          imagePath: '',
           date: date,
           time: time,
           host: host,
@@ -410,7 +425,7 @@ export class PostService {
         updatedPosts[oldPostIndex] = post;
         this.posts = updatedPosts;
         this.postsUpdated.next([...this.posts]);
-        this.router.navigate(["/hostedevents"]);
+        this.router.navigate(['/hostedevents']);
       });
   }
 
@@ -423,7 +438,7 @@ export class PostService {
     };
     this.httpClient
       .put(
-        "http://localhost:3000/api/posts/update/rsvp",
+        'http://localhost:3000/api/posts/update/rsvp',
         post
       ).subscribe(response => {
 
@@ -436,7 +451,33 @@ export class PostService {
       email: string;
       numberofguests: string;
       status: string;
-    }>("http://localhost:3000/api/posts/responseitem/" + emailId + '/' + postId);
+    }>('http://localhost:3000/api/posts/responseitem/' + emailId + '/' + postId);
   }
 
+  updatePostwithPoll(postId: string, username: string, question: string, options: string[], items: ItemsToBring, list: string[]) {
+    const post = {
+      question: question,
+      options: options,
+      items: items.items,
+      foodmenu: list,
+      postId: postId,
+      username: username
+    };
+    this.httpClient
+      .put(
+        'http://localhost:3000/api/posts/update/foodpoll' ,
+        post
+      ).subscribe(response => {
+        this.router.navigate(['/hostedevents']);
+      });
+  }
+
+  getRecords(emailid: string, userId: string) {
+    return this.httpClient.get<{
+      firstname: string;
+      lastname: string;
+      emailid: string;
+      mobilenumber: string;
+    }>('http://localhost:3000/api/posts/getcontact/' + emailid + '/' + userId);
+  }
 }

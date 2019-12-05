@@ -1,18 +1,18 @@
-import {Component, OnInit} from '@angular/core';
-import { MatBottomSheetRef } from '@angular/material/bottom-sheet';
-import {  FormGroup, FormBuilder, FormArray } from '@angular/forms';
+import { Component, OnInit, Inject, Pipe, PipeTransform, Injectable } from '@angular/core';
+import { MatBottomSheetRef, MAT_BOTTOM_SHEET_DATA } from '@angular/material/bottom-sheet';
+import { FormGroup, FormBuilder, FormArray } from '@angular/forms';
 
 import { Contact } from 'src/app/csvread/contact-model';
 import { ContactService } from 'src/app/csvread/contact.service';
 import { MatTableDataSource } from '@angular/material';
-import { AuthService } from 'src/app/auth.service';
+import { AuthService, ContactGroups } from 'src/app/auth.service';
+
 
 @Component({
-  selector: 'bottom-sheet-overview-example-sheet',
-  templateUrl: 'bottom-sheet-overview-example.html',
+  selector: "bottom-sheet-overview-example-sheet",
+  templateUrl: 'bottom-sheet-overview-example.html'
 })
-
-
+@Injectable()
 export class BottomSheetOverviewExampleSheet implements OnInit {
 
   form: FormGroup;
@@ -21,48 +21,49 @@ export class BottomSheetOverviewExampleSheet implements OnInit {
 
   contactsArry: Contact[] = [];
 
-  contact: Contact = {firstname: 'Vishal', lastname: 'Pannala' , mobilenumber: '13124312' , emailid: 'vishalreddy.pannala@gmail.com'};
+  contact: Contact = {
+    firstname: 'Vishal',
+    lastname: 'Pannala',
+    mobilenumber: '13124312',
+    emailid: 'vishalreddy.pannala@gmail.com'
+  };
 
   checked = true;
 
   selectedContact = [];
-
   username: string;
-
-  lengthOfArray
-
+  lengthOfArray;
   selectedAll: any;
-
   dataSource;
+  searchTerm: any;
+  itemsCopy;
+  selected: string;
 
-  constructor(private _bottomSheetRef: MatBottomSheetRef<BottomSheetOverviewExampleSheet>, private formbuilder: FormBuilder, private contactService: ContactService, private authService: AuthService) {
-    for (let i = 0; i < 60; i++){
-      this.contactsArry.push(this.contact);
-    }
-    // console.log(this.contact.mobilenumber);
-    // while (this.contact.mobilenumber !== '13124312') {
-    //   this.contactsArry.push(this.contact);
-    // }
-  this.contacts = this.contactsArry;
+  constructor(
+    private _bottomSheetRef: MatBottomSheetRef<BottomSheetOverviewExampleSheet>,
+    @Inject(MAT_BOTTOM_SHEET_DATA) public data: any,
+    private formbuilder: FormBuilder,
+    private contactService: ContactService,
+    private authService: AuthService
+  ) {
   }
 
   openLink(event: MouseEvent): void {
     this._bottomSheetRef.dismiss();
     event.preventDefault();
     this.contactService.setSelectedContactList(this.selectedContact);
-    this.selectedContact = [];
   }
 
-  onClick(){
+  onClick() {
 
   }
 
   ngOnInit(): void {
     this.form = this.formbuilder.group({
       contacts: this.addContactsControls()
-  });
+    });
 
-  this.authService
+    this.authService
       .getAuthUsernameListener()
       .subscribe(message => (this.username = message));
     this.authService.getContacts(this.username);
@@ -70,46 +71,48 @@ export class BottomSheetOverviewExampleSheet implements OnInit {
     this.authService
       .getContactsListListener()
       .subscribe((contacts1: Contact[]) => {
-        this.contactsArry = contacts1;
+        this.contactsArry = this.data;
         this.contacts = this.contactsArry;
         this.lengthOfArray = this.contacts.length;
       });
-      console.log(this.contactsArry);
-}
-
-get contactsArray() {
-  return this.form.get('contacts') as FormArray;
-}
-
-addContactsControls() {
-  const arr = this.contacts.map(element => {
-    return this.formbuilder.control(false);
-  });
-  return this.formbuilder.array(arr);
-}
-
-getSelectedContactsValue() {
-  this.selectedContact = [];
-  this.contactsArray.controls.forEach((control, i) => {
-    if (control.value) {
-      this.selectedContact.push(this.contacts[i]);
-    }
-  });
-}
-
-applyFilter(filterValue: string) {
-  this.dataSource = new MatTableDataSource(this.contacts);
-  this.dataSource.filter = filterValue.trim().toLowerCase();
-}
-
-selectAll() {
-  for (let i = 0; i < this.contacts.length; i++) {
-    this.contactsArray[i].selected = this.selectedAll;
+    this.authService
+      .getContactGroupsListener()
+      .subscribe((contacts1: ContactGroups[]) => {});
   }
-}
-checkIfAllSelected() {
-  this.selectedAll = this.contacts.every(function(item:any) {
-      return item.selected = true;
+
+  get contactsArray() {
+    return this.form.get('contacts') as FormArray;
+  }
+
+  addContactsControls() {
+    const arr = this.data.map(element => {
+      return this.formbuilder.control(false);
     });
-}
+    return this.formbuilder.array(arr);
+  }
+
+  getSelectedContactsValue() {
+    this.selectedContact = [];
+    this.contactsArray.controls.forEach((control, i) => {
+      if (control.value) {
+        this.selectedContact.push(this.contacts[i]);
+      }
+    });
+  }
+
+  SelectAll() {
+    this.contactsArray.controls.forEach((control) => {
+      control.setValue(true);
+    });
+    this.getSelectedContactsValue();
+  }
+
+  SelectNone() {
+    this.contactsArray.controls.forEach((control) => {
+      control.setValue(false);
+    });
+    this.getSelectedContactsValue();
+  }
+
+
 }

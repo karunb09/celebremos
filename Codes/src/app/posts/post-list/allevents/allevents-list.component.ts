@@ -88,7 +88,9 @@ export class AllEventsComponent implements OnInit, OnDestroy {
     });
       this.posts = sortedArray;
     });
-
+    if (this.posts.length === 0 ) {
+      this.isLoading = false;
+    }
   }
 
   onDelete(post: string) {

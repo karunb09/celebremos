@@ -44,14 +44,14 @@
       />
       <mat-card-content>
         <mat-list>
-          <mat-list-item>Event type: {{ post.type }}</mat-list-item>
+          <mat-list-item><mat-icon>card_giftcard</mat-icon> &nbsp;Event type: {{ post.type }}</mat-list-item>
           <mat-divider></mat-divider>
-          <mat-list-item>Hosted by: {{ (post.host.length>50)? (post.host | slice:0:50)+'..':(post.host) }}</mat-list-item>
+          <mat-list-item><mat-icon>emoji_people</mat-icon> &nbsp;Hosted by: {{ (post.host.length>50)? (post.host | slice:0:50)+'..':(post.host) }}</mat-list-item>
           <mat-divider></mat-divider>
-          <mat-list-item>Where: {{ (post.location.length>50)? (post.location | slice:0:50)+'..':(post.location) }}</mat-list-item>
+          <mat-list-item><mat-icon>room</mat-icon> &nbsp;Where: {{ (post.location.length>50)? (post.location | slice:0:50)+'..':(post.location) }}</mat-list-item>
           <mat-divider></mat-divider>
           <mat-list-item
-            >Your response: {{ getresponses[i] }}</mat-list-item
+            ><mat-icon>reply</mat-icon> &nbsp;Your response: {{ getresponses[i] }}</mat-list-item
           >
         </mat-list>
         <mat-divider></mat-divider>

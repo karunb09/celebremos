@@ -7,6 +7,8 @@ import { Component, OnInit } from '@angular/core';
 })
 export class BirthdayCardsComponent implements OnInit {
 
+  image = 'http://localhost:3000/images/suresh-gadi-pelli-1574224031587.jpg';
+  imagePath = 'suresh-gadi-pelli-1574224031587';
   constructor() { }
 
   ngOnInit() {

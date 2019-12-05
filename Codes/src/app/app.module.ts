@@ -9,7 +9,8 @@ import { MatInputModule, MatCardModule, MatButtonModule,
   MatSelectModule, MatAutocompleteModule, MatDatepickerModule, MatNativeDateModule,
   MatTableModule, MatRadioModule, MatTooltipModule, MatSnackBarModule,
   MatBottomSheetModule, MatCheckboxModule, MatPaginatorModule, MatSortModule, MatIconModule, MatTabsModule,
-  MatBadgeModule } from '@angular/material';
+  MatBadgeModule,
+  MatTreeModule} from '@angular/material';
 
 import { GooglePlaceModule } from 'ngx-google-places-autocomplete';
 
@@ -43,7 +44,11 @@ import { BirthdayCardsComponent } from './cards/birthday-cards/birthday-cards.co
 import { WeddingCardsComponent } from './cards/wedding-cards/wedding-cards.component';
 import { PartyCardsComponent } from './cards/party-cards/party-cards.component';
 import { PostQuestionaireComponent } from './posts/create-posts/post-questionaire/post-questionaire.component';
-
+import { DialogOverviewExampleDialog } from './posts/create-posts/post-questionaire/add-poll/dialog-overview-example-dialog';
+import { ItemsToBringDialog } from './posts/create-posts/post-questionaire/items-to-bring/items-to-bring-dialog';
+import { AddFoodItemsDialog } from './posts/create-posts/post-questionaire/add-food-menu/add-food-items-dialog';
+import { CreateContactGroup } from './contacts/create-contact-group/create-contact-group';
+import { SearchFilterPipe } from './posts/create-posts/search-filter.pipe';
 
 
 @NgModule({
@@ -74,7 +79,12 @@ import { PostQuestionaireComponent } from './posts/create-posts/post-questionair
     BirthdayCardsComponent,
     WeddingCardsComponent,
     PartyCardsComponent,
-    PostQuestionaireComponent
+    PostQuestionaireComponent,
+    DialogOverviewExampleDialog,
+    ItemsToBringDialog,
+    AddFoodItemsDialog,
+    CreateContactGroup,
+    SearchFilterPipe
   ],
   imports: [
     BrowserModule,
@@ -108,7 +118,8 @@ import { PostQuestionaireComponent } from './posts/create-posts/post-questionair
     MatSortModule,
     MatIconModule,
     MatTabsModule,
-    MatBadgeModule
+    MatBadgeModule,
+    MatTreeModule
   ],
   providers: [ MatDatepickerModule,
     {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
@@ -116,6 +127,12 @@ import { PostQuestionaireComponent } from './posts/create-posts/post-questionair
 
   ],
   bootstrap: [AppComponent],
-  entryComponents: [ErrorComponent, BottomSheetOverviewExampleSheet, ConfirmationDialogComponent]
+  entryComponents: [ErrorComponent, BottomSheetOverviewExampleSheet,
+    ConfirmationDialogComponent,
+    DialogOverviewExampleDialog,
+    ItemsToBringDialog,
+    AddFoodItemsDialog,
+    CreateContactGroup
+  ]
 })
 export class AppModule { }

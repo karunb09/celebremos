@@ -22,14 +22,17 @@
       </mat-select>
     </mat-form-field>
     <div>
-        <button mat-stroked-button type = "button" (click)="filePicker.click()" matTooltip="You can either choose a predefined template or a template of your own.">Choose template</button>
+        <button mat-stroked-button type = "button" color="accent"(click)="filePicker.click()" matTooltip="You can either choose a predefined template or a template of your own."><mat-icon>add_photo_alternate</mat-icon>&nbsp;Choose template</button>
         <input type = "file" #filePicker (change) = "onImagePicked($event)">
       </div>
       <div class="image-preview" *ngIf = "(imagePreview !== '' && imagePreview && form.get('image').valid) ">
-        <img [src] = "imagePreview" class="img-fluid" [alt] = "form.value.title">
+        <img [src] = "imagePreview" class="img-fluid" alt = "Title">
       </div>
       <div class="image-preview" *ngIf = "mode === 'edit' && imagePreview === '' ">
-        <img [src] = "post?.imagePath" class="img-fluid" [alt] = "form.value.title">
+        <img [src] = "post?.imagePath" class="img-fluid" alt = "Title">
+      </div>
+      <div class="image-preview" *ngIf = "mode === 'createImage' && imagePathCreate !== ''">
+        <img [src] = "imagePathCreate" class="img-fluid" alt = "Form">
       </div>
       <br>
 
@@ -88,9 +91,9 @@
         later as well.</mat-hint
       > </mat-form-field
     ><br /><br />
-    <button mat-stroked-button color="primary"matTooltip="Choose from your contact list" (click)="openBottomSheet(); $event.preventDefault()" >Contact list</button>&nbsp; &nbsp;
+    <button mat-stroked-button color="primary"matTooltip="Choose from your contact list" (click)="openBottomSheet(); $event.preventDefault()" ><mat-icon>list_alt</mat-icon>&nbsp;Contact list</button>&nbsp; &nbsp;
     <!-- <button mat-raised-button color="primary" matTooltip="Import contacts from CSV file">Upload file</button> -->
-    <button mat-stroked-button  type = "button" (click)="csvReader.click()" matTooltip="">Choose a file</button>
+    <button mat-stroked-button  color="accent" type = "button" (click)="csvReader.click()" matTooltip=""><mat-icon>present_to_all</mat-icon>&nbsp;&nbsp;Choose a file</button>
       <input type="file" #csvReader name="Upload CSV" id="txtFileUpload" (change)="uploadListener($event)" accept=".csv" />
 
     <mat-form-field class="example-full-width">
@@ -99,10 +102,12 @@
         rows="3"
         formControlName="content"
         placeholder="Additional Information (If any)"
-      ></textarea> </mat-form-field
-    ><br />
-    <button mat-raised-button color="primary" type="button" [routerLink]="['/questionaire']" routerLinkActive="router-link-active" >Continue</button>&nbsp; &nbsp;
-    <button mat-raised-button color="primary" type = "button" matTooltip="Invitations will not be sent to your guests by clicking here." (click)="onSaveforLaterUse(); $event.preventDefault()">Save for later use</button> &nbsp; &nbsp;
-    <button mat-raised-button color="accent" type="Submit" matTooltip="Invitations will be sent to your guests by clicking here.">Send Invitation</button>
+      ></textarea>
+      <mat-hint
+        >If you want to add a poll, items to bring, and food menu click on Continue button below else click on Send Invitation to invite your guests without poll, food menu and items to bring. However, you can add them later.</mat-hint
+      ></mat-form-field
+    ><br /><br><br>
+    <button mat-raised-button *ngIf="mode !== 'edit'" color="primary" type = "button" matTooltip="Invitations will not be sent to your guests by clicking here." (click)="onSaveforLaterUse(); $event.preventDefault()">Continue</button> &nbsp; &nbsp;
+    <button mat-raised-button color="accent" type="Submit" matTooltip="Invitations will be sent to your guests by clicking here."><mat-icon>send</mat-icon>&nbsp;&nbsp;Send Invitation</button>
   </form>
 </mat-card>

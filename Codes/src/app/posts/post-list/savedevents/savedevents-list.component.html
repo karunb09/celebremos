@@ -44,28 +44,28 @@
       />
       <mat-card-content>
         <mat-list>
-          <mat-list-item>Event type: {{ post.type }}</mat-list-item>
+          <mat-list-item><mat-icon>card_giftcard</mat-icon> &nbsp;Event type: {{ post.type }}</mat-list-item>
           <mat-divider></mat-divider>
-          <mat-list-item>Hosted by: {{ (post.host.length>50)? (post.host | slice:0:50)+'..':(post.host) }}</mat-list-item>
+          <mat-list-item><mat-icon>emoji_people</mat-icon> &nbsp;Hosted by: {{ (post.host.length>50)? (post.host | slice:0:50)+'..':(post.host) }}</mat-list-item>
           <mat-divider></mat-divider>
-          <mat-list-item>Where: {{ (post.location.length>50)? (post.location | slice:0:50)+'..':(post.location) }}</mat-list-item>
+          <mat-list-item><mat-icon>room</mat-icon> &nbsp;Where: {{ (post.location.length>50)? (post.location | slice:0:50)+'..':(post.location) }}</mat-list-item>
           <mat-divider></mat-divider>
           <mat-list-item
-            >Number of Guests added: {{ post.guests.length }}</mat-list-item
+            ><mat-icon>people_alt</mat-icon> &nbsp; Number of Guests added: {{ post.guests.length }}</mat-list-item
           >
           <a mat-button color="primary" [routerLink]="['/addGuests', post.id]"
-            >Add more guests</a
+            ><mat-icon>group_add</mat-icon> &nbsp;Add more guests</a
           >
         </mat-list>
         <mat-divider></mat-divider>
       </mat-card-content>
       <mat-card-actions>
-        <a mat-button color="primary" [routerLink]="['/edit', post.id]">EDIT</a>
-        <button mat-button color="warn" (click)="openDialog(post.id)">
+        <a mat-stroked-button color="primary" [routerLink]="['/edit', post.id]"><mat-icon>edit</mat-icon>EDIT</a>
+        <button mat-stroked-button color="warn" (click)="openDialog(post.id)"><mat-icon>cancel_schedule_send</mat-icon>
           CANCEL
         </button>
-        <button mat-raised-button color="primary" (click)="onSendInvitations(post.id)">
-            SEND INVITATIONS
+        <button mat-raised-button color="primary" (click)="onSendInvitations(post.id)"><mat-icon>send</mat-icon>
+            SEND
           </button>
       </mat-card-actions>
     </mat-card>

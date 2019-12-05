@@ -1,0 +1,16 @@
+<h1 mat-dialog-title>Create a Poll</h1>
+<div mat-dialog-content>
+  <mat-form-field>
+    <textarea matInput rows = "2" placeholder = "Enter your question here" required [(ngModel)]="data.question"></textarea>
+  </mat-form-field>
+  <div *ngFor = "let option of data.options; let i = index;">
+  <mat-form-field >
+    <input matInput placeholder = "Enter option"  [(ngModel)]="data.options[i]">
+  </mat-form-field>
+</div>
+<button mat-stroked-button color="primary" (click)="increaseArraySize()"><mat-icon>library_add</mat-icon>&nbsp;&nbsp; Add new option</button>
+</div><br>
+<div mat-dialog-actions>
+  <button mat-flat-button color = "accent" (click)="onNoClick()">No, thanks</button> &nbsp;&nbsp;
+  <button mat-flat-button  color = "primary" [mat-dialog-close]="data" cdkFocusInitial>Add</button>
+</div>

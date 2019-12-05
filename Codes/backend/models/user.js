@@ -13,13 +13,23 @@ const userScheme = mongoose.Schema({
   createdEvents: { type: [mongoose.Schema.Types.ObjectId], ref: "Post", required: false},
   savedEvents: { type: [mongoose.Schema.Types.ObjectId], ref: "Post", required: false},
   invitedEvents: { type: [mongoose.Schema.Types.ObjectId], ref: "Post", required: false},
+  contactgroups: {type: [ {
+    groupName: { type: String, required: false },
+    groupcontacts: { type: [ {
+      firstname: { type: String, required: false },
+      lastname: { type: String, required: false },
+      mobilenumber: { type: String, required: false },
+      emailid: { type: String, required: false },
+    }
+    ], required: false},
+  }], required: false},
   contacts: { type: [ {
     firstname: { type: String, required: false },
     lastname: { type: String, required: false },
     mobilenumber: { type: String, required: false },
     emailid: { type: String, required: false },
   }
-  ]},
+  ], required: false},
 });
 
 userScheme.plugin(uniqueValidator);

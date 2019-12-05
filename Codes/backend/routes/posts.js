@@ -46,9 +46,14 @@ const nexmo = new Nexmo({
 router.post('/api/posts', checkAuth, multer({ storage: storage }).single("image"), (req, res, next) => {
   const username = req.body.username;
   const contacts = req.body.contacts;
-  const url = req.protocol + '://' + req.get('host');
+  let imagePath = req.body.image;
+  if (req.file) {
+    const url = req.protocol + '://' + req.get('host');
+    imagePath = url + "/images/" + req.file.filename;
+  }
+  console.log(imagePath);
   let responsesArray = [];
-  for(let i = 0; i < req.body.guests.length; i++ ){
+  for (let i = 0; i < req.body.guests.length; i++) {
     let response = {
       email: req.body.guests[i],
       numberofguests: "0",
@@ -59,7 +64,7 @@ router.post('/api/posts', checkAuth, multer({ storage: storage }).single("image"
   const post = new Post({
     title: req.body.title,
     type: req.body.type,
-    imagePath: url + "/images/" + req.file.filename,
+    imagePath: imagePath,
     date: req.body.date,
     time: req.body.time,
     host: req.body.host,
@@ -68,7 +73,9 @@ router.post('/api/posts', checkAuth, multer({ storage: storage }).single("image"
     guests: req.body.guests,
     responses: responsesArray,
     question: [],
-    itemstobring: []
+    itemstobring: [],
+    photos: [],
+    foodmenu: [],
   });
   let contact;
   let contactsss = [];
@@ -134,18 +141,20 @@ router.post('/api/posts', checkAuth, multer({ storage: storage }).single("image"
       }
       console.log('Credentials obtained, sending message...');
       let transporter = nodemailer.createTransport({
-        host: 'smtp.ethereal.email',
-        port: 587,
-        security: false,
+        service: 'gmail',
         auth: {
-          user: 'kylee.simonis24@ethereal.email',
-          pass: 'xjAxxwbVcWGg2m2wku'
+          user: 'celebremosnwmsu@gmail.com',
+          pass: 'Madhu876'
         }
       });
+
       for (let i = 0; i < createdPost.guests.length; i++) {
+        let urlll = 'http://localhost:4200/rsvp/' + createdPost._id + '/' + createdPost.guests[i];
         if (Number(createdPost.guests[i])) {
           nexmo.message.sendSms(
-            '16469928733', createdPost.guests[i], 'You are invited to a ' + createdPost.type + ' invitation. Please RSVP by clicking the below link.' + 'http://localhost:4200/rsvp/' + createdPost._id + '/' + createdPost.guests[i] + ' ', { type: 'unicode' },
+            '16469928733', createdPost.guests[i], 'You are invited to a ' + createdPost.type +
+            ' invitation. Please RSVP by clicking the below link.' + '<a href="' +urlll+'">Click here</a>'
+            , { type: 'unicode' },
             (err, responseData) => {
               if (err) {
                 console.log(err);
@@ -160,7 +169,9 @@ router.post('/api/posts', checkAuth, multer({ storage: storage }).single("image"
             subject: 'You have an invitation',
             text: 'CELEBREMOS',
             html:
-              '<p>You are invited to a ' + createdPost.type + ' invitation. Please RSVP by clicking the below link. </p>' + 'http://localhost:4200/rsvp/' + createdPost._id + '/' + createdPost.guests[i]
+              '<p>You are invited to a ' + createdPost.type + ' invitation. <br>Please RSVP by clicking the below link. </p>'
+              + '<img src = "' + createdPost.imagePath + '" alt = "text" width="400" height="300"></img><br>'
+              + '<a href="' +urlll+'">Click here</a>'
           };
           transporter.sendMail(message, (err, info) => {
             if (err) {
@@ -190,7 +201,7 @@ router.post('/api/saveposts', checkAuth, multer({ storage: storage }).single("im
   const contacts = req.body.contacts;
   const url = req.protocol + '://' + req.get('host');
   let responsesArray = [];
-  for(let i = 0; i < req.body.guests.length; i++ ){
+  for (let i = 0; i < req.body.guests.length; i++) {
     let response = {
       email: req.body.guests[i],
       numberofguests: "0",
@@ -210,7 +221,9 @@ router.post('/api/saveposts', checkAuth, multer({ storage: storage }).single("im
     guests: req.body.guests,
     responses: responsesArray,
     question: [],
-    itemstobring: []
+    itemstobring: [],
+    foodmenu: [],
+    photos: [],
   });
   let contact;
   let contactsss = [];
@@ -257,7 +270,7 @@ router.post('/api/saveposts', checkAuth, multer({ storage: storage }).single("im
   });
 });
 
- router.get('/api/postslist/:id', checkAuth,(req, res, next) => {
+router.get('/api/postslist/:id', checkAuth, (req, res, next) => {
   const username = req.params.id;
   let posts = [];
   let fetchedUser;
@@ -403,6 +416,7 @@ router.delete('/api/posts/:id/:user', checkAuth, (req, res, next) => {
   Post.deleteOne({
     _id: req.params.id
   }).then(result => {
+    console.log(result);
     User
       .findOne({ username: username })
       .then(user => {
@@ -426,18 +440,18 @@ router.delete('/api/posts/:id/:user', checkAuth, (req, res, next) => {
           }
         }
         User.find().then(users => {
-          for(let i = 0; i < users.length; i++ ){
+          for (let i = 0; i < users.length; i++) {
             let invited = [];
-            for(let j = 0; j < users[i].invitedEvents.length; j++ ){
+            for (let j = 0; j < users[i].invitedEvents.length; j++) {
               let arr2 = JSON.stringify(users[i].invitedEvents[j]);
               const contactID = arr2.replace(/"/g, '');
-              if(contactID === req.params.id ){
+              if (contactID === req.params.id) {
 
-              }else{
+              } else {
                 invited.push(users[i].invitedEvents[j]);
               }
             }
-            User.updateOne({username: users[i].username}, {$set: {"invitedEvents": invited}}).then(result => {
+            User.updateOne({ username: users[i].username }, { $set: { "invitedEvents": invited } }).then(result => {
               res.status(200).json({
                 title: "Event id added to event successfully. ",
                 message: 'Your password is successfully changed. You can now login with the updated password.'
@@ -449,8 +463,10 @@ router.delete('/api/posts/:id/:user', checkAuth, (req, res, next) => {
         User.updateOne({
           username: fetchedUser.username
         }, {
-          $set: { "createdEvents": fetchedEvents,
-        "savedEvents": savedEventss }
+          $set: {
+            "createdEvents": fetchedEvents,
+            "savedEvents": savedEventss
+          }
         }).then(result => {
           res.status(200).json({
             title: "Event id added to event successfully. ",
@@ -468,7 +484,7 @@ router.put('/api/posts/:id', multer({ storage: storage }).single("image"), (req,
     imagePath = url + "/images/" + req.file.filename;
   }
   let responsesArray = [];
-  for(let i = 0; i < req.body.guests.length; i++ ){
+  for (let i = 0; i < req.body.guests.length; i++) {
     let response = {
       email: req.body.guests[i],
       numberofguests: "0",
@@ -489,11 +505,36 @@ router.put('/api/posts/:id', multer({ storage: storage }).single("image"), (req,
     guests: req.body.guests,
     responses: responsesArray,
     question: [],
-    itemstobring: []
+    itemstobring: [],
+    foodmenu: [],
+    photos: [],
   })
   Post.updateOne({
     _id: req.params.id
   }, post).then(result => {
+    let fetchedInvitedUser;
+    User.find().then(users => {
+      for (let i = 0; i < post.guests.length; i++) {
+        for (let j = 0; j < users.length; j++) {
+          if (post.guests[i] === users[j].email) {
+            User.findOne({ email: users[j].email }).then(user => {
+              fetchedInvitedUser = user;
+              fetchedInvitedUser.invitedEvents.push(post._id)
+              User.updateOne({
+                email: users[j].email
+              }, {
+                $set: { "invitedEvents": fetchedInvitedUser.invitedEvents }
+              }).then(result => {
+                res.status(200).json({
+                  title: "Invited Successfully",
+                  message: 'Your password is successfully changed.'
+                });
+              })
+            });
+          }
+        }
+      }
+    });
     nodemailer.createTestAccount((err, account) => {
       if (err) {
         console.error('Failed to create a testing account. ' + err.message);
@@ -501,18 +542,18 @@ router.put('/api/posts/:id', multer({ storage: storage }).single("image"), (req,
       }
       console.log('Credentials obtained, sending message...');
       let transporter = nodemailer.createTransport({
-        host: 'smtp.ethereal.email',
-        port: 587,
-        security: false,
+        service: 'gmail',
         auth: {
-          user: 'kylee.simonis24@ethereal.email',
-          pass: 'xjAxxwbVcWGg2m2wku'
+          user: 'celebremosnwmsu@gmail.com',
+          pass: 'Madhu876'
         }
       });
       for (let i = 0; i < post.guests.length; i++) {
+        let urlll = 'http://localhost:4200/rsvp/' + post._id + '/' + post.guests[i];
         if (Number(post.guests[i])) {
           nexmo.message.sendSms(
-            '16469928733', post.guests[i], 'You are invited to a ' + post.type + ' invitation. Please RSVP by clicking the below link.' + 'http://localhost:4200/rsvp/' + post._id + '/' + post.guests[i] + '\t.', { type: 'unicode' },
+            '16469928733', post.guests[i], 'Event ' + createdPost.type +
+            ' is updated. Your host wants you to send RSVP again. Please RSVP by clicking the below link.' + '<a href="' +urlll+'">Click here</a>', { type: 'unicode' },
             (err, responseData) => {
               if (err) {
                 console.log(err);
@@ -527,7 +568,9 @@ router.put('/api/posts/:id', multer({ storage: storage }).single("image"), (req,
             subject: 'You have an invitation',
             text: 'CELEBREMOS',
             html:
-              '<p>You are invited to a' + post.type + ' invitation. Please RSVP by clicking the below link. </p>' + 'http://localhost:4200/rsvp/' + post._id + '/' + post.guests[i]
+            '<p>Event ' + post.type + ' is updated. <br> Your host wants you to send RSVP again. <br> Please RSVP by clicking the below link. </p>'
+            + '<img src = "' + post.imagePath + '" alt = "text" width="400" height="300"></img><br>'
+            + '<a href="' +urlll+'">Click here</a>'
           };
           transporter.sendMail(message, (err, info) => {
             if (err) {
@@ -556,7 +599,7 @@ router.post('/api/posts/update/:id/:username', multer({ storage: storage }).sing
     imagePath = url + "/images/" + req.file.filename;
   }
   let responsesArray = [];
-  for(let i = 0; i < req.body.guests.length; i++ ){
+  for (let i = 0; i < req.body.guests.length; i++) {
     let response = {
       email: req.body.guests[i],
       numberofguests: "0",
@@ -576,7 +619,9 @@ router.post('/api/posts/update/:id/:username', multer({ storage: storage }).sing
     guests: req.body.guests,
     responses: responsesArray,
     question: [],
-    itemstobring: []
+    itemstobring: [],
+    photos: [],
+    foodmenu: []
   })
   let contacting = [];
   post.save().then(createdPost => {
@@ -608,6 +653,29 @@ router.post('/api/posts/update/:id/:username', multer({ storage: storage }).sing
           });
         })
       });
+      let fetchedInvitedUser;
+      User.find().then(users => {
+        for (let i = 0; i < createdPost.guests.length; i++) {
+          for (let j = 0; j < users.length; j++) {
+            if (post.guests[i] === users[j].email) {
+              User.findOne({ email: users[j].email }).then(user => {
+                fetchedInvitedUser = user;
+                fetchedInvitedUser.invitedEvents.push(createdPost._id)
+                User.updateOne({
+                  email: users[j].email
+                }, {
+                  $set: { "invitedEvents": fetchedInvitedUser.invitedEvents }
+                }).then(result => {
+                  res.status(200).json({
+                    title: "Invited Successfully",
+                    message: 'Your password is successfully changed.'
+                  });
+                })
+              });
+            }
+          }
+        }
+      });
     nodemailer.createTestAccount((err, account) => {
       if (err) {
         console.error('Failed to create a testing account. ' + err.message);
@@ -615,45 +683,48 @@ router.post('/api/posts/update/:id/:username', multer({ storage: storage }).sing
       }
       console.log('Credentials obtained, sending message...');
       let transporter = nodemailer.createTransport({
-        host: 'smtp.ethereal.email',
-        port: 587,
-        security: false,
+        service: 'gmail',
         auth: {
-          user: 'kylee.simonis24@ethereal.email',
-          pass: 'xjAxxwbVcWGg2m2wku'
+          user: 'celebremosnwmsu@gmail.com',
+          pass: 'Madhu876'
         }
       });
-      // for (let i = 0; i < createdPost.guests.length; i++) {
-      //   if (Number(createdPost.guests[i])) {
-      //     nexmo.message.sendSms(
-      //       '16469928733', createdPost.guests[i], 'You are invited to a ' + createdPost.type + ' invitation. Please RSVP by clicking the below link.' + 'http://localhost:4200/rsvp/' + createdPost._id + '/' + createdPost.guests[i] + ' ', { type: 'unicode' },
-      //       (err, responseData) => {
-      //         if (err) {
-      //           console.log(err);
-      //         }
-      //       }
-      //     );
-      //   } else {
-      //     //Message object
-      //     let message = {
-      //       from: 'Celebremos <haripriyarao.jupally@gmail.com>',
-      //       to: createdPost.guests[i],
-      //       subject: 'You have an invitation',
-      //       text: 'CELEBREMOS',
-      //       html:
-      //         '<p>You are invited to a ' + createdPost.type + ' invitation. Please RSVP by clicking the below link. </p>' + 'http://localhost:4200/rsvp/' + createdPost._id + '/' + createdPost.guests[i]
-      //     };
-      //     transporter.sendMail(message, (err, info) => {
-      //       if (err) {
-      //         console.log('Error occurred. ' + err.message);
-      //         return process.exit(1);
-      //       }
-      //       console.log('Message sent: %s', info.messageId);
-      //       // Preview only available when sending through an Ethereal account
-      //       console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
-      //     });
-      //   }
-      // }
+      for (let i = 0; i < createdPost.guests.length; i++) {
+        let urlll = 'http://localhost:4200/rsvp/' + createdPost._id + '/' + createdPost.guests[i];
+        if (Number(createdPost.guests[i])) {
+          nexmo.message.sendSms(
+            '16469928733', createdPost.guests[i], 'You are invited to a ' + createdPost.type +
+            ' invitation. Please RSVP by clicking the below link.' + '<a href="' +urlll+'">Click here</a>'
+            , { type: 'unicode' },
+            (err, responseData) => {
+              if (err) {
+                console.log(err);
+              }
+            }
+          );
+        } else {
+          //Message object
+          let message = {
+            from: 'Celebremos <haripriyarao.jupally@gmail.com>',
+            to: createdPost.guests[i],
+            subject: 'You have an invitation',
+            text: 'CELEBREMOS',
+            html:
+              '<p>You are invited to a ' + createdPost.type + ' invitation. <br>Please RSVP by clicking the below link. </p>'
+              + '<img src = "' + createdPost.imagePath + '" alt = "text" width="400" height="300"></img><br>'
+              + '<a href="' +urlll+'">Click here</a>'
+          };
+          transporter.sendMail(message, (err, info) => {
+            if (err) {
+              console.log('Error occurred. ' + err.message);
+              return process.exit(1);
+            }
+            console.log('Message sent: %s', info.messageId);
+            // Preview only available when sending through an Ethereal account
+            console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
+          });
+        }
+      }
     });
     res.status(200).json({
       title: "Event created succesfully",
@@ -670,13 +741,13 @@ router.put('/api/posts/update/rsvp', (req, res, next) => {
   let fetchedResponses = [];
   let statusText;
   Post.findById(req.body.id).then((post) => {
-    for(let i = 0; i < post.responses.length; i++){
+    for (let i = 0; i < post.responses.length; i++) {
       if (post.responses[i].email === req.body.emailId) {
-        if(req.body.response === "Yes") {
+        if (req.body.response === "Yes") {
           statusText = "accepted"
-        }else if(req.body.response === "No") {
+        } else if (req.body.response === "No") {
           statusText = "denied"
-        } else{
+        } else {
           statusText = "may be"
         }
         let responsesPush = {
@@ -686,7 +757,7 @@ router.put('/api/posts/update/rsvp', (req, res, next) => {
           status: statusText
         }
         fetchedResponses.push(responsesPush);
-      }else {
+      } else {
         fetchedResponses.push(post.responses[i]);
       }
     }
@@ -712,7 +783,7 @@ router.put('/api/posts/update/rsvp', (req, res, next) => {
 router.get('/api/posts/responseitem/:emailId/:postid', (req, res, next) => {
   Post.findById(req.params.postid)
     .then(post => {
-      for (let i = 0; i < post.responses.length; i++ ) {
+      for (let i = 0; i < post.responses.length; i++) {
         if (post.responses[i].email === req.params.emailId) {
           res.status(200).json(post.responses[i]);
         }
@@ -724,6 +795,162 @@ router.get('/api/posts/responseitem/:emailId/:postid', (req, res, next) => {
         message: "Fetching email failed!"
       });
     });
-})
+});
+
+router.put('/api/posts/update/foodpoll', (req, res, next) => {
+  let contacting = [];
+  Post.findById(req.body.postId)
+    .then(post => {
+      let optionsValues = [];
+      post.foodmenu = req.body.foodmenu
+      post.itemstobring = req.body.items
+      for (let i = 0; i < req.body.options.length; i++) {
+        optionsValues.push({ optionvalue: req.body.options[i], emails: [] })
+      }
+      post.question = [{ questionname: req.body.question, options: optionsValues }]
+      Post.updateOne({
+        _id: req.body.postId
+      }, {
+        $set: {
+          "foodmenu": post.foodmenu,
+          "itemstobring": post.itemstobring,
+          "question": post.question
+        }
+      }).then(createdPost => {
+        console.log(req.body.username);
+        let fetchedUser;
+        User
+          .findOne({ username: req.body.username })
+          .then(user => {
+            fetchedUser = user;
+            fetchedUser.createdEvents.push(req.body.postId);
+            for (let i = 0; i < fetchedUser.savedEvents.length; i++) {
+              let arr2 = JSON.stringify(fetchedUser.savedEvents[i]);
+              const contactID = arr2.replace(/"/g, '');
+              if (req.body.postId === contactID) {
+              } else {
+                contacting.push(fetchedUser.savedEvents[i])
+              }
+            }
+            User.updateOne({
+              username: fetchedUser.username
+            }, {
+              $set: {
+                "createdEvents": fetchedUser.createdEvents,
+                "savedEvents": contacting
+              }
+            }).then(result => {
+              res.status(200).json({
+                title: "Event id added to event successfully. ",
+                message: 'Your password is successfully changed. You can now login with the updated password.'
+              });
+            })
+          });
+        let fetchedInvitedUser;
+        User.find().then(users => {
+          for (let i = 0; i < createdPost.guests.length; i++) {
+            for (let j = 0; j < users.length; j++) {
+              if (post.guests[i] === users[j].email) {
+                User.findOne({ email: users[j].email }).then(user => {
+                  fetchedInvitedUser = user;
+                  fetchedInvitedUser.invitedEvents.push(createdPost._id)
+                  User.updateOne({
+                    email: users[j].email
+                  }, {
+                    $set: { "invitedEvents": fetchedInvitedUser.invitedEvents }
+                  }).then(result => {
+                    res.status(200).json({
+                      title: "Invited Successfully",
+                      message: 'Your password is successfully changed.'
+                    });
+                  })
+                });
+              }
+            }
+          }
+        });
+        nodemailer.createTestAccount((err, account) => {
+          if (err) {
+            console.error('Failed to create a testing account. ' + err.message);
+            return process.exit(1);
+          }
+          console.log('Credentials obtained, sending message...');
+          let transporter = nodemailer.createTransport({
+            service: 'gmail',
+            auth: {
+              user: 'celebremosnwmsu@gmail.com',
+              pass: 'Madhu876'
+            }
+          });
+          for (let i = 0; i < createdPost.guests.length; i++) {
+            if (Number(createdPost.guests[i])) {
+              nexmo.message.sendSms(
+                '16469928733', createdPost.guests[i], 'You are invited to a ' + createdPost.type + ' invitation. Please RSVP by clicking the below link.' + 'http://localhost:4200/rsvp/' + createdPost._id + '/' + createdPost.guests[i] + ' ', { type: 'unicode' },
+                (err, responseData) => {
+                  if (err) {
+                    console.log(err);
+                  }
+                }
+              );
+            } else {
+              //Message object
+              let message = {
+                from: 'Celebremos <haripriyarao.jupally@gmail.com>',
+                to: createdPost.guests[i],
+                subject: 'You have an invitation',
+                text: 'CELEBREMOS',
+                html:
+                  '<p>You are invited to a ' + createdPost.type + ' invitation. Please RSVP by clicking the below link. </p>' + 'http://localhost:4200/rsvp/' + createdPost._id + '/' + createdPost.guests[i]
+              };
+              transporter.sendMail(message, (err, info) => {
+                if (err) {
+                  console.log('Error occurred. ' + err.message);
+                  return process.exit(1);
+                }
+                console.log('Message sent: %s', info.messageId);
+                // Preview only available when sending through an Ethereal account
+                console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
+              });
+            }
+          }
+        });
+        res.status(200).json({
+          title: "Event created succesfully",
+          message: "The event has been successfully created and invitations are sent to your guests email address/phone numbers.",
+          post: {
+            ...createdPost,
+            id: createdPost._id
+          }
+        });
+      });
+    })
+    .catch(error => {
+      res.status(500).json({
+        message: "Fetching post failed!"
+      });
+    });
+});
+
+router.get('/api/posts/getcontact/:emailId/:userId', (req, res, next) => {
+  User.findOne( {username: req.params.userId})
+  .then(user => {
+    for (let i= 0; i < user.contacts.length; i++) {
+      if(user.contacts[i].emailid === req.params.emailId || user.contacts[i].mobilenumber === req.params.emailId) {
+        res.status(200).json({
+          firstname: user.contacts[i].firstname,
+          lastname: user.contacts[i].lastname,
+          emailid: user.contacts[i].emailid,
+          mobilenumber: user.contacts[i].mobilenumber
+        });
+      }
+    }
+
+  })
+  .catch(error => {
+    res.status(500).json({
+      message: "Fetching email failed!"
+    });
+  });
+});
 
 module.exports = router;

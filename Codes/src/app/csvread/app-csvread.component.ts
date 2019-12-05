@@ -16,7 +16,7 @@ export class CsvReadComponent {
 
   uploadListener($event: any): void {
 
-    let text = [];
+    const text = [];
     let files = $event.srcElement.files;
 
     if (this.isValidCSVFile(files[0])) {
@@ -48,8 +48,8 @@ export class CsvReadComponent {
     let csvArr = [];
 
     for (let i = 1; i < csvRecordsArray.length; i++) {
-      let curruntRecord = (<string>csvRecordsArray[i]).split(',');
-      if (curruntRecord.length == headerLength) {
+      let curruntRecord = (<string> csvRecordsArray[i]).split(',');
+      if (curruntRecord.length === headerLength) {
         let csvRecord: Contact = {
         firstname: curruntRecord[0].trim(),
         lastname: curruntRecord[0].trim(),

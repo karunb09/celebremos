@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../auth.service';
 import { NgForm } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 
 @Component({
   selector: 'app-activateuser',
@@ -10,13 +10,24 @@ import { Router } from '@angular/router';
 })
 export class ActivateUserComponent implements OnInit {
   isLoading = false;
+  userid;
 
-  constructor(public authService: AuthService, private router: Router) {}
+  constructor(public authService: AuthService, private router: Router, public route: ActivatedRoute) {
+
+  }
 
   ngOnInit() {
     const currentURL = this.router.url;
-    
     this.isLoading = true;
-    this.authService.activateUser(currentURL.slice(currentURL.lastIndexOf('/') + 1));
+
+    this.route.paramMap.subscribe((paramMap: ParamMap) => {
+      if (paramMap.has('userId')) {
+        this.userid = paramMap.get('userId');
+        console.log(this.userid);
+      }
+      this.authService.activateNewUser(this.userid);
+    });
+
   }
+
 }

@@ -2,7 +2,7 @@
   <a class="navbar-brand" *ngIf = "!userIsAuthenticated" routerLink='/' id="titletext1"><img
       src="./assets/9423cc10-a935-45dc-a5d7-8497444f4f29_200x200.png" alt="Responsive text" class="d-inline-block align-top" width="45"
       height="45">CELEBREMOS</a>
-      <a class="navbar-brand" *ngIf = "userIsAuthenticated" routerLink='/allevents' id="titletext1"><img
+      <a class="navbar-brand" *ngIf = "userIsAuthenticated" routerLink='/hostedevents' id="titletext1"><img
         src="./assets/9423cc10-a935-45dc-a5d7-8497444f4f29_200x200.png" alt="Responsive text" class="d-inline-block align-top" width="45"
         height="45">CELEBREMOS</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
@@ -15,7 +15,7 @@
         <a class="nav-link" routerLink="/create" id="navbartextcolor" id="titletext" routerLinkActive="mat-primary"><b>Create Events</b></a>
       </li>
       <li class="nav-item" *ngIf="userIsAuthenticated">
-        <a class="nav-link" routerLink="/allevents" id="navbartextcolor" id="titletext"><b>Dashboard</b></a>
+        <a class="nav-link" routerLink="/hostedevents" id="navbartextcolor" id="titletext"><b>Dashboard</b></a>
       </li>
       <li class="nav-item dropdown" *ngIf="userIsAuthenticated">
         <a class="nav-link dropdown-toggle" href="#" id="navbartextcolor" role="button" data-toggle="dropdown"

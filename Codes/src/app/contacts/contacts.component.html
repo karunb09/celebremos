@@ -7,10 +7,11 @@
             (keyup)="applyFilter($event.target.value)"
             placeholder="Search"
           />
-
+          <mat-icon matSuffix>search</mat-icon>
         </mat-form-field>
+        <button mat-raised-button class = "buttonpaddingleft"color="accent" (click)= "openCreateContactDialog()"type="button" matTooltip="To create a new group click here."><mat-icon>group_add</mat-icon>&nbsp; &nbsp;Create new contact group</button>
 
-    <table mat-table [dataSource]="dataSource">
+        <table mat-table [dataSource]="dataSource">
       <!--- Note that these columns can be defined in any order.
               The actual rendered columns are set as a property on the row definition" -->
 
@@ -42,8 +43,6 @@
           <td mat-cell *matCellDef="let record"><mat-icon aria-hidden="false" aria-label="Example home icon" [routerLink]="['/contacts/edit', record.id]">edit</mat-icon>
             <mat-icon aria-hidden="false" class="redcolor" aria-label="Example home icon" (click)="openDialog(record.id, record.firstname)">delete</mat-icon></td>
         </ng-container>
-
-
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
     </table>
@@ -51,6 +50,64 @@
   <p *ngIf="contacts?.length <= 0 && !isLoading" class="info-text mat-body-1">
       No contacts added yet!
     </p>
+    <mat-spinner *ngIf="isLoading"></mat-spinner>
+    <mat-accordion multi="true" *ngIf="contactgroups?.length > 0 && !isLoading">
+      <mat-expansion-panel *ngFor="let post of contactgroups">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <b>{{post.groupName}} </b>
+          </mat-panel-title>
+          <mat-panel-description>
+            Number of Contacts: {{post?.groupcontacts.length}}
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+        <!-- <mat-list *ngFor="let contacts of post.groupcontacts">
+            <mat-list-item>{{ contacts.firstname }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{ contacts.lastname }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              {{ contacts.mobilenumber }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              {{ contacts.emailid }} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <mat-icon [routerLink]="['/contacts/edit', contacts._id]">edit</mat-icon>
+              <mat-icon class="redcolor" (click)="openDialogContactGroup(contacts._id, post._id, contacts.firstname)">delete</mat-icon> </mat-list-item>
+            <mat-divider></mat-divider>
+
+          </mat-list> -->
+          <div *ngFor="let data of contactsInGroups; let i = index;">
+
+          <table mat-table [dataSource]="data" >
+              <!--- Note that these columns can be defined in any order.
+                      The actual rendered columns are set as a property on the row definition" -->
+
+              <!-- Name Column -->
+              <ng-container matColumnDef="firstname">
+                <th mat-header-cell *matHeaderCellDef>First Name</th>
+                <td mat-cell *matCellDef="let record">{{ (record.firstname.length>6)? (record.firstname | slice:0:6)+'..':(record.firstname) }}</td>
+              </ng-container>
+
+              <ng-container matColumnDef="lastname">
+                <th mat-header-cell *matHeaderCellDef>Last Name</th>
+                <td mat-cell *matCellDef="let record">{{ (record.lastname.length>6)? (record.lastname | slice:0:6)+'..':(record.lastname) }}</td>
+              </ng-container>
+
+              <!-- Weight Column -->
+              <ng-container matColumnDef="mobilenumber">
+                <th mat-header-cell *matHeaderCellDef>Phone</th>
+                <td mat-cell *matCellDef="let record">{{ record.mobilenumber }}</td>
+              </ng-container>
+
+              <!-- Symbol Column -->
+              <ng-container matColumnDef="emailid">
+                <th mat-header-cell *matHeaderCellDef>Email</th>
+                <td mat-cell *matCellDef="let record">{{ (record.emailid.length>20)? (record.emailid | slice:0:20)+'..':(record.emailid) }}</td>
+              </ng-container>
+              <ng-container matColumnDef="operations">
+                  <th mat-header-cell *matHeaderCellDef></th>
+                  <td mat-cell *matCellDef="let record"><mat-icon aria-hidden="false" aria-label="Example home icon" [routerLink]="['/contacts/edit', record._id]">edit</mat-icon>
+                    <mat-icon aria-hidden="false" class="redcolor" aria-label="Example home icon" (click)="openDialogContactGroup(record._id, post._id. record.firstname)">delete</mat-icon></td>
+                </ng-container>
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+            </table>
+          </div>
+      </mat-expansion-panel>
+    </mat-accordion>
 </mat-card>
 <mat-card class="addguests1">
     <form [formGroup]= "form" (submit)="onSaveContact()" >
@@ -61,7 +118,6 @@
             formControlName="firstname"
             placeholder="Firstname"
           />
-
         </mat-form-field>
         <br>
         <mat-form-field>
@@ -80,7 +136,7 @@
                 formControlName="emailid"
                 placeholder="Email Id"
               />
-
+              <mat-icon matSuffix>email</mat-icon>
             </mat-form-field><br>
             <mat-form-field>
                 <input
@@ -89,9 +145,20 @@
                   formControlName="mobilenumber"
                   placeholder="Mobile"
                 />
+                <mat-icon matSuffix>call</mat-icon>
 
               </mat-form-field><br>
-        <button mat-raised-button color="accent" type="button" (click)= "onSaveContact()" routerLink="/contacts" matTooltip="By clicking here contact will be added.">Add Contact</button>
-
+              <mat-form-field>
+                  <mat-select
+                    placeholder="Contact Group"
+                    formControlName="group"
+                  >
+                    <mat-option *ngFor="let event of events" [value]="event.groupName">
+                      {{ event.groupName }}
+                    </mat-option>
+                  </mat-select>
+                  </mat-form-field><br>
+        <button mat-raised-button color="accent" type="button" (click)= "onSaveContact()" routerLink="/contacts" *ngIf = "mode !== 'edit'" matTooltip="By clicking here contact will be added.">Add Contact</button>
+        <button mat-raised-button color="accent" type="button" (click)= "onSaveContact()" routerLink="/contacts" *ngIf = "mode === 'edit'" matTooltip="By clicking here contact will be added.">Update Contact</button>
       </form>
 </mat-card>

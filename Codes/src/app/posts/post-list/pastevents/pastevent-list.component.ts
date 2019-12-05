@@ -31,25 +31,21 @@ export class PastEventComponent implements OnInit, OnDestroy {
     private router: Router
   ) {
     this.navLinks = [
-      {
-        label: "All Events",
-        link: "/allevents",
-        index: 0
-      },
+
       {
         label: "Hosted Events",
         link: "/hostedevents",
-        index: 1
+        index: 0
       },
       {
         label: "Saved Events",
         link: "/savedevents",
-        index: 2
+        index: 1
       },
       {
         label: "Invited Events",
         link: "/pastevents",
-        index: 3
+        index: 2
       }
     ];
   }

@@ -34,29 +34,24 @@ export class InvitedEventComponent implements OnInit, OnDestroy {
   ) {
     this.navLinks = [
       {
-        label: 'All Events',
-        link: '/allevents',
-        index: 0
-      },
-      {
         label: 'Hosted Events',
         link: '/hostedevents',
-        index: 1
+        index: 0
       },
       {
         label: 'Invited Events',
         link: '/invitedevents',
-        index: 2
+        index: 1
       },
       {
         label: 'Saved Events',
         link: '/savedevents',
-        index: 3
+        index: 2
       },
       {
         label: 'Past Events',
         link: '/pastevents',
-        index: 4
+        index: 3
       }
     ];
   }

@@ -44,44 +44,44 @@
       />
       <mat-card-content>
         <mat-list>
-          <mat-list-item>Event type: {{ post.type }}</mat-list-item>
+          <mat-list-item><mat-icon>card_giftcard</mat-icon> &nbsp;Event type: {{ post.type }}</mat-list-item>
           <mat-divider></mat-divider>
-          <mat-list-item>Hosted by: {{ (post.host.length>50)? (post.host | slice:0:50)+'..':(post.host) }}</mat-list-item>
+          <mat-list-item><mat-icon>emoji_people</mat-icon> &nbsp;Hosted by: {{ (post.host.length>50)? (post.host | slice:0:50)+'..':(post.host) }}</mat-list-item>
           <mat-divider></mat-divider>
-          <mat-list-item>Where: {{ (post.location.length>50)? (post.location | slice:0:50)+'..':(post.location) }}</mat-list-item>
+          <mat-list-item><mat-icon>room</mat-icon> &nbsp;Where: {{ (post.location.length>50)? (post.location | slice:0:50)+'..':(post.location) }}</mat-list-item>
           <mat-divider></mat-divider>
           <mat-list-item
-            >Number of Guests invited: {{ post.guests.length }}</mat-list-item
+            ><mat-icon>people_alt</mat-icon> &nbsp;Number of Guests invited: {{ post.guests.length }}</mat-list-item
           >
           <a mat-button color="primary" [routerLink]="['/addGuests', post.id]"
-            >Add more guests</a
+            ><mat-icon>group_add</mat-icon> &nbsp; Add more guests</a
           >
           <mat-divider></mat-divider>
           <mat-list-item
-            >Total Guests Attending: {{totalguests[i]}}</mat-list-item
+            ><mat-icon>how_to_reg</mat-icon> &nbsp;Total Guests Attending: {{totalguests[i]}}</mat-list-item
           >
           <mat-divider></mat-divider>
           <mat-list-item class="green"
-            >Accepted: {{accepted[i]}}</mat-list-item
+            ><mat-icon>thumb_up</mat-icon> &nbsp;Accepted: {{accepted[i]}}</mat-list-item
           >
           <mat-divider></mat-divider>
           <mat-list-item class="red"
-            >Rejected: {{denied[i]}}</mat-list-item
+            ><mat-icon>thumb_down</mat-icon> &nbsp;Rejected: {{denied[i]}}</mat-list-item
           >
           <mat-divider></mat-divider>
           <mat-list-item class="yellow"
-            >Maybe: {{ambiguous[i]}} </mat-list-item
+            ><mat-icon>thumbs_up_down</mat-icon> &nbsp;Maybe: {{ambiguous[i]}} </mat-list-item
           >
           <mat-divider></mat-divider>
           <mat-list-item
-            >Not replied: {{noreply[i]}} </mat-list-item
+            ><mat-icon>error</mat-icon> &nbsp;Not replied: {{noreply[i]}} </mat-list-item
           >
           <mat-divider></mat-divider>
         </mat-list>
       </mat-card-content>
       <mat-card-actions>
-        <a mat-button color="primary" [routerLink]="['/edit', post.id]">EDIT</a>
-        <button mat-button color="warn" (click)="openDialog(post.id)">
+        <a mat-stroked-button color="primary" [routerLink]="['/edit', post.id]"><mat-icon>edit</mat-icon>EDIT</a>
+        <button mat-stroked-button color="warn" (click)="openDialog(post.id)"><mat-icon>cancel_schedule_send</mat-icon>
           CANCEL
         </button>
       </mat-card-actions>

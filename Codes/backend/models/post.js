@@ -29,6 +29,8 @@ const postScheme = mongoose.Schema({
     itemname: { type: String, required: false },
     quantity: { type: String, required: false },
   }], required: false },
+  photos: { type: [String], required: false },
+  foodmenu: { type: [String], required: false },
 });
 
 

@@ -1,0 +1,17 @@
+<h1 mat-dialog-title>Ask Guests to Bring Something</h1>
+<div mat-dialog-content>
+  <div *ngFor="let item of data.items">
+    <mat-form-field >
+      <input matInput placeholder = "Item name"  [(ngModel)]="item.itemname">
+    </mat-form-field>&nbsp; &nbsp;
+    <mat-form-field >
+        <input matInput placeholder = "Quantity"  [(ngModel)]="item.quantity">
+      </mat-form-field>
+    </div>
+<button mat-stroked-button color="primary" (click)="increaseArraySize()"><mat-icon>library_add</mat-icon>&nbsp;&nbsp; Add new option</button>
+<br>
+</div>
+<div mat-dialog-actions>
+  <button mat-flat-button color = "accent" (click)="onNoClick()">No, thanks</button> &nbsp;&nbsp;
+  <button mat-flat-button  color = "primary" [mat-dialog-close]="data.items" cdkFocusInitial>Add</button>
+</div>

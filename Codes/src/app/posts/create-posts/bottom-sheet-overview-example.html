@@ -1,17 +1,11 @@
 <mat-nav-list>
-    <mat-form-field>
-        <input
-          matInput
-          (keyup)="applyFilter($event.target.value)"
-          placeholder="Search"
-        />
-      </mat-form-field>
+      <button mat-raised-button color="primary"  (click)="SelectAll()">Select All</button> &nbsp; &nbsp;
+      <button mat-raised-button color="secondary" (click)="SelectNone()">Select None</button>
   <form [formGroup]= "form" (submit)="onClick()">
     <div *ngFor = "let contact of contactsArray.controls; let i = index;">
-        <mat-checkbox [formControl] = 'contact' (change) = "getSelectedContactsValue()">{{contacts[i].firstname}}
-          {{contacts[i].lastname}}<br>{{contacts[i].emailid}}</mat-checkbox>
+        <mat-checkbox [formControl] = 'contact' (change) = "getSelectedContactsValue()">{{data[i].firstname}}
+          {{data[i].lastname}}<br>{{data[i].emailid}}</mat-checkbox>
     </div>
-
     <button mat-raised-button color="accent" (click)="openLink($event)">Done</button>
   </form>
 </mat-nav-list>
