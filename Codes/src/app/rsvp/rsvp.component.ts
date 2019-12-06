@@ -94,7 +94,7 @@ export class RSVPComponent implements OnInit {
             };
             if (this.emailDetails.status === 'accepted') {
               this.yourResponse = 'Yes';
-            } else if (this.emailDetails === 'denied') {
+            } else if (this.emailDetails.status === 'denied') {
               this.yourResponse = 'No';
             } else {
               this.yourResponse = 'Maybe';

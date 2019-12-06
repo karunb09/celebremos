@@ -107,7 +107,6 @@
               {{ contacts.emailid }} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <mat-icon [routerLink]="['/contacts/edit', contacts._id]">edit</mat-icon>
               <mat-icon class="redcolor" (click)="openDialogContactGroup(contacts._id, post._id, contacts.firstname)">delete</mat-icon> </mat-list-item>
             <mat-divider></mat-divider>
-
           </mat-list> -->
       <table class="table table-striped">
         <thead>
@@ -139,7 +138,7 @@
                 (click)="
                   openDialogContactGroup(
                     response._id,
-                    post._id.record.firstname
+                    post._id, response.firstname
                   )
                 "
                 >delete</mat-icon
@@ -148,12 +147,15 @@
           </tr>
         </tbody>
       </table>
+      <mat-action-row>
+          <button mat-button color="warn">DELETE</button>
+        </mat-action-row>
     </mat-expansion-panel>
   </mat-accordion>
 </mat-card>
 <mat-card class="addguests1">
   <form [formGroup]="form" (submit)="onSaveContact()">
-    <button
+    <!-- <button
       mat-stroked-button
       color="accent"
       type="button"
@@ -169,7 +171,7 @@
       id="txtFileUpload"
       (change)="uploadListener($event)"
       accept=".csv"
-    />
+    /> -->
     <mat-form-field>
       <input
         matInput

@@ -14,7 +14,14 @@ const checkAuth = require('../middleware/check-auth');
 
 const Contact = require('../models/contact');
 
+const Nexmo = require('nexmo');
+
 const router = express.Router();
+
+const nexmo = new Nexmo({
+  apiKey: '078fe5ba',
+  apiSecret: 'qvJuY0lWVmtjujSU'
+}, { debug: true });
 
 router.post("/user/register", (req, res, next) => {
   bcrypt.hash(req.body.password, 10)
@@ -678,13 +685,27 @@ router.put('/user/activate', function (req, res, next) {
 router.put('/user/sendresponsetoguest', checkAuth, (req, res, next) => {
   // Create a SMTP transporter object
   const transporter = nodemailer.createTransport({
-    host: 'smtp.ethereal.email',
-    port: 587,
-    auth: {
-        user: 'lolita.mcdermott@ethereal.email',
-        pass: '7Hkk5bqrCXTeNPUHtU'
-    }
-});
+    service: 'gmail',
+              auth: {
+                user: 'celebremosnwmsu@gmail.com',
+                pass: 'Madhu@876'
+              }
+        });
+        if (Number(req.body.guestemailId)) {
+          nexmo.message.sendSms(
+            '16469928733', req.body.guestemailId, '<h3>Hello' + ',</h3>' +
+            '<p>Below is the reply from your host.</p>' +
+             req.body.message +
+            '<br><br>' + 'In case you have more questions, please send a mail to host at ' + '<a href="' + req.body.useremailId +'">' + req.body.useremailId+ '</a>' + '.<br>' +
+            '<h3>----Team----</h3><h3>Celebremos</h3>'
+            , { type: 'unicode' },
+            (err, responseData) => {
+              if (err) {
+                console.log(err);
+              }
+            }
+          );
+        }else {
         // Message object
         let message = {
           from: 'Celebremos <celebremosnwmsu@gmail.com>',
@@ -710,6 +731,7 @@ router.put('/user/sendresponsetoguest', checkAuth, (req, res, next) => {
           title: "User activated.",
           message: 'You can now login with the username and password.'
         });
+      }
 });
 
 module.exports = router;
