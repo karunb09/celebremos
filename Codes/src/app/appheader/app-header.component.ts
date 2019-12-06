@@ -9,7 +9,6 @@ import { MatSnackBar } from '@angular/material';
   styleUrls: ['./app-header.component.css']
 })
 export class HeaderComponent implements OnInit, OnDestroy {
-
   userIsAuthenticated = false;
   private authListenerSubs: Subscription;
 

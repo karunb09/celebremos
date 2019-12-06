@@ -241,15 +241,13 @@ export class ContactsComponent implements OnInit {
   title = 'ReadCSV';
 
   public records: any[] = [];
-  @ViewChild('csvReader', {static: false}) csvReader: any;
+  @ViewChild('csvReader', { static: false }) csvReader: any;
 
   uploadListener($event: any): void {
-
     const text = [];
     let files = $event.srcElement.files;
 
     if (this.isValidCSVFile(files[0])) {
-
       let input = $event.target;
       let reader = new FileReader();
       reader.readAsText(input.files[0]);
@@ -260,15 +258,17 @@ export class ContactsComponent implements OnInit {
 
         let headersRow = this.getHeaderArray(csvRecordsArray);
 
-        this.records = this.getDataRecordsArrayFromCSVFile(csvRecordsArray, headersRow.length);
+        this.records = this.getDataRecordsArrayFromCSVFile(
+          csvRecordsArray,
+          headersRow.length
+        );
       };
 
-      reader.onerror = function () {
+      reader.onerror = function() {
         console.log('error is occured while reading file!');
       };
-
     } else {
-      alert("Please import valid .csv file.");
+      alert('Please import valid .csv file.');
       this.fileReset();
     }
   }
@@ -277,14 +277,14 @@ export class ContactsComponent implements OnInit {
     let csvArr = [];
 
     for (let i = 1; i < csvRecordsArray.length; i++) {
-      let curruntRecord = (<string> csvRecordsArray[i]).split(',');
+      let curruntRecord = (<string>csvRecordsArray[i]).split(',');
       if (curruntRecord.length === headerLength) {
         let csvRecord: Contact = {
-        firstname: curruntRecord[0].trim(),
-        lastname: curruntRecord[0].trim(),
-        mobilenumber: curruntRecord[1].trim(),
-        emailid: curruntRecord[2].trim(),
-        }
+          firstname: curruntRecord[0].trim(),
+          lastname: curruntRecord[0].trim(),
+          mobilenumber: curruntRecord[1].trim(),
+          emailid: curruntRecord[2].trim()
+        };
         csvArr.push(csvRecord);
       }
     }
@@ -292,7 +292,7 @@ export class ContactsComponent implements OnInit {
   }
 
   isValidCSVFile(file: any) {
-    return file.name.endsWith(".csv");
+    return file.name.endsWith('.csv');
   }
 
   getHeaderArray(csvRecordsArr: any) {
@@ -305,7 +305,7 @@ export class ContactsComponent implements OnInit {
   }
 
   fileReset() {
-    this.csvReader.nativeElement.value = "";
+    this.csvReader.nativeElement.value = '';
     this.records = [];
   }
 }

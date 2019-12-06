@@ -46,13 +46,11 @@ export class BottomSheetOverviewExampleSheet implements OnInit {
     private formbuilder: FormBuilder,
     private contactService: ContactService,
     private authService: AuthService
-  ) {
-  }
+  ) {}
 
   openLink(event: MouseEvent): void {
     this._bottomSheetRef.dismiss();
     event.preventDefault();
-
     this.getSelectedContactGroupValue();
     this.getSelectedContactsValue();
     this.contactService.setSelectedContactList(this.selectedContact);

@@ -42,8 +42,8 @@ const routes: Routes =  [
   { path: 'reset/:userId', component: ResetPasswordComponent},
   { path: 'addGuests/:eventName', component: AddGuestsComponent, canActivate: [AuthGuard] },
   { path: 'questionaire/:postId' , component: PostQuestionaireComponent, canActivate: [AuthGuard]},
-  { path: 'postdetails/:postId' , component: PostdetailsComponent},
-  { path: 'sendresponse/:emailId/:postId' , component: HostreplyComponent},
+  { path: 'postdetails/:postId' , component: PostdetailsComponent, canActivate: [AuthGuard]},
+  { path: 'sendresponse/:emailId/:postId' , component: HostreplyComponent, canActivate: [AuthGuard]},
   { path: 'activateUser/:userId', component: ActivateUserComponent},
   { path: 'rsvp/:postId/:emailId', component: RSVPComponent},
   { path: 'edit/rsvp/:postId/:email', component: RSVPComponent},
@@ -52,10 +52,8 @@ const routes: Routes =  [
   { path: 'contacts/edit/:contactId' , component: ContactsComponent, canActivate: [AuthGuard]},
   { path: 'birthdaycards' , component: BirthdayCardsComponent},
   { path: 'weddingcards' , component: WeddingCardsComponent},
-
   { path: 'partycards' , component: PartyCardsComponent},
 ];
-
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

@@ -1,49 +1,65 @@
 <mat-card class="addguests">
   <h1 class="info-text mat-headline">Invite Guests for the event</h1>
-  <form [formGroup]= "form" (submit)="onInvite()">
+  <form [formGroup]="form" (submit)="onInvite()">
     <mat-form-field class="example-full-width">
       <textarea
         matInput
         rows="6"
         formControlName="guests"
         placeholder="Add Guests"
-      ></textarea>
-    </mat-form-field><br><br>
-    <button mat-stroked-button  type = "button" (click)="csvReader.click()" matTooltip="">Choose a file</button>
-      <input type="file" #csvReader name="Upload CSV" id="txtFileUpload" (change)="uploadListener($event)" accept=".csv" />
-    <button mat-raised-button color="accent" class = "centerbutton" (change)="uploadListener($event)" type="Submit">Add</button>
+      ></textarea> </mat-form-field
+    ><br /><br />
+    <button
+      mat-stroked-button
+      type="button"
+      (click)="csvReader.click()"
+      matTooltip=""
+    >
+      Choose a file
+    </button>
+    <input
+      type="file"
+      #csvReader
+      name="Upload CSV"
+      id="txtFileUpload"
+      (change)="uploadListener($event)"
+      accept=".csv"
+    />
+    <button
+      mat-raised-button
+      color="accent"
+      class="centerbutton"
+      (change)="uploadListener($event)"
+      type="Submit"
+    >
+      Add
+    </button>
   </form>
 </mat-card>
 <mat-card>
-    <table mat-table [dataSource]="records" class="mat-elevation-z8">
-
-        <!--- Note that these columns can be defined in any order.
+  <table mat-table [dataSource]="records" class="mat-elevation-z8">
+    <!--- Note that these columns can be defined in any order.
               The actual rendered columns are set as a property on the row definition" -->
-
-        <!-- Name Column -->
-        <ng-container matColumnDef="firstname">
-          <th mat-header-cell *matHeaderCellDef> First Name </th>
-          <td mat-cell *matCellDef="let record"> {{record.firstname}} </td>
-        </ng-container>
-
-        <ng-container matColumnDef="lastname">
-          <th mat-header-cell *matHeaderCellDef> Last Name </th>
-          <td mat-cell *matCellDef="let record"> {{record.lastname}} </td>
-        </ng-container>
-
-        <!-- Weight Column -->
-        <ng-container matColumnDef="mobilenumber">
-          <th mat-header-cell *matHeaderCellDef> Phone </th>
-          <td mat-cell *matCellDef="let record"> {{record.mobilenumber}} </td>
-        </ng-container>
-
-        <!-- Symbol Column -->
-        <ng-container matColumnDef="emailid">
-          <th mat-header-cell *matHeaderCellDef> Email </th>
-          <td mat-cell *matCellDef="let record"> {{record.emailid}} </td>
-        </ng-container>
-
-        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-      </table>
+    <!-- Name Column -->
+    <ng-container matColumnDef="firstname">
+      <th mat-header-cell *matHeaderCellDef>First Name</th>
+      <td mat-cell *matCellDef="let record">{{ record.firstname }}</td>
+    </ng-container>
+    <ng-container matColumnDef="lastname">
+      <th mat-header-cell *matHeaderCellDef>Last Name</th>
+      <td mat-cell *matCellDef="let record">{{ record.lastname }}</td>
+    </ng-container>
+    <!-- Weight Column -->
+    <ng-container matColumnDef="mobilenumber">
+      <th mat-header-cell *matHeaderCellDef>Phone</th>
+      <td mat-cell *matCellDef="let record">{{ record.mobilenumber }}</td>
+    </ng-container>
+    <!-- Symbol Column -->
+    <ng-container matColumnDef="emailid">
+      <th mat-header-cell *matHeaderCellDef>Email</th>
+      <td mat-cell *matCellDef="let record">{{ record.emailid }}</td>
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  </table>
 </mat-card>

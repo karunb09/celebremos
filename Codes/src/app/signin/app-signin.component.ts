@@ -1,6 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { NgForm} from '@angular/forms';
-
+import { NgForm } from '@angular/forms';
 import { AuthService } from '../auth.service';
 import { Subscription } from 'rxjs';
 
@@ -13,7 +12,6 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./app-signin.component.css']
 })
 export class SignINComponent implements OnInit, OnDestroy {
-
   isLoading = false;
 
   private authStatusSub: Subscription;
@@ -29,17 +27,14 @@ export class SignINComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.authStatusSub = this.authService.getAuthStatusListener().subscribe(authStatus => {
-      this.isLoading = false;
-    });
+    this.authStatusSub = this.authService
+      .getAuthStatusListener()
+      .subscribe(authStatus => {
+        this.isLoading = false;
+      });
   }
 
   ngOnDestroy() {
     this.authStatusSub.unsubscribe();
   }
-
-
 }
-
-
-

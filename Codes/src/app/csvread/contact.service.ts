@@ -1,4 +1,3 @@
-
 import { Injectable } from '@angular/core';
 import { Subject, BehaviorSubject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
@@ -16,7 +15,6 @@ export interface ContactModel {
 
 @Injectable({ providedIn: 'root' })
 export class ContactService {
-
   private selectedContactsList = new Subject<Contact[]>();
   private selectedContactsListDialog = new Subject<ContactModel[]>();
   private selectedContactGroups = new Subject<ContactGroups[]>();
@@ -57,5 +55,4 @@ export class ContactService {
   getGroupName() {
     return this.groupName.asObservable();
   }
-
 }

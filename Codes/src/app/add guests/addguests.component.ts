@@ -42,7 +42,7 @@ export class AddGuestsComponent implements OnInit {
           csvRecordsArray,
           headersRow.length
         );
-        let newContacts: string = '';
+        let newContacts = '';
         for (let i = 0; i < this.records.length; i++) {
           newContacts += this.records[i].emailid + ',';
         }

@@ -1,21 +1,21 @@
-import { Component, OnInit, ViewChild } from "@angular/core";
-import { Post } from "../posts.model";
-import { FormControl, FormGroup, Validators } from "@angular/forms";
-import { PostService } from "../posts.service";
-import { ActivatedRoute, ParamMap } from "@angular/router";
-import { GooglePlaceDirective } from "ngx-google-places-autocomplete";
-import { Address } from "ngx-google-places-autocomplete/objects/address";
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { Post } from '../posts.model';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { PostService } from '../posts.service';
+import { ActivatedRoute, ParamMap } from '@angular/router';
+import { GooglePlaceDirective } from 'ngx-google-places-autocomplete';
+import { Address } from 'ngx-google-places-autocomplete/objects/address';
 import {
   MatDatepickerInputEvent,
   MatSnackBar,
   MatBottomSheet
-} from "@angular/material";
-import { mimeType } from "./mime-type.validator";
-import { AuthService, ContactGroups } from "src/app/auth.service";
-import { Subscription } from "rxjs";
-import { BottomSheetOverviewExampleSheet } from "./bottom-sheet-overview";
-import { ContactService } from "src/app/csvread/contact.service";
-import { Contact } from "src/app/csvread/contact-model";
+} from '@angular/material';
+import { mimeType } from './mime-type.validator';
+import { AuthService, ContactGroups } from 'src/app/auth.service';
+import { Subscription } from 'rxjs';
+import { BottomSheetOverviewExampleSheet } from './bottom-sheet-overview';
+import { ContactService } from 'src/app/csvread/contact.service';
+import { Contact } from 'src/app/csvread/contact-model';
 
 export interface Eventss {
   value: string;
@@ -23,9 +23,9 @@ export interface Eventss {
 }
 
 @Component({
-  selector: "app-post-create",
-  templateUrl: "./post-create.component.html",
-  styleUrls: ["./post-create.component.css"]
+  selector: 'app-post-create',
+  templateUrl: './post-create.component.html',
+  styleUrls: ['./post-create.component.css']
 })
 export class PostCreateComponent implements OnInit {
   contactgroups: any[];
@@ -40,30 +40,30 @@ export class PostCreateComponent implements OnInit {
 
   public contacts: any[] = [];
   contactBottomSheet;
-  title = "ReadCSV";
+  title = 'ReadCSV';
   public records: Contact[] = [];
-  @ViewChild("csvReader", { static: false }) csvReader: any;
-  mode = "create";
+  @ViewChild('csvReader', { static: false }) csvReader: any;
+  mode = 'create';
   minDate = new Date();
-  formattedaddress = "";
+  formattedaddress = '';
   username: string;
-  imagePathCreate: string = "";
+  imagePathCreate: string = '';
   events: Eventss[] = [
-    { value: "Anniversary", viewValue: "Anniversary" },
-    { value: "Baby Shower", viewValue: "Baby Shower" },
-    { value: "Bachelor Party", viewValue: "Bachelor Party" },
-    { value: "Wedding", viewValue: "Wedding" },
-    { value: "Beach Party", viewValue: "Beach Party" },
-    { value: "Dinner Party", viewValue: "Dinner Party" },
-    { value: "Birthday", viewValue: "Birthday" },
-    { value: "Engagement Party", viewValue: "Engagement Party" },
-    { value: "Housewarming", viewValue: "Housewarming" },
-    { value: "Custom", viewValue: "Custom" }
+    { value: 'Anniversary', viewValue: 'Anniversary' },
+    { value: 'Baby Shower', viewValue: 'Baby Shower' },
+    { value: 'Bachelor Party', viewValue: 'Bachelor Party' },
+    { value: 'Wedding', viewValue: 'Wedding' },
+    { value: 'Beach Party', viewValue: 'Beach Party' },
+    { value: 'Dinner Party', viewValue: 'Dinner Party' },
+    { value: 'Birthday', viewValue: 'Birthday' },
+    { value: 'Engagement Party', viewValue: 'Engagement Party' },
+    { value: 'Housewarming', viewValue: 'Housewarming' },
+    { value: 'Custom', viewValue: 'Custom' }
   ];
   private postId: string;
   post: Post;
   imagePreview: string;
-  newGuests: [string] = ["celebremos"];
+  newGuests: [string] = ['celebremos'];
   date = new FormControl(new Date());
   newDate;
   myDate;
@@ -73,7 +73,7 @@ export class PostCreateComponent implements OnInit {
   placesRef: GooglePlaceDirective;
 
   onSavePost() {
-    if (this.form.invalid && this.mode !== "createImage") {
+    if (this.form.invalid && this.mode !== 'createImage') {
       return;
     }
     if (this.newDate == null) {
@@ -83,8 +83,8 @@ export class PostCreateComponent implements OnInit {
     }
     if (this.form.value.guests == null) {
       this.newGuests.pop();
-    } else if (this.form.value.guests.includes(",")) {
-      const anotherGuests = this.form.value.guests.split(",");
+    } else if (this.form.value.guests.includes(',')) {
+      const anotherGuests = this.form.value.guests.split(',');
       for (let _i = 0; _i < anotherGuests.length; _i++) {
         if (_i === 0) {
           this.newGuests.pop();
@@ -92,17 +92,17 @@ export class PostCreateComponent implements OnInit {
         this.newGuests.push(anotherGuests[_i].trim());
         if (Number(anotherGuests[_i].trim())) {
           this.records.push({
-            firstname: "",
-            lastname: "",
-            emailid: "",
+            firstname: '',
+            lastname: '',
+            emailid: '',
             mobilenumber: anotherGuests[_i].trim()
           });
         } else {
           this.records.push({
-            firstname: "",
-            lastname: "",
+            firstname: '',
+            lastname: '',
             emailid: anotherGuests[_i].trim(),
-            mobilenumber: ""
+            mobilenumber: ''
           });
         }
       }
@@ -110,21 +110,21 @@ export class PostCreateComponent implements OnInit {
       this.newGuests[0] = this.form.value.guests;
       if (Number(this.form.value.guests)) {
         this.records.push({
-          firstname: "",
-          lastname: "",
-          emailid: "",
+          firstname: '',
+          lastname: '',
+          emailid: '',
           mobilenumber: this.form.value.guests
         });
       } else {
         this.records.push({
-          firstname: "",
-          lastname: "",
+          firstname: '',
+          lastname: '',
           emailid: this.form.value.guests,
-          mobilenumber: ""
+          mobilenumber: ''
         });
       }
     }
-    if (this.mode === "create" || this.mode === "createImage") {
+    if (this.mode === 'create' || this.mode === 'createImage') {
       this.form.value.location = this.formattedaddress;
       this.postService.addPosts(
         this.form.value.title,
@@ -170,8 +170,8 @@ export class PostCreateComponent implements OnInit {
     }
     if (this.form.value.guests == null) {
       this.newGuests.pop();
-    } else if (this.form.value.guests.includes(",")) {
-      const anotherGuests = this.form.value.guests.split(",");
+    } else if (this.form.value.guests.includes(',')) {
+      const anotherGuests = this.form.value.guests.split(',');
       for (let _i = 0; _i < anotherGuests.length; _i++) {
         if (_i === 0) {
           this.newGuests.pop();
@@ -180,17 +180,17 @@ export class PostCreateComponent implements OnInit {
 
         if (Number(anotherGuests[_i].trim())) {
           this.records.push({
-            firstname: "",
-            lastname: "",
-            emailid: "",
+            firstname: '',
+            lastname: '',
+            emailid: '',
             mobilenumber: anotherGuests[_i].trim()
           });
         } else {
           this.records.push({
-            firstname: "",
-            lastname: "",
+            firstname: '',
+            lastname: '',
             emailid: anotherGuests[_i].trim(),
-            mobilenumber: ""
+            mobilenumber: ''
           });
         }
       }
@@ -199,17 +199,17 @@ export class PostCreateComponent implements OnInit {
 
       if (Number(this.form.value.guests)) {
         this.records.push({
-          firstname: "",
-          lastname: "",
-          emailid: "",
+          firstname: '',
+          lastname: '',
+          emailid: '',
           mobilenumber: this.form.value.guests
         });
       } else {
         this.records.push({
-          firstname: "",
-          lastname: "",
+          firstname: '',
+          lastname: '',
           emailid: this.form.value.guests,
-          mobilenumber: ""
+          mobilenumber: ''
         });
       }
     }
@@ -245,7 +245,7 @@ export class PostCreateComponent implements OnInit {
       host: new FormControl(null, { validators: [] }),
       location: new FormControl(null, { validators: [Validators.required] }),
       guests: new FormControl(null, { validators: [] }),
-      content: new FormControl("", { validators: [] })
+      content: new FormControl('', { validators: [] })
     });
 
     this.authService
@@ -264,12 +264,12 @@ export class PostCreateComponent implements OnInit {
         this.contactgroups = contacts1;
       });
     this.route.paramMap.subscribe((paramMap: ParamMap) => {
-      if (paramMap.has("postId")) {
-        this.mode = "edit";
-        this.postId = paramMap.get("postId");
+      if (paramMap.has('postId')) {
+        this.mode = 'edit';
+        this.postId = paramMap.get('postId');
         this.postService.getPost(this.postId).subscribe(postData => {
-          const nowDate = postData.date.slice(postData.date.indexOf(", ") + 2);
-          const dateArray = nowDate.split("/");
+          const nowDate = postData.date.slice(postData.date.indexOf(', ') + 2);
+          const dateArray = nowDate.split('/');
           this.post = {
             id: postData._id,
             title: postData.title,
@@ -282,12 +282,12 @@ export class PostCreateComponent implements OnInit {
             content: postData.content,
             guests: postData.guests
           };
-          let guestsvalue: string = "";
+          let guestsvalue: string = '';
           for (let i = 0; i < this.post.guests.length; i++) {
             if (i === this.post.guests.length - 1) {
               guestsvalue += this.post.guests[i];
             } else {
-              guestsvalue += this.post.guests[i] + ",";
+              guestsvalue += this.post.guests[i] + ',';
             }
           }
           this.form.setValue({
@@ -314,25 +314,25 @@ export class PostCreateComponent implements OnInit {
               });
           }
           this.records = recordsRetrieved;
-          this.imagePreview = "";
+          this.imagePreview = '';
         });
       } else {
-        this.mode = "create";
+        this.mode = 'create';
         this.postId = null;
       }
     });
     this.route.paramMap.subscribe((paramMap: ParamMap) => {
       let imagesss;
-      if (paramMap.has("imagePath")) {
-        imagesss = paramMap.get("imagePath");
-        this.mode = "createImage";
+      if (paramMap.has('imagePath')) {
+        imagesss = paramMap.get('imagePath');
+        this.mode = 'createImage';
         this.imagePathCreate =
-          "http://localhost:3000/images/" + imagesss + ".jpg";
+          'http://localhost:3000/images/' + imagesss + '.jpg';
       }
       this.form.setValue({
         image: this.imagePathCreate
       });
-      this.imagePreview = "";
+      this.imagePreview = '';
     });
   }
 
@@ -343,13 +343,13 @@ export class PostCreateComponent implements OnInit {
   addEvent(type: string, event: MatDatepickerInputEvent<Date>) {
     const date = `${event.value}`;
     this.newDate = date
-      .slice(0, date.indexOf("00:00:00") - 1)
+      .slice(0, date.indexOf('00:00:00') - 1)
       .concat(
-        ", " +
+        ', ' +
           `${event.value.getMonth() + 1}` +
-          "/" +
+          '/' +
           `${event.value.getDate()}` +
-          "/" +
+          '/' +
           `${event.value.getFullYear()}`
       );
   }
@@ -357,7 +357,7 @@ export class PostCreateComponent implements OnInit {
   onImagePicked(event: Event) {
     const file = (event.target as HTMLInputElement).files[0];
     this.form.patchValue({ image: file });
-    this.form.get("image").updateValueAndValidity();
+    this.form.get('image').updateValueAndValidity();
     const reader = new FileReader();
     reader.onload = () => {
       this.imagePreview = reader.result as string;
@@ -370,7 +370,7 @@ export class PostCreateComponent implements OnInit {
       return;
     } else {
       // this.onSaveforLaterUse();
-      this.snackBar.open("Events Saved!", "Dismiss", {
+      this.snackBar.open('Events Saved!', 'Dismiss', {
         duration: 2000
       });
     }
@@ -390,12 +390,12 @@ export class PostCreateComponent implements OnInit {
       this.contactService
         .getselectedContactList()
         .subscribe((list: Contact[]) => {
-          let newFormValue = "";
+          let newFormValue = '';
           if (this.form.value.guests) {
-            newFormValue = this.form.value.guests + ",";
+            newFormValue = this.form.value.guests + ',';
             for (let i = 0; i < list.length; i++) {
-              let concatenatedString = "";
-              if (list[i].emailid === null || list[i].emailid === "") {
+              let concatenatedString = '';
+              if (list[i].emailid === null || list[i].emailid === '') {
                 concatenatedString = list[i].mobilenumber;
               } else {
                 concatenatedString = list[i].emailid;
@@ -405,14 +405,14 @@ export class PostCreateComponent implements OnInit {
                 if (i === list.length - 1) {
                   newFormValue += concatenatedString;
                 } else {
-                  newFormValue += concatenatedString + ",";
+                  newFormValue += concatenatedString + ',';
                 }
               }
             }
           } else {
             for (let i = 0; i < list.length; i++) {
-              let concatenatedString = "";
-              if (list[i].emailid === null || list[i].emailid === "") {
+              let concatenatedString = '';
+              if (list[i].emailid === null || list[i].emailid === '') {
                 concatenatedString = list[i].mobilenumber;
               } else {
                 concatenatedString = list[i].emailid;
@@ -422,12 +422,12 @@ export class PostCreateComponent implements OnInit {
                 if (i === list.length - 1) {
                   newFormValue += concatenatedString;
                 } else {
-                  newFormValue += concatenatedString + ",";
+                  newFormValue += concatenatedString + ',';
                 }
               }
             }
           }
-          while (newFormValue.endsWith(",")) {
+          while (newFormValue.endsWith(',')) {
             newFormValue = newFormValue.substring(0, newFormValue.length - 1);
           }
           this.form.patchValue({ guests: newFormValue });
@@ -435,15 +435,15 @@ export class PostCreateComponent implements OnInit {
       this.contactService
         .getselectedContactGroupList()
         .subscribe((groups: ContactGroups[]) => {
-          let newFormValue = "";
+          let newFormValue = '';
           if (this.form.value.guests) {
-            newFormValue = this.form.value.guests + ",";
+            newFormValue = this.form.value.guests + ',';
             for (let i = 0; i < groups.length; i++) {
               for (let j = 0; j < groups[i].groupcontacts.length; j++) {
-                let concatenatedString = "";
+                let concatenatedString = '';
                 if (
                   groups[i].groupcontacts[j].emailid === null ||
-                  groups[i].groupcontacts[j].emailid === ""
+                  groups[i].groupcontacts[j].emailid === ''
                 ) {
                   concatenatedString = groups[i].groupcontacts[j].mobilenumber;
                 } else {
@@ -454,7 +454,7 @@ export class PostCreateComponent implements OnInit {
                   if (i === groups[i].groupcontacts.length - 1) {
                     newFormValue += concatenatedString;
                   } else {
-                    newFormValue += concatenatedString + ",";
+                    newFormValue += concatenatedString + ',';
                   }
                 }
               }
@@ -462,8 +462,8 @@ export class PostCreateComponent implements OnInit {
           } else {
             for (let i = 0; i < groups.length; i++) {
               for (let j = 0; j < groups[i].groupcontacts.length; j++) {
-                let concatenatedString = "";
-                if (groups[i].groupcontacts[j].emailid === null || groups[i].groupcontacts[j].emailid === "") {
+                let concatenatedString = '';
+                if (groups[i].groupcontacts[j].emailid === null || groups[i].groupcontacts[j].emailid === '') {
                   concatenatedString = groups[i].groupcontacts[j].mobilenumber;
                 } else {
                   concatenatedString = groups[i].groupcontacts[j].emailid;
@@ -473,13 +473,13 @@ export class PostCreateComponent implements OnInit {
                   if (i === groups[i].groupcontacts.length - 1) {
                     newFormValue += concatenatedString;
                   } else {
-                    newFormValue += concatenatedString + ",";
+                    newFormValue += concatenatedString + ',';
                   }
                 }
               }
             }
           }
-          while (newFormValue.endsWith(",")) {
+          while (newFormValue.endsWith(',')) {
             newFormValue = newFormValue.substring(0, newFormValue.length - 1);
           }
           this.form.patchValue({ guests: newFormValue });
@@ -508,21 +508,25 @@ export class PostCreateComponent implements OnInit {
           csvRecordsArray,
           headersRow.length
         );
-        let newContacts = "";
+        let newContacts = '';
         for (let i = 0; i < this.records.length; i++) {
-          newContacts += this.records[i].emailid + ",";
+          if (this.records[i].emailid) {
+          newContacts += this.records[i].emailid + ',';
+          } else {
+            newContacts += this.records[i].mobilenumber + ',';
+          }
         }
-        while (newContacts.endsWith(",")) {
+        while (newContacts.endsWith(',')) {
           newContacts = newContacts.substring(0, newContacts.length - 1);
         }
 
         this.form.patchValue({ guests: newContacts });
       };
       reader.onerror = function() {
-        console.log("error is occured while reading file!");
+        console.log('error is occured while reading file!');
       };
     } else {
-      alert("Please import valid .csv file.");
+      alert('Please import valid .csv file.');
       this.fileReset();
     }
   }
@@ -530,7 +534,7 @@ export class PostCreateComponent implements OnInit {
   getDataRecordsArrayFromCSVFile(csvRecordsArray: any, headerLength: any) {
     let csvArr = [];
     for (let i = 1; i < csvRecordsArray.length; i++) {
-      let curruntRecord = (csvRecordsArray[i] as string).split(",");
+      let curruntRecord = (csvRecordsArray[i] as string).split(',');
       if (curruntRecord.length === headerLength) {
         let csvRecord: Contact = {
           firstname: curruntRecord[0].trim(),
@@ -545,11 +549,11 @@ export class PostCreateComponent implements OnInit {
   }
 
   isValidCSVFile(file: any) {
-    return file.name.endsWith(".csv");
+    return file.name.endsWith('.csv');
   }
 
   getHeaderArray(csvRecordsArr: any) {
-    let headers = (csvRecordsArr[0] as string).split(",");
+    let headers = (csvRecordsArr[0] as string).split(',');
     let headerArray = [];
     for (let j = 0; j < headers.length; j++) {
       headerArray.push(headers[j]);
@@ -558,7 +562,7 @@ export class PostCreateComponent implements OnInit {
   }
 
   fileReset() {
-    this.csvReader.nativeElement.value = "";
+    this.csvReader.nativeElement.value = '';
   }
 
   onInvite() {
@@ -567,8 +571,8 @@ export class PostCreateComponent implements OnInit {
     if (this.form.value.guests == null) {
       return;
     }
-    if (this.form.value.guests.includes(",")) {
-      const anotherGuests = this.form.value.guests.split(",");
+    if (this.form.value.guests.includes(',')) {
+      const anotherGuests = this.form.value.guests.split(',');
       for (let _i = 0; _i < anotherGuests.length; _i++) {
         newGuests.push(anotherGuests[_i].trim());
       }
@@ -579,17 +583,17 @@ export class PostCreateComponent implements OnInit {
       let csvRecord;
       if (Number(newGuests[i])) {
         csvRecord = {
-          emailid: "",
-          firstname: "",
-          lastname: "",
+          emailid: '',
+          firstname: '',
+          lastname: '',
           mobilenumber: newGuests[i]
         };
       } else {
         csvRecord = {
           emailid: newGuests[i],
-          firstname: "",
-          lastname: "",
-          mobilenumber: ""
+          firstname: '',
+          lastname: '',
+          mobilenumber: ''
         };
       }
       record.push(csvRecord);

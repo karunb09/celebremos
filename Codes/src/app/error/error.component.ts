@@ -11,7 +11,10 @@ export class ErrorComponent implements OnInit, OnDestroy {
   userIsAuthenticated = false;
   private authListenerSubs: Subscription;
 
-  constructor(private authService: AuthService, @Inject(MAT_DIALOG_DATA) public data: {title: string, message: string }) { }
+  constructor(
+    private authService: AuthService,
+    @Inject(MAT_DIALOG_DATA) public data: { title: string; message: string }
+  ) {}
 
   ngOnInit() {
     this.userIsAuthenticated = this.authService.getIsAuth();
@@ -29,5 +32,4 @@ export class ErrorComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.authListenerSubs.unsubscribe();
   }
-
 }
