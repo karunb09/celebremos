@@ -17,6 +17,7 @@ const postScheme = mongoose.Schema({
     email: { type: String, required: false },
     numberofguests: { type: String, required: false },
     status: {type: String, required: false },
+    questions: {type: String, required: false },
   }], required: false },
   question: { type: [{
     questionname: { type: String, required: false },

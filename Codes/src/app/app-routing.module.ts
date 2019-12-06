@@ -20,6 +20,8 @@ import { BirthdayCardsComponent } from './cards/birthday-cards/birthday-cards.co
 import { WeddingCardsComponent } from './cards/wedding-cards/wedding-cards.component';
 import { PartyCardsComponent } from './cards/party-cards/party-cards.component';
 import { PostQuestionaireComponent } from './posts/create-posts/post-questionaire/post-questionaire.component';
+import { PostdetailsComponent } from './posts/postdetails/postdetails.component';
+import { HostreplyComponent } from './posts/hostreply/hostreply.component';
 
 
 
@@ -39,7 +41,9 @@ const routes: Routes =  [
   { path: 'reset', component: NewPasswordComponent},
   { path: 'reset/:userId', component: ResetPasswordComponent},
   { path: 'addGuests/:eventName', component: AddGuestsComponent, canActivate: [AuthGuard] },
-  { path: 'questionaire/:postId' , component: PostQuestionaireComponent},
+  { path: 'questionaire/:postId' , component: PostQuestionaireComponent, canActivate: [AuthGuard]},
+  { path: 'postdetails/:postId' , component: PostdetailsComponent},
+  { path: 'sendresponse/:emailId/:postId' , component: HostreplyComponent},
   { path: 'activateUser/:userId', component: ActivateUserComponent},
   { path: 'rsvp/:postId/:emailId', component: RSVPComponent},
   { path: 'edit/rsvp/:postId/:email', component: RSVPComponent},

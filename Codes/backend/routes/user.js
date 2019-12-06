@@ -55,34 +55,36 @@ router.post("/user/register", (req, res, next) => {
               });
             });
           });
-          let transporter = nodemailer.createTransport({
-            service: 'gmail',
-            auth: {
-              user: 'celebremosnwmsu@gmail.com',
-              pass: 'Madhu876'
-            }
-          });
-          // Message object
-          let message = {
-            from: 'Celebremos <celebremosnwmsu@gmail.com>',
-            to: result.email,
-            subject: 'Activate username',
-            text: 'CELEBREMOS',
-            html:
-              '<p>Thank you for registering with us. In order to login you have to verify your email address. To verify, please click link below</p>' +
-              'http://localhost:4200/activateUser/' + result._id +
-              '<br><br>' + 'Please ignore this mail if you already did. Please report us if you are not the one who created the account.' +
-              '<h3>----Team----</h3><h3>Celebremos</h3>'
-          };
-          transporter.sendMail(message, (err, info) => {
-            if (err) {
-              console.log('Error occurred. ' + err.message);
-              return process.exit(1);
-            }
-            console.log('Message sent: %s', info.messageId);
-            // Preview only available when sending through an Ethereal account
-            console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
-          });
+          // let transporter = nodemailer.createTransport({
+          //   host: 'smtp.gmail.com',
+          //   port: 465,
+          //   secure: true,
+          //   auth: {
+          //     user: 'celebremosnwmsu@gmail.com',
+          //     pass: 'Madhu@876'
+          //   }
+          // });
+          // // Message object
+          // let message = {
+          //   from: 'Celebremos <celebremosnwmsu@gmail.com>',
+          //   to: result.email,
+          //   subject: 'Activate username',
+          //   text: 'CELEBREMOS',
+          //   html:
+          //     '<p>Thank you for registering with us. In order to login you have to verify your email address. To verify, please click link below</p>' +
+          //     'http://localhost:4200/activateUser/' + result._id +
+          //     '<br><br>' + 'Please ignore this mail if you already did. Please report us if you are not the one who created the account.' +
+          //     '<h3>----Team----</h3><h3>Celebremos</h3>'
+          // };
+          // transporter.sendMail(message, (err, info) => {
+          //   if (err) {
+          //     console.log('Error occurred. ' + err.message);
+          //     return process.exit(1);
+          //   }
+          //   console.log('Message sent: %s', info.messageId);
+          //   // Preview only available when sending through an Ethereal account
+          //   console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
+          // });
           return res.status(201).json({
             title: "Congratulations!",
             message: "Your account is created. In order to login you have to activate your username by clicking on the link that is mailed to your email address.",
@@ -162,34 +164,36 @@ router.post('/user/reset-password', function (req, res, next) {
         }
         console.log('Credentials obtained, sending message...');
         // Create a SMTP transporter object
-        let transporter = nodemailer.createTransport({
-          service: 'gmail',
-          auth: {
-            user: 'celebremosnwmsu@gmail.com',
-            pass: 'Madhu876'
-          }
-        });
-        // Message object
-        let message = {
-          from: 'Celebremos <celebremosnwmsu@gmail.com>',
-          to: fetchedUser.email,
-          subject: 'Reset your account password',
-          text: 'CELEBREMOS',
-          html: '<h3>Hello ' + fetchedUser.firstname + ',</h3>' +
-            '<p>You told us you forget your password. If you really did, click below to choose a new one:</p>' +
-            'http://localhost:4200/reset/' + user.id +
-            '<br><br>' + 'If you didn\'t mean to reset your password, then you can just ignore this email, your password will not change.' +
-            '<h3>----Team----</h3><h3>Celebremos</h3>'
-        };
-        transporter.sendMail(message, (err, info) => {
-          if (err) {
-            console.log('Error occurred. ' + err.message);
-            return process.exit(1);
-          }
-          console.log('Message sent: %s', info.messageId);
-          // Preview only available when sending through an Ethereal account
-          console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
-        });
+        // let transporter = nodemailer.createTransport({
+        //   host: 'smtp.gmail.com',
+        //   port: 465,
+        //   secure: true,
+        //   auth: {
+        //     user: 'celebremosnwmsu@gmail.com',
+        //     pass: 'Madhu@876'
+        //   }
+        // });
+        // // Message object
+        // let message = {
+        //   from: 'Celebremos <celebremosnwmsu@gmail.com>',
+        //   to: fetchedUser.email,
+        //   subject: 'Reset your account password',
+        //   text: 'CELEBREMOS',
+        //   html: '<h3>Hello ' + fetchedUser.firstname + ',</h3>' +
+        //     '<p>You told us you forget your password. If you really did, click below to choose a new one:</p>' +
+        //     'http://localhost:4200/reset/' + user.id +
+        //     '<br><br>' + 'If you didn\'t mean to reset your password, then you can just ignore this email, your password will not change.' +
+        //     '<h3>----Team----</h3><h3>Celebremos</h3>'
+        // };
+        // transporter.sendMail(message, (err, info) => {
+        //   if (err) {
+        //     console.log('Error occurred. ' + err.message);
+        //     return process.exit(1);
+        //   }
+        //   console.log('Message sent: %s', info.messageId);
+        //   // Preview only available when sending through an Ethereal account
+        //   console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
+        // });
       });
       res.status(201).json({
         title: "Password Reset Email Sent",
@@ -217,34 +221,34 @@ router.put('/user/store-password', function (req, res, next) {
           }, {
             $set: { "password": hash }
           }).then(result => {
-            let transporter = nodemailer.createTransport({
-              service: 'gmail',
-              auth: {
-                user: 'celebremosnwmsu@gmail.com',
-                pass: 'Madhu876'
-              }
-            });
-            // Message object
-            let message = {
-              from: 'Celebremos <celebremosnwmsu@gmail.com>',
-              to: result.email,
-              subject: 'Password Changed Successfully',
-              text: 'CELEBREMOS',
-              html:
-                '<p>Password is updated successfully. In order to login with the updated password please naviate to our home page by clicking the below URL.</p>' +
-                'http://localhost:4200' +
-                '<br><br>' + 'Please report us if you are not the one who initiated the password reset process.' +
-                '<h3>----Team----</h3><h3>Celebremos</h3>'
-            };
-            transporter.sendMail(message, (err, info) => {
-              if (err) {
-                console.log('Error occurred. ' + err.message);
-                return process.exit(1);
-              }
-              console.log('Message sent: %s', info.messageId);
-              // Preview only available when sending through an Ethereal account
-              console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
-            });
+            // let transporter = nodemailer.createTransport({
+            //   service: 'gmail',
+            //   auth: {
+            //     user: 'celebremosnwmsu@gmail.com',
+            //     pass: 'Madhu@876'
+            //   }
+            // });
+            // // Message object
+            // let message = {
+            //   from: 'Celebremos <celebremosnwmsu@gmail.com>',
+            //   to: result.email,
+            //   subject: 'Password Changed Successfully',
+            //   text: 'CELEBREMOS',
+            //   html:
+            //     '<p>Password is updated successfully. In order to login with the updated password please naviate to our home page by clicking the below URL.</p>' +
+            //     'http://localhost:4200' +
+            //     '<br><br>' + 'Please report us if you are not the one who initiated the password reset process.' +
+            //     '<h3>----Team----</h3><h3>Celebremos</h3>'
+            // };
+            // transporter.sendMail(message, (err, info) => {
+            //   if (err) {
+            //     console.log('Error occurred. ' + err.message);
+            //     return process.exit(1);
+            //   }
+            //   console.log('Message sent: %s', info.messageId);
+            //   // Preview only available when sending through an Ethereal account
+            //   console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
+            // });
             res.status(201).json({
               title: "Password Reset Successful.",
               message: 'Your password is successfully changed. You can now login with the updated password.'
@@ -673,6 +677,43 @@ router.put('/user/activate', function (req, res, next) {
         });
       })
     });
+});
+
+router.put('/user/sendresponsetoguest', checkAuth, (req, res, next) => {
+  // Create a SMTP transporter object
+  const transporter = nodemailer.createTransport({
+    host: 'smtp.ethereal.email',
+    port: 587,
+    auth: {
+        user: 'lolita.mcdermott@ethereal.email',
+        pass: '7Hkk5bqrCXTeNPUHtU'
+    }
+});
+        // Message object
+        let message = {
+          from: 'Celebremos <celebremosnwmsu@gmail.com>',
+          to: req.body.guestemailId,
+          subject: 'Reply from host',
+          text: 'CELEBREMOS',
+          html: '<h3>Hello' + ',</h3>' +
+            '<p>Below is the reply from your host.</p>' +
+             req.body.message +
+            '<br><br>' + 'In case you have more questions, please send a mail to host at ' + '<a href="' + req.body.useremailId +'">' + req.body.useremailId+ '</a>' + '.<br>' +
+            '<h3>----Team----</h3><h3>Celebremos</h3>'
+        };
+        transporter.sendMail(message, (err, info) => {
+          if (err) {
+            console.log('Error occurred. ' + err.message);
+            return process.exit(1);
+          }
+          console.log('Message sent: %s', info.messageId);
+          // Preview only available when sending through an Ethereal account
+          console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
+        });
+        res.status(200).json({
+          title: "User activated.",
+          message: 'You can now login with the username and password.'
+        });
 });
 
 module.exports = router;

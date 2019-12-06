@@ -1,17 +1,17 @@
-import { Component, OnInit, OnDestroy } from "@angular/core";
+import { Component, OnInit, OnDestroy } from '@angular/core';
 
-import { Subscription } from "rxjs";
-import { AuthService } from "src/app/auth.service";
-import { MatDialog } from "@angular/material";
-import { ConfirmationDialogComponent } from "src/app/confirmation-dialog/confirmation-dialog.component";
-import { Router } from "@angular/router";
-import { Post } from "../../posts.model";
-import { PostService } from "../../posts.service";
+import { Subscription } from 'rxjs';
+import { AuthService } from 'src/app/auth.service';
+import { MatDialog } from '@angular/material';
+import { ConfirmationDialogComponent } from 'src/app/confirmation-dialog/confirmation-dialog.component';
+import { Router } from '@angular/router';
+import { Post } from '../../posts.model';
+import { PostService } from '../../posts.service';
 
 @Component({
-  selector: "app-pastevent-list",
-  templateUrl: "./pastevent-list.component.html",
-  styleUrls: ["./pastevent-list.component.css"]
+  selector: 'app-pastevent-list',
+  templateUrl: './pastevent-list.component.html',
+  styleUrls: ['./pastevent-list.component.css']
 })
 export class PastEventComponent implements OnInit, OnDestroy {
   posts = [];
@@ -20,7 +20,7 @@ export class PastEventComponent implements OnInit, OnDestroy {
   emailId: string;
   username: string;
   getresponses = [];
-  title = "angular-material-tab-router";
+  title = 'angular-material-tab-router';
   navLinks: any[];
   activeLinkIndex = -1;
 
@@ -33,18 +33,18 @@ export class PastEventComponent implements OnInit, OnDestroy {
     this.navLinks = [
 
       {
-        label: "Hosted Events",
-        link: "/hostedevents",
+        label: 'Hosted Events',
+        link: '/hostedevents',
         index: 0
       },
       {
-        label: "Saved Events",
-        link: "/savedevents",
+        label: 'Saved Events',
+        link: '/savedevents',
         index: 1
       },
       {
-        label: "Invited Events",
-        link: "/pastevents",
+        label: 'Invited Events',
+        link: '/pastevents',
         index: 2
       }
     ];
@@ -55,7 +55,7 @@ export class PastEventComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.router.events.subscribe(res => {
       this.activeLinkIndex = this.navLinks.indexOf(
-        this.navLinks.find(tab => tab.link === "." + this.router.url)
+        this.navLinks.find(tab => tab.link === '.' + this.router.url)
       );
     });
     this.isLoading = true;
@@ -71,8 +71,8 @@ export class PastEventComponent implements OnInit, OnDestroy {
       .subscribe(async (posts: Post[]) => {
         this.isLoading = false;
         const sortedArray: Post[] = await posts.sort((obj1, obj2) => {
-          const obj1Date = obj1.date.slice(0, obj1.date.indexOf(", "));
-          const obj2Date = obj2.date.slice(0, obj2.date.indexOf(", "));
+          const obj1Date = obj1.date.slice(0, obj1.date.indexOf(', '));
+          const obj2Date = obj2.date.slice(0, obj2.date.indexOf(', '));
           const obj1DateFormat = new Date(obj1Date);
           const obj2DateFormat = new Date(obj2Date);
           if (obj1DateFormat > obj2DateFormat) {
@@ -104,12 +104,11 @@ export class PastEventComponent implements OnInit, OnDestroy {
 
   openDialog(postId: string): void {
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
-      width: "350px",
-      data: "Are you sure you want to cancel the event?"
+      width: '350px',
+      data: 'Are you sure you want to cancel the event?'
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        console.log("Yes clicked");
         this.onDelete(postId);
         // DO SOMETHING
       }
@@ -120,14 +119,14 @@ export class PastEventComponent implements OnInit, OnDestroy {
     for (let i = 0; i < this.posts.length; i++) {
       for (let j = 0; j < this.posts[i].responses.length; j++) {
         if (this.posts[i].responses[j].email === this.emailId) {
-          if (this.posts[i].responses[j].status === "no reply") {
-            this.getresponses.push("Not replied yet!");
-          } else if (this.posts[i].responses[j].status === "accepted") {
-            this.getresponses.push("Yes");
-          } else if (this.posts[i].responses[j].status === "denied") {
-            this.getresponses.push("No");
-          } else if (this.posts[i].responses[j].status === "may be") {
-            this.getresponses.push("May be");
+          if (this.posts[i].responses[j].status === 'no reply') {
+            this.getresponses.push('Not replied yet!');
+          } else if (this.posts[i].responses[j].status === 'accepted') {
+            this.getresponses.push('Yes');
+          } else if (this.posts[i].responses[j].status === 'denied') {
+            this.getresponses.push('No');
+          } else if (this.posts[i].responses[j].status === 'may be') {
+            this.getresponses.push('May be');
           }
         }
       }

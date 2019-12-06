@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { AuthService, ContactGroups } from '../auth.service';
 import { Contact } from '../csvread/contact-model';
 import { MatTableDataSource, MatSnackBar, MatDialog } from '@angular/material';
@@ -91,20 +91,17 @@ export class ContactsComponent implements OnInit {
       .subscribe((contacts1: ContactGroups[]) => {
         this.contactgroups = contacts1;
         this.isLoading = false;
-        this.isLoading = false;
         for (let i = 0; i < this.contactgroups.length; i++) {
           this.events.push({
             id: this.contactgroups[i]._id,
             groupName: this.contactgroups[i].groupName
           });
-          this.contactsInGroups[i] = new MatTableDataSource<Contact>(this.contactgroups[i].groupcontacts)
         }
       });
     this.route.paramMap.subscribe((paramMap: ParamMap) => {
       if (paramMap.has('contactId')) {
         this.mode = 'edit';
         this.contactId = paramMap.get('contactId');
-        console.log(this.mode);
         this.authService
           .getContact(this.username, this.contactId)
           .subscribe(contactData => {
@@ -139,14 +136,12 @@ export class ContactsComponent implements OnInit {
     if (this.form.invalid) {
       return;
     }
-    console.log(this.mode);
     let contactgroupId = '';
     for (let i = 0; i < this.events.length; i++) {
       if (this.form.value.group === this.events[i].groupName) {
         contactgroupId = this.events[i].id;
       }
     }
-    console.log(contactgroupId);
     if (this.mode === 'create') {
       this.authService.addContact(
         this.form.value.firstname,
@@ -204,7 +199,6 @@ export class ContactsComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        console.log('Yes clicked');
         this.onDelete(contactId, firstname);
         // DO SOMETHING
       }
@@ -222,7 +216,6 @@ export class ContactsComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        console.log('Yes clicked');
         this.onDeleteContactGroup(contactId, contactgroupId, firstname);
         // DO SOMETHING
       }
@@ -243,5 +236,76 @@ export class ContactsComponent implements OnInit {
     this.snackBar.open('Contact group created successfully!', 'Dismiss', {
       duration: 2000
     });
+  }
+
+  title = 'ReadCSV';
+
+  public records: any[] = [];
+  @ViewChild('csvReader', {static: false}) csvReader: any;
+
+  uploadListener($event: any): void {
+
+    const text = [];
+    let files = $event.srcElement.files;
+
+    if (this.isValidCSVFile(files[0])) {
+
+      let input = $event.target;
+      let reader = new FileReader();
+      reader.readAsText(input.files[0]);
+
+      reader.onload = () => {
+        let csvData = reader.result;
+        let csvRecordsArray = (<string>csvData).split(/\r\n|\n/);
+
+        let headersRow = this.getHeaderArray(csvRecordsArray);
+
+        this.records = this.getDataRecordsArrayFromCSVFile(csvRecordsArray, headersRow.length);
+      };
+
+      reader.onerror = function () {
+        console.log('error is occured while reading file!');
+      };
+
+    } else {
+      alert("Please import valid .csv file.");
+      this.fileReset();
+    }
+  }
+
+  getDataRecordsArrayFromCSVFile(csvRecordsArray: any, headerLength: any) {
+    let csvArr = [];
+
+    for (let i = 1; i < csvRecordsArray.length; i++) {
+      let curruntRecord = (<string> csvRecordsArray[i]).split(',');
+      if (curruntRecord.length === headerLength) {
+        let csvRecord: Contact = {
+        firstname: curruntRecord[0].trim(),
+        lastname: curruntRecord[0].trim(),
+        mobilenumber: curruntRecord[1].trim(),
+        emailid: curruntRecord[2].trim(),
+        }
+        csvArr.push(csvRecord);
+      }
+    }
+    return csvArr;
+  }
+
+  isValidCSVFile(file: any) {
+    return file.name.endsWith(".csv");
+  }
+
+  getHeaderArray(csvRecordsArr: any) {
+    let headers = (<string>csvRecordsArr[0]).split(',');
+    let headerArray = [];
+    for (let j = 0; j < headers.length; j++) {
+      headerArray.push(headers[j]);
+    }
+    return headerArray;
+  }
+
+  fileReset() {
+    this.csvReader.nativeElement.value = "";
+    this.records = [];
   }
 }

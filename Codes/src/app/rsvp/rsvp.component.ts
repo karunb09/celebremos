@@ -11,14 +11,21 @@ import { MatSnackBar } from '@angular/material';
   styleUrls: ['./rsvp.component.css']
 })
 export class RSVPComponent implements OnInit {
-  post: Post;
+  post;
   yourResponse: string;
+  foodResponse;
+  itemsResponse;
   guestsNumber = 0;
   rsvp: string[] = ['Yes', 'No', 'Maybe'];
+  options: string[] = [];
   emailId: string;
   postId: string;
   emailDetails;
   mode: string;
+  showFood = false;
+  showItems = false;
+  showFoodMenu = false;
+  questionsFromGuest;
 
   constructor(
     public postService: PostService,
@@ -42,11 +49,19 @@ export class RSVPComponent implements OnInit {
             host: postData.host,
             location: postData.location,
             content: postData.content,
-            guests: postData.guests
+            guests: postData.guests,
+            question: postData.question,
+            itemstobring: postData.itemstobring,
+            foodmenu: postData.foodmenu
           };
+          for(let i = 0; i< this.post.question[0].options.length; i++){
+            this.options.push(this.post.question[0].options[i].optionvalue);
+          }
         });
       }
     });
+
+
     this.route.paramMap.subscribe((paramMap: ParamMap) => {
       if (paramMap.has('emailId')) {
         this.emailId = paramMap.get('emailId');
@@ -57,16 +72,15 @@ export class RSVPComponent implements OnInit {
               _id: email._id,
               email: email.email,
               numberofguests: email.numberofguests,
-              status: email.status
+              status: email.status,
+              questionsFromGuest: email.questions
             };
-            console.log(this.emailDetails);
           });
       }
     });
     this.route.paramMap.subscribe((paramMap: ParamMap) => {
       if (paramMap.has('email')) {
         this.emailId = paramMap.get('email');
-        console.log(this.emailId);
         this.mode = 'edit';
         this.postService
           .getEmailDetails(this.postId, this.emailId)
@@ -75,7 +89,8 @@ export class RSVPComponent implements OnInit {
               _id: email._id,
               email: email.email,
               numberofguests: email.numberofguests,
-              status: email.status
+              status: email.status,
+              questionsFromGuest: email.questions
             };
             if (this.emailDetails.status === 'accepted') {
               this.yourResponse = 'Yes';
@@ -91,16 +106,23 @@ export class RSVPComponent implements OnInit {
 
   sendResponse(form: NgForm) {
     let guests;
+    let questions;
     if (form.value.guestsNumber) {
       guests = form.value.guestsNumber;
     } else {
       guests = this.guestsNumber;
     }
+    if (form.value.questions) {
+      questions = form.value.questions;
+    } else {
+      questions = '';
+    }
     this.postService.updateRSVP(
       this.post.id,
       this.emailId,
       this.yourResponse,
-      Number(guests)
+      Number(guests),
+      questions
     );
     this.openSnackBar(form);
   }
@@ -113,5 +135,17 @@ export class RSVPComponent implements OnInit {
         duration: 2000
       });
     }
+  }
+
+  openFoodPoll() {
+    this.showFood = true;
+  }
+
+  openItemsToBringDialog() {
+    this.showItems = true;
+  }
+
+  openFoodDialog() {
+    this.showFoodMenu = true;
   }
 }

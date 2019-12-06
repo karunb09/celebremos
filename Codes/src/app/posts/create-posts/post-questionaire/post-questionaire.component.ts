@@ -97,14 +97,12 @@ export class PostQuestionaireComponent implements OnInit {
               numberofguests: email.numberofguests,
               status: email.status
             };
-            console.log(this.emailDetails);
           });
       }
     });
     this.route.paramMap.subscribe((paramMap: ParamMap) => {
       if (paramMap.has('email')) {
         this.emailId = paramMap.get('email');
-        console.log(this.emailId);
         this.mode = 'edit';
         this.postService
           .getEmailDetails(this.postId, this.emailId)
@@ -138,7 +136,8 @@ export class PostQuestionaireComponent implements OnInit {
       this.post.id,
       this.emailId,
       this.yourResponse,
-      Number(guests)
+      Number(guests),
+      ''
     );
     this.openSnackBar(form);
   }

@@ -1,0 +1,36 @@
+textarea,
+mat-form-field {
+  width: 90%;
+}
+
+.centerbutton {
+  margin: 0 auto;
+  display: block;
+  text-align: center;
+  font-size: 12px;
+}
+
+.rpassword {
+  max-width: 800px;
+  margin: 0 auto;
+  display: block;
+  margin-top: 16px;
+  margin-bottom: 16px;
+}
+
+.info-text {
+  text-align: center;
+}
+
+.example-radio-group {
+  display: flex;
+  flex-direction: column;
+  margin: 15px 0;
+}
+
+.example-radio-button {
+  margin: 5px;
+}
+
+
+

@@ -1,0 +1,18 @@
+<mat-card class="npassword">
+
+    <h1 class="info-text mat-subheading-2"> <b>Question from {{emailId}}:</b><br> {{emailDetails?.questionsFromGuest}} </h1>
+  <form (submit)="onReset(resetform)" #resetform="ngForm">
+    <mat-form-field>
+        <textarea
+        matInput
+        rows="3"
+        [ngModel]="answerFromHost"
+        name="answer"
+        #answer='ngModel'
+        placeholder="Enter your response here"
+      ></textarea>
+      <mat-error *ngIf="answer.invalid">Please enter a valid response.</mat-error><br>
+    </mat-form-field>
+    <button mat-raised-button color="accent" type="Submit" class="centerbutton">Send</button>
+  </form>
+</mat-card>

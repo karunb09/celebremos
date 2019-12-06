@@ -22,7 +22,7 @@
       >Will you attend <b>{{ post.title }}</b>?</label
     ><br>
     <label id="example-radio-group-label"
-      ><b>When:</b> {{ post.date }}</label
+      ><b>When:</b> {{ post.date }}, {{post.time}}</label
     >
     <label id="example-radio-group-label"
       ><b>Where:</b> {{ post.location }}</label
@@ -54,9 +54,66 @@
       />
     </mat-form-field>
 
+
     <div *ngIf="emailDetails?.status === 'no reply'">Your response is: {{ yourResponse }}</div>
     <div *ngIf="emailDetails?.status !== 'no reply'">Your response is: {{ emailDetails?.status }}</div>
     <br />
+    <button mat-stroked-button color="accent" *ngIf="post.question.length !== 0" (click)="openFoodPoll()">
+      <mat-icon>poll</mat-icon>&nbsp;&nbsp;<b>Answer Food Poll Questions</b></button
+    ><br /><br>
+    <div *ngIf="showFood">
+    <label id="example-radio-group-label"
+      ><b>{{ post.question[0].questionname }}</b>?</label
+    ><br>
+    <mat-radio-group
+      [(ngModel)]="foodResponse"
+    >
+    <mat-radio-button
+    class="example-radio-group"
+        *ngFor="let response of options"
+        [value]="response"
+      >
+        {{ response }}
+      </mat-radio-button>
+    </mat-radio-group>
+  </div><br>
+  <button mat-stroked-button color="primary" (click)="openItemsToBringDialog()">
+    <mat-icon>store_mall_directory</mat-icon>&nbsp;&nbsp;Items to bring
+  </button><br>
+  <div *ngIf="showItems">
+    <mat-radio-group
+      [(ngModel)]="itemsResponse"
+    >
+    <mat-radio-button
+    class="example-radio-group"
+        *ngFor="let response of post.itemstobring"
+        [value]="response.itemname"
+      >
+        {{ response.itemname }}, Qty: {{ response.quantity }}
+      </mat-radio-button>
+    </mat-radio-group>
+  </div><br>
+  <button mat-stroked-button color="primary" (click)="openFoodDialog()">
+    <mat-icon>fastfood</mat-icon>&nbsp;&nbsp;View food menu
+  </button><br>
+  <div *ngIf="showFoodMenu">
+  <mat-list role = "list" *ngFor="let response of post.foodmenu">
+    <mat-list-item role="listitem">{{response}}</mat-list-item>
+  </mat-list>
+</div><br>
+<mat-form-field class="example-full-width">
+  <textarea
+    matInput
+    rows="3"
+    [ngModel]="questionsFromGuest"
+    name="questions"
+    #questions='ngModel'
+    placeholder="Any questions"
+  ></textarea>
+  <mat-hint
+  >If you have any questions, a mail will be sent to the host with the questions. The host might see your question and reply. Leave it blank if you don't have any questions.</mat-hint
+>
+  </mat-form-field><br><br>
     <button *ngIf="emailDetails?.status === 'no reply' && !isLoading || mode === 'edit'"
       mat-raised-button
       color="primary"

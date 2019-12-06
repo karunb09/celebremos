@@ -51,7 +51,6 @@ router.post('/api/posts', checkAuth, multer({ storage: storage }).single("image"
     const url = req.protocol + '://' + req.get('host');
     imagePath = url + "/images/" + req.file.filename;
   }
-  console.log(imagePath);
   let responsesArray = [];
   for (let i = 0; i < req.body.guests.length; i++) {
     let response = {
@@ -134,57 +133,57 @@ router.post('/api/posts', checkAuth, multer({ storage: storage }).single("image"
           });
         })
       });
-    nodemailer.createTestAccount((err, account) => {
-      if (err) {
-        console.error('Failed to create a testing account. ' + err.message);
-        return process.exit(1);
-      }
-      console.log('Credentials obtained, sending message...');
-      let transporter = nodemailer.createTransport({
-        service: 'gmail',
-        auth: {
-          user: 'celebremosnwmsu@gmail.com',
-          pass: 'Madhu876'
-        }
-      });
+    // nodemailer.createTestAccount((err, account) => {
+    //   if (err) {
+    //     console.error('Failed to create a testing account. ' + err.message);
+    //     return process.exit(1);
+    //   }
+    //   console.log('Credentials obtained, sending message...');
+    //   let transporter = nodemailer.createTransport({
+    //     service: 'gmail',
+    //     auth: {
+    //       user: 'celebremosnwmsu@gmail.com',
+    //       pass: 'Madhu@876'
+    //     }
+    //   });
 
-      for (let i = 0; i < createdPost.guests.length; i++) {
-        let urlll = 'http://localhost:4200/rsvp/' + createdPost._id + '/' + createdPost.guests[i];
-        if (Number(createdPost.guests[i])) {
-          nexmo.message.sendSms(
-            '16469928733', createdPost.guests[i], 'You are invited to a ' + createdPost.type +
-            ' invitation. Please RSVP by clicking the below link.' + '<a href="' +urlll+'">Click here</a>'
-            , { type: 'unicode' },
-            (err, responseData) => {
-              if (err) {
-                console.log(err);
-              }
-            }
-          );
-        } else {
-          //Message object
-          let message = {
-            from: 'Celebremos <haripriyarao.jupally@gmail.com>',
-            to: createdPost.guests[i],
-            subject: 'You have an invitation',
-            text: 'CELEBREMOS',
-            html:
-              '<p>You are invited to a ' + createdPost.type + ' invitation. <br>Please RSVP by clicking the below link. </p>'
-              + '<img src = "' + createdPost.imagePath + '" alt = "text" width="400" height="300"></img><br>'
-              + '<a href="' +urlll+'">Click here</a>'
-          };
-          transporter.sendMail(message, (err, info) => {
-            if (err) {
-              console.log('Error occurred. ' + err.message);
-              return process.exit(1);
-            }
-            console.log('Message sent: %s', info.messageId);
-            // Preview only available when sending through an Ethereal account
-            console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
-          });
-        }
-      }
-    });
+    //   for (let i = 0; i < createdPost.guests.length; i++) {
+    //     let urlll = 'http://localhost:4200/rsvp/' + createdPost._id + '/' + createdPost.guests[i];
+    //     if (Number(createdPost.guests[i])) {
+    //       nexmo.message.sendSms(
+    //         '16469928733', createdPost.guests[i], 'You are invited to a ' + createdPost.type +
+    //         ' invitation. Please RSVP by clicking the below link.' + '<a href="' +urlll+'">Click here</a>'
+    //         , { type: 'unicode' },
+    //         (err, responseData) => {
+    //           if (err) {
+    //             console.log(err);
+    //           }
+    //         }
+    //       );
+    //     } else {
+    //       //Message object
+    //       let message = {
+    //         from: 'Celebremos <haripriyarao.jupally@gmail.com>',
+    //         to: createdPost.guests[i],
+    //         subject: 'You have an invitation',
+    //         text: 'CELEBREMOS',
+    //         html:
+    //           '<p>You are invited to a ' + createdPost.type + ' invitation. <br>Please RSVP by clicking the below link. </p>'
+    //           + '<img src = "' + createdPost.imagePath + '" alt = "text" width="400" height="300"></img><br>'
+    //           + '<a href="' +urlll+'">Click here</a>'
+    //       };
+    //       transporter.sendMail(message, (err, info) => {
+    //         if (err) {
+    //           console.log('Error occurred. ' + err.message);
+    //           return process.exit(1);
+    //         }
+    //         console.log('Message sent: %s', info.messageId);
+    //         // Preview only available when sending through an Ethereal account
+    //         console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
+    //       });
+    //     }
+    //   }
+    // });
     res.status(200).json({
       title: "Event created succesfully",
       message: "The event has been successfully created and invitations are sent to your guests email address/phone numbers.",
@@ -416,7 +415,6 @@ router.delete('/api/posts/:id/:user', checkAuth, (req, res, next) => {
   Post.deleteOne({
     _id: req.params.id
   }).then(result => {
-    console.log(result);
     User
       .findOne({ username: username })
       .then(user => {
@@ -535,54 +533,54 @@ router.put('/api/posts/:id', multer({ storage: storage }).single("image"), (req,
         }
       }
     });
-    nodemailer.createTestAccount((err, account) => {
-      if (err) {
-        console.error('Failed to create a testing account. ' + err.message);
-        return process.exit(1);
-      }
-      console.log('Credentials obtained, sending message...');
-      let transporter = nodemailer.createTransport({
-        service: 'gmail',
-        auth: {
-          user: 'celebremosnwmsu@gmail.com',
-          pass: 'Madhu876'
-        }
-      });
-      for (let i = 0; i < post.guests.length; i++) {
-        let urlll = 'http://localhost:4200/rsvp/' + post._id + '/' + post.guests[i];
-        if (Number(post.guests[i])) {
-          nexmo.message.sendSms(
-            '16469928733', post.guests[i], 'Event ' + createdPost.type +
-            ' is updated. Your host wants you to send RSVP again. Please RSVP by clicking the below link.' + '<a href="' +urlll+'">Click here</a>', { type: 'unicode' },
-            (err, responseData) => {
-              if (err) {
-                console.log(err);
-              }
-            }
-          );
-        } else {
-          // Message object
-          let message = {
-            from: 'Celebremos <haripriyarao.jupally@gmail.com>',
-            to: post.guests[i],
-            subject: 'You have an invitation',
-            text: 'CELEBREMOS',
-            html:
-            '<p>Event ' + post.type + ' is updated. <br> Your host wants you to send RSVP again. <br> Please RSVP by clicking the below link. </p>'
-            + '<img src = "' + post.imagePath + '" alt = "text" width="400" height="300"></img><br>'
-            + '<a href="' +urlll+'">Click here</a>'
-          };
-          transporter.sendMail(message, (err, info) => {
-            if (err) {
-              console.log('Error occurred. ' + err.message);
-              return process.exit(1);
-            }
-            console.log('Message sent: %s', info.messageId);
-            console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
-          });
-        }
-      }
-    });
+    // nodemailer.createTestAccount((err, account) => {
+    //   if (err) {
+    //     console.error('Failed to create a testing account. ' + err.message);
+    //     return process.exit(1);
+    //   }
+    //   console.log('Credentials obtained, sending message...');
+    //   let transporter = nodemailer.createTransport({
+    //     service: 'gmail',
+    //     auth: {
+    //       user: 'celebremosnwmsu@gmail.com',
+    //       pass: 'Madhu@876'
+    //     }
+    //   });
+    //   for (let i = 0; i < post.guests.length; i++) {
+    //     let urlll = 'http://localhost:4200/rsvp/' + post._id + '/' + post.guests[i];
+    //     if (Number(post.guests[i])) {
+    //       nexmo.message.sendSms(
+    //         '16469928733', post.guests[i], 'Event ' + createdPost.type +
+    //         ' is updated. Your host wants you to send RSVP again. Please RSVP by clicking the below link.' + '<a href="' +urlll+'">Click here</a>', { type: 'unicode' },
+    //         (err, responseData) => {
+    //           if (err) {
+    //             console.log(err);
+    //           }
+    //         }
+    //       );
+    //     } else {
+    //       // Message object
+    //       let message = {
+    //         from: 'Celebremos <haripriyarao.jupally@gmail.com>',
+    //         to: post.guests[i],
+    //         subject: 'You have an invitation',
+    //         text: 'CELEBREMOS',
+    //         html:
+    //         '<p>Event ' + post.type + ' is updated. <br> Your host wants you to send RSVP again. <br> Please RSVP by clicking the below link. </p>'
+    //         + '<img src = "' + post.imagePath + '" alt = "text" width="400" height="300"></img><br>'
+    //         + '<a href="' +urlll+'">Click here</a>'
+    //       };
+    //       transporter.sendMail(message, (err, info) => {
+    //         if (err) {
+    //           console.log('Error occurred. ' + err.message);
+    //           return process.exit(1);
+    //         }
+    //         console.log('Message sent: %s', info.messageId);
+    //         console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
+    //       });
+    //     }
+    //   }
+    // });
     res.status(200).json({
       title: "Event updated succesfully",
       message: "The event has been successfully updated and updated invitations are sent to your guests email address/phone numbers.",
@@ -676,56 +674,56 @@ router.post('/api/posts/update/:id/:username', multer({ storage: storage }).sing
           }
         }
       });
-    nodemailer.createTestAccount((err, account) => {
-      if (err) {
-        console.error('Failed to create a testing account. ' + err.message);
-        return process.exit(1);
-      }
-      console.log('Credentials obtained, sending message...');
-      let transporter = nodemailer.createTransport({
-        service: 'gmail',
-        auth: {
-          user: 'celebremosnwmsu@gmail.com',
-          pass: 'Madhu876'
-        }
-      });
-      for (let i = 0; i < createdPost.guests.length; i++) {
-        let urlll = 'http://localhost:4200/rsvp/' + createdPost._id + '/' + createdPost.guests[i];
-        if (Number(createdPost.guests[i])) {
-          nexmo.message.sendSms(
-            '16469928733', createdPost.guests[i], 'You are invited to a ' + createdPost.type +
-            ' invitation. Please RSVP by clicking the below link.' + '<a href="' +urlll+'">Click here</a>'
-            , { type: 'unicode' },
-            (err, responseData) => {
-              if (err) {
-                console.log(err);
-              }
-            }
-          );
-        } else {
-          //Message object
-          let message = {
-            from: 'Celebremos <haripriyarao.jupally@gmail.com>',
-            to: createdPost.guests[i],
-            subject: 'You have an invitation',
-            text: 'CELEBREMOS',
-            html:
-              '<p>You are invited to a ' + createdPost.type + ' invitation. <br>Please RSVP by clicking the below link. </p>'
-              + '<img src = "' + createdPost.imagePath + '" alt = "text" width="400" height="300"></img><br>'
-              + '<a href="' +urlll+'">Click here</a>'
-          };
-          transporter.sendMail(message, (err, info) => {
-            if (err) {
-              console.log('Error occurred. ' + err.message);
-              return process.exit(1);
-            }
-            console.log('Message sent: %s', info.messageId);
-            // Preview only available when sending through an Ethereal account
-            console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
-          });
-        }
-      }
-    });
+    // nodemailer.createTestAccount((err, account) => {
+    //   if (err) {
+    //     console.error('Failed to create a testing account. ' + err.message);
+    //     return process.exit(1);
+    //   }
+    //   console.log('Credentials obtained, sending message...');
+    //   let transporter = nodemailer.createTransport({
+    //     service: 'gmail',
+    //     auth: {
+    //       user: 'celebremosnwmsu@gmail.com',
+    //       pass: 'Madhu@876'
+    //     }
+    //   });
+    //   for (let i = 0; i < createdPost.guests.length; i++) {
+    //     let urlll = 'http://localhost:4200/rsvp/' + createdPost._id + '/' + createdPost.guests[i];
+    //     if (Number(createdPost.guests[i])) {
+    //       nexmo.message.sendSms(
+    //         '16469928733', createdPost.guests[i], 'You are invited to a ' + createdPost.type +
+    //         ' invitation. Please RSVP by clicking the below link.' + '<a href="' +urlll+'">Click here</a>'
+    //         , { type: 'unicode' },
+    //         (err, responseData) => {
+    //           if (err) {
+    //             console.log(err);
+    //           }
+    //         }
+    //       );
+    //     } else {
+    //       //Message object
+    //       let message = {
+    //         from: 'Celebremos <haripriyarao.jupally@gmail.com>',
+    //         to: createdPost.guests[i],
+    //         subject: 'You have an invitation',
+    //         text: 'CELEBREMOS',
+    //         html:
+    //           '<p>You are invited to a ' + createdPost.type + ' invitation. <br>Please RSVP by clicking the below link. </p>'
+    //           + '<img src = "' + createdPost.imagePath + '" alt = "text" width="400" height="300"></img><br>'
+    //           + '<a href="' +urlll+'">Click here</a>'
+    //       };
+    //       transporter.sendMail(message, (err, info) => {
+    //         if (err) {
+    //           console.log('Error occurred. ' + err.message);
+    //           return process.exit(1);
+    //         }
+    //         console.log('Message sent: %s', info.messageId);
+    //         // Preview only available when sending through an Ethereal account
+    //         console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
+    //       });
+    //     }
+    //   }
+    // });
     res.status(200).json({
       title: "Event created succesfully",
       message: "The event has been successfully created and invitations are sent to your guests email address/phone numbers.",
@@ -754,7 +752,8 @@ router.put('/api/posts/update/rsvp', (req, res, next) => {
           _id: post.responses[i]._id,
           email: post.responses[i].email,
           numberofguests: req.body.guestsNumber,
-          status: statusText
+          status: statusText,
+          questions: req.body.questionsFromGuest
         }
         fetchedResponses.push(responsesPush);
       } else {
@@ -817,7 +816,6 @@ router.put('/api/posts/update/foodpoll', (req, res, next) => {
           "question": post.question
         }
       }).then(createdPost => {
-        console.log(req.body.username);
         let fetchedUser;
         User
           .findOne({ username: req.body.username })
@@ -848,12 +846,12 @@ router.put('/api/posts/update/foodpoll', (req, res, next) => {
           });
         let fetchedInvitedUser;
         User.find().then(users => {
-          for (let i = 0; i < createdPost.guests.length; i++) {
+          for (let i = 0; i < post.guests.length; i++) {
             for (let j = 0; j < users.length; j++) {
               if (post.guests[i] === users[j].email) {
                 User.findOne({ email: users[j].email }).then(user => {
                   fetchedInvitedUser = user;
-                  fetchedInvitedUser.invitedEvents.push(createdPost._id)
+                  fetchedInvitedUser.invitedEvents.push(post._id)
                   User.updateOne({
                     email: users[j].email
                   }, {
@@ -869,57 +867,58 @@ router.put('/api/posts/update/foodpoll', (req, res, next) => {
             }
           }
         });
-        nodemailer.createTestAccount((err, account) => {
-          if (err) {
-            console.error('Failed to create a testing account. ' + err.message);
-            return process.exit(1);
-          }
-          console.log('Credentials obtained, sending message...');
-          let transporter = nodemailer.createTransport({
-            service: 'gmail',
-            auth: {
-              user: 'celebremosnwmsu@gmail.com',
-              pass: 'Madhu876'
-            }
-          });
-          for (let i = 0; i < createdPost.guests.length; i++) {
-            if (Number(createdPost.guests[i])) {
-              nexmo.message.sendSms(
-                '16469928733', createdPost.guests[i], 'You are invited to a ' + createdPost.type + ' invitation. Please RSVP by clicking the below link.' + 'http://localhost:4200/rsvp/' + createdPost._id + '/' + createdPost.guests[i] + ' ', { type: 'unicode' },
-                (err, responseData) => {
-                  if (err) {
-                    console.log(err);
-                  }
-                }
-              );
-            } else {
-              //Message object
-              let message = {
-                from: 'Celebremos <haripriyarao.jupally@gmail.com>',
-                to: createdPost.guests[i],
-                subject: 'You have an invitation',
-                text: 'CELEBREMOS',
-                html:
-                  '<p>You are invited to a ' + createdPost.type + ' invitation. Please RSVP by clicking the below link. </p>' + 'http://localhost:4200/rsvp/' + createdPost._id + '/' + createdPost.guests[i]
-              };
-              transporter.sendMail(message, (err, info) => {
-                if (err) {
-                  console.log('Error occurred. ' + err.message);
-                  return process.exit(1);
-                }
-                console.log('Message sent: %s', info.messageId);
-                // Preview only available when sending through an Ethereal account
-                console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
-              });
-            }
-          }
-        });
+        // nodemailer.createTestAccount((err, account) => {
+        //   if (err) {
+        //     console.error('Failed to create a testing account. ' + err.message);
+        //     return process.exit(1);
+        //   }
+        //   console.log('Credentials obtained, sending message...');
+        //   let transporter = nodemailer.createTransport({
+        //     service: 'gmail',
+        //     auth: {
+        //       user: 'celebremosnwmsu@gmail.com',
+        //       pass: 'Madhu@876'
+        //     }
+        //   });
+        //   console.log(post);
+        //   for (let i = 0; i < post.guests.length; i++) {
+        //     if (Number(post.guests[i])) {
+        //       nexmo.message.sendSms(
+        //         '16469928733', post.guests[i], 'You are invited to a ' + post.type + ' invitation. Please RSVP by clicking the below link.' + 'http://localhost:4200/rsvp/' + post._id + '/' + post.guests[i] + ' ', { type: 'unicode' },
+        //         (err, responseData) => {
+        //           if (err) {
+        //             console.log(err);
+        //           }
+        //         }
+        //       );
+        //     } else {
+        //       //Message object
+        //       let message = {
+        //         from: 'Celebremos <haripriyarao.jupally@gmail.com>',
+        //         to: post.guests[i],
+        //         subject: 'You have an invitation',
+        //         text: 'CELEBREMOS',
+        //         html:
+        //           '<p>You are invited to a ' + post.type + ' invitation. Please RSVP by clicking the below link. </p>' + 'http://localhost:4200/rsvp/' + post._id + '/' + post.guests[i]
+        //       };
+        //       transporter.sendMail(message, (err, info) => {
+        //         if (err) {
+        //           console.log('Error occurred. ' + err.message);
+        //           return process.exit(1);
+        //         }
+        //         console.log('Message sent: %s', info.messageId);
+        //         // Preview only available when sending through an Ethereal account
+        //         console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
+        //       });
+        //     }
+        //   }
+        // });
         res.status(200).json({
           title: "Event created succesfully",
           message: "The event has been successfully created and invitations are sent to your guests email address/phone numbers.",
           post: {
-            ...createdPost,
-            id: createdPost._id
+            ...post,
+            id: post._id
           }
         });
       });

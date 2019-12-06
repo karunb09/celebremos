@@ -1,10 +1,20 @@
 <mat-nav-list>
       <button mat-raised-button color="primary"  (click)="SelectAll()">Select All</button> &nbsp; &nbsp;
-      <button mat-raised-button color="secondary" (click)="SelectNone()">Select None</button>
+      <button mat-raised-button color="secondary" (click)="SelectNone()">Select None</button><br><br>
   <form [formGroup]= "form" (submit)="onClick()">
+    <div *ngIf="data.contactgroups.length > 0">
+      <label><b>Contact Groups: </b></label>
+      <div *ngFor = "let contact of contactGroupArray.controls; let i = index;">
+          <mat-checkbox [formControl] = 'contact' (change) = "getSelectedContactsValue()">{{data.contactgroups[i].groupName}} &nbsp;&nbsp; &nbsp;&nbsp;
+              &nbsp;&nbsp; &nbsp;&nbsp;  &nbsp;&nbsp; &nbsp;&nbsp;  &nbsp;&nbsp; &nbsp;&nbsp; Number of contacts: {{data.contactgroups[i].groupcontacts.length}}
+            </mat-checkbox>
+      </div>
+    </div><br>
+    <label><b>Contacts: </b></label>
     <div *ngFor = "let contact of contactsArray.controls; let i = index;">
-        <mat-checkbox [formControl] = 'contact' (change) = "getSelectedContactsValue()">{{data[i].firstname}}
-          {{data[i].lastname}}<br>{{data[i].emailid}}</mat-checkbox>
+        <mat-checkbox [formControl] = 'contact' (change) = "getSelectedContactsValue()">{{data.contacts[i].firstname}}
+          {{data.contacts[i].lastname}}<br>{{data.contacts[i].emailid}}</mat-checkbox>
+          <mat-divider></mat-divider>
     </div>
     <button mat-raised-button color="accent" (click)="openLink($event)">Done</button>
   </form>

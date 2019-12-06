@@ -429,12 +429,13 @@ export class PostService {
       });
   }
 
-  updateRSVP(postId: string, emailid: string, response: string, guestsNumber: number) {
+  updateRSVP(postId: string, emailid: string, response: string, guestsNumber: number, questionsFromGuest: string) {
     let post = {
       id: postId,
       emailId: emailid,
       response: response,
-      guestsNumber: guestsNumber
+      guestsNumber: guestsNumber,
+      questionsFromGuest: questionsFromGuest
     };
     this.httpClient
       .put(
@@ -451,6 +452,7 @@ export class PostService {
       email: string;
       numberofguests: string;
       status: string;
+      questions: string;
     }>('http://localhost:3000/api/posts/responseitem/' + emailId + '/' + postId);
   }
 

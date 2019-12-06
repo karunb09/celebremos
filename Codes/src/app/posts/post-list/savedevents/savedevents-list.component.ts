@@ -99,7 +99,6 @@ export class SavedEventComponent implements OnInit, OnDestroy {
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        console.log('Yes clicked');
         this.onDelete(postId);
       }
     });

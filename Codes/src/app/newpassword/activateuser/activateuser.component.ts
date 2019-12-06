@@ -23,7 +23,6 @@ export class ActivateUserComponent implements OnInit {
     this.route.paramMap.subscribe((paramMap: ParamMap) => {
       if (paramMap.has('userId')) {
         this.userid = paramMap.get('userId');
-        console.log(this.userid);
       }
       this.authService.activateNewUser(this.userid);
     });

@@ -1,0 +1,40 @@
+<mat-card class="rpassword">
+    <img
+      mat-card-image
+      class="matcardimage"
+      [src]="post?.imagePath"
+      [alt]="post?.title"
+    /><br />
+
+    <label id="example-radio-group-label"
+      > <b>{{ post?.title }}</b
+      ></label
+    ><br />
+    <label id="example-radio-group-label"
+      ><b>When:</b> {{ post?.date }}, {{ post?.time }}</label
+    >
+    <label id="example-radio-group-label"
+      ><b>Where:</b> {{ post?.location }}</label
+    >
+    <table class="table table-striped">
+        <thead>
+          <tr>
+            <th scope="col">Email</th>
+            <th scope="col">Status</th>
+            <th scope="col">No. of Guests</th>
+            <th scope="col">Questions</th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let response of post.responses">
+            <th scope="row">{{response.email}}</th>
+            <td>{{response.status}}</td>
+            <td>{{response.numberofguests}}</td>
+            <td>{{response.questions }}</td>
+            <td>    <button mat-stroked-button color="accent" *ngIf="response.questions" class="centerbutton" [routerLink]="['/sendresponse', response.email, post.id]">Reply</button></td>
+          </tr>
+        </tbody>
+      </table>
+</mat-card>
+

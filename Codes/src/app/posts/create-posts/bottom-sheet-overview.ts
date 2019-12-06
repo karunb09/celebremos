@@ -38,6 +38,7 @@ export class BottomSheetOverviewExampleSheet implements OnInit {
   searchTerm: any;
   itemsCopy;
   selected: string;
+  selectedContactGroups: any[];
 
   constructor(
     private _bottomSheetRef: MatBottomSheetRef<BottomSheetOverviewExampleSheet>,
@@ -51,7 +52,11 @@ export class BottomSheetOverviewExampleSheet implements OnInit {
   openLink(event: MouseEvent): void {
     this._bottomSheetRef.dismiss();
     event.preventDefault();
+
+    this.getSelectedContactGroupValue();
+    this.getSelectedContactsValue();
     this.contactService.setSelectedContactList(this.selectedContact);
+    this.contactService.setSelectedContactGroupList(this.selectedContactGroups);
   }
 
   onClick() {
@@ -60,6 +65,7 @@ export class BottomSheetOverviewExampleSheet implements OnInit {
 
   ngOnInit(): void {
     this.form = this.formbuilder.group({
+      contactgroups: this.addContactGroupControls(),
       contacts: this.addContactsControls()
     });
 
@@ -85,7 +91,7 @@ export class BottomSheetOverviewExampleSheet implements OnInit {
   }
 
   addContactsControls() {
-    const arr = this.data.map(element => {
+    const arr = this.data.contacts.map(element => {
       return this.formbuilder.control(false);
     });
     return this.formbuilder.array(arr);
@@ -95,7 +101,27 @@ export class BottomSheetOverviewExampleSheet implements OnInit {
     this.selectedContact = [];
     this.contactsArray.controls.forEach((control, i) => {
       if (control.value) {
-        this.selectedContact.push(this.contacts[i]);
+        this.selectedContact.push(this.data.contacts[i]);
+      }
+    });
+  }
+
+  get contactGroupArray() {
+    return this.form.get('contactgroups') as FormArray;
+  }
+
+  addContactGroupControls() {
+    const arr = this.data.contactgroups.map(element => {
+      return this.formbuilder.control(false);
+    });
+    return this.formbuilder.array(arr);
+  }
+
+  getSelectedContactGroupValue() {
+    this.selectedContactGroups = [];
+    this.contactGroupArray.controls.forEach((control, i) => {
+      if (control.value) {
+        this.selectedContactGroups.push(this.data.contactgroups[i]);
       }
     });
   }
@@ -104,14 +130,22 @@ export class BottomSheetOverviewExampleSheet implements OnInit {
     this.contactsArray.controls.forEach((control) => {
       control.setValue(true);
     });
+    this.contactGroupArray.controls.forEach((control) => {
+      control.setValue(true);
+    });
     this.getSelectedContactsValue();
+    this.getSelectedContactGroupValue();
   }
 
   SelectNone() {
     this.contactsArray.controls.forEach((control) => {
       control.setValue(false);
     });
+    this.contactGroupArray.controls.forEach((control) => {
+      control.setValue(false);
+    });
     this.getSelectedContactsValue();
+    this.getSelectedContactGroupValue();
   }
 
 

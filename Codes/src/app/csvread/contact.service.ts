@@ -4,6 +4,7 @@ import { Subject, BehaviorSubject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import { Contact } from './contact-model';
+import { ContactGroups } from '../auth.service';
 
 export interface ContactModel {
   id: string;
@@ -18,6 +19,7 @@ export class ContactService {
 
   private selectedContactsList = new Subject<Contact[]>();
   private selectedContactsListDialog = new Subject<ContactModel[]>();
+  private selectedContactGroups = new Subject<ContactGroups[]>();
   private groupName = new BehaviorSubject<string>('Hello from APP');
 
   constructor(private httpClient: HttpClient) {
@@ -25,15 +27,19 @@ export class ContactService {
   }
 
   setSelectedContactList(list: Contact[]) {
-
     this.selectedContactsList.next([...list]);
-    this.getselectedContactList().subscribe(result => {
-      console.log(result);
-    });
   }
 
   getselectedContactList() {
     return this.selectedContactsList.asObservable();
+  }
+
+  setSelectedContactGroupList(list: ContactGroups[]) {
+    this.selectedContactGroups.next([...list]);
+  }
+
+  getselectedContactGroupList() {
+    return this.selectedContactGroups.asObservable();
   }
 
   setSelectedContactListDialog(list: ContactModel[]) {

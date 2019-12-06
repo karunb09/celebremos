@@ -49,7 +49,8 @@ import { ItemsToBringDialog } from './posts/create-posts/post-questionaire/items
 import { AddFoodItemsDialog } from './posts/create-posts/post-questionaire/add-food-menu/add-food-items-dialog';
 import { CreateContactGroup } from './contacts/create-contact-group/create-contact-group';
 import { SearchFilterPipe } from './posts/create-posts/search-filter.pipe';
-
+import { PostdetailsComponent } from './posts/postdetails/postdetails.component';
+import { HostreplyComponent } from './posts/hostreply/hostreply.component';
 
 @NgModule({
   declarations: [
@@ -84,7 +85,9 @@ import { SearchFilterPipe } from './posts/create-posts/search-filter.pipe';
     ItemsToBringDialog,
     AddFoodItemsDialog,
     CreateContactGroup,
-    SearchFilterPipe
+    SearchFilterPipe,
+    PostdetailsComponent,
+    HostreplyComponent,
   ],
   imports: [
     BrowserModule,

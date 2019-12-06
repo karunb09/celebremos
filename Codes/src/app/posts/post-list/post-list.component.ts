@@ -26,6 +26,7 @@ export class PostListComponent implements OnInit, OnDestroy {
   title = 'angular-material-tab-router';
   navLinks: any[];
   activeLinkIndex = -1;
+  savedPosts: Post[];
 
 
   constructor(
@@ -107,7 +108,6 @@ export class PostListComponent implements OnInit, OnDestroy {
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        console.log('Yes clicked');
         this.onDelete(postId);
         // DO SOMETHING
       }

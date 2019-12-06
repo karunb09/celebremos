@@ -80,6 +80,7 @@ export class AuthService {
     };
     let contacts: [Contact] = [contact];
     const authData: AuthData = {
+      // tslint:disable-next-line: object-literal-shorthand
       firstname: firstname,
       lastname: lastname,
       username: username,
@@ -316,7 +317,6 @@ export class AuthService {
       mobilenumber: mobilenumber,
       contactgroupId: contactgroupId
     };
-    console.log(contact);
     this.http
       .put<{ message: string; contacts: any }>(
         'http://localhost:3000/user/contacts/' + username,
@@ -343,7 +343,6 @@ export class AuthService {
       groupName: groupName,
       groupContacts: contacts
     };
-    console.log(contactgroup);
     this.http
       .put<{ message: string; contacts: any }>(
         'http://localhost:3000/user/addcontactsgroup/' + username,
@@ -473,6 +472,22 @@ export class AuthService {
       this.setAuthTimer(expiresIn / 1000);
       this.authStatusListener.next(true);
     }
+  }
+
+  sendMail(message: string, guestemailId: string, useremailId: string) {
+    let reply = {
+      message: message,
+      guestemailId: guestemailId,
+      useremailId: useremailId
+    };
+    this.http
+      .put(
+        'http://localhost:3000/user/sendresponsetoguest',
+        reply
+      )
+      .subscribe(responseData => {
+        this.router.navigate(['/hostedevents']);
+      });
   }
 
 }

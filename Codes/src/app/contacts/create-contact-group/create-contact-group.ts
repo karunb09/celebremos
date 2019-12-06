@@ -1,20 +1,20 @@
-import { Component, Inject } from "@angular/core";
-import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material";
-import { Contact } from "src/app/csvread/contact-model";
+import { Component, Inject } from '@angular/core';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { Contact } from 'src/app/csvread/contact-model';
 import {
   FormBuilder,
   FormArray,
   FormGroup,
   FormControl,
   Validators
-} from "@angular/forms";
-import { ContactService } from "src/app/csvread/contact.service";
-import { AuthService } from "src/app/auth.service";
+} from '@angular/forms';
+import { ContactService } from 'src/app/csvread/contact.service';
+import { AuthService } from 'src/app/auth.service';
 
 @Component({
   selector: "createcontactcomponent",
-  templateUrl: "create-contact-group.html",
-  styleUrls: ["create-contact-group.css"]
+  templateUrl: 'create-contact-group.html',
+  styleUrls: ['create-contact-group.css']
 })
 export class CreateContactGroup {
   constructor(
@@ -36,10 +36,10 @@ export class CreateContactGroup {
   contactsArry: Contact[] = [];
 
   contact: Contact = {
-    firstname: "Vishal",
-    lastname: "Pannala",
-    mobilenumber: "13124312",
-    emailid: "vishalreddy.pannala@gmail.com"
+    firstname: 'Vishal',
+    lastname: 'Pannala',
+    mobilenumber: '13124312',
+    emailid: 'vishalreddy.pannala@gmail.com'
   };
 
   checked = true;
@@ -57,7 +57,6 @@ export class CreateContactGroup {
   openLink(event: MouseEvent): void {
     this.dialogRef.close();
     event.preventDefault();
-    console.log(this.selectedContact);
     this.authService.addContactGroup(
       this.username,
       this.form.value.groupName,
@@ -81,7 +80,7 @@ export class CreateContactGroup {
   }
 
   get contactsArray() {
-    return this.form.get("contacts") as FormArray;
+    return this.form.get('contacts') as FormArray;
   }
 
   addContactsControls() {
