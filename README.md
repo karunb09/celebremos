@@ -33,3 +33,5 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 ## Project description
 
 This project is basically used to create an invitation for any event and invite them through the mail or texting to their mobile.
+
+URL: http://celebremos-env.449mj8qcam.us-east-2.elasticbeanstalk.com/
