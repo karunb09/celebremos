@@ -31,7 +31,7 @@
     "jsonwebtoken": "^8.5.1",
     "mailgun-js": "^0.22.0",
     "mdbootstrap": "^4.8.10",
-    "mongoose": "^5.6.1",
+    "mongoose": "^5.7.5",
     "mongoose-unique-validator": "^2.0.3",
     "multer": "^1.4.2",
     "mydatepicker": "^2.6.6",
